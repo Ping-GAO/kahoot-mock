@@ -1,9 +1,8 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
-  const a
-  =5;
+  const a = 5;
   return (
     <div className="App">
       <header className="App-header">
