@@ -6,8 +6,9 @@ export const loginRequest = () => ({
   type: userConstants.LOGIN_REQUEST,
 });
 
-export const loginSuccess = () => ({
+export const loginSuccess = (accessToken) => ({
   type: userConstants.LOGIN_SUCCESS,
+  accessToken,
 });
 
 export const loginFailure = (error) => ({
@@ -56,7 +57,10 @@ export const login = (email, password) => {
         if (!res.ok) {
           throw new Error(res.statusText);
         } else {
-          dispatch(loginSuccess());
+          // pretent api give us an accessToken
+          const accessToken = "fuck";
+          localStorage.setItem("accessToken", accessToken);
+          dispatch(loginSuccess(accessToken));
         }
       })
       .catch((error) => {
@@ -80,6 +84,7 @@ export const logout = () => {
         if (!res.ok) {
           throw new Error(res.statusText);
         } else {
+          localStorage.removeItem("accessToken");
           dispatch(logoutSuccess());
         }
       })
