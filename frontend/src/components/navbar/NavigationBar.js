@@ -2,7 +2,26 @@ import React from "react";
 import { Navbar, NavbarBrand, Nav, NavItem, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./NavigationBar.css";
+import { useSelector } from "react-redux";
+import { handleLoginClick, handleLogoutClick } from "./Utilities";
 const NavigationBar = () => {
+  // get loginStatus from reudex store
+  const loginStatus = useSelector((state) => state.authentication);
+  // condition rendering base on loginStatus
+  let button;
+  if (loginStatus.loggedIn) {
+    button = (
+      <Button outline color="primary" onClick={handleLoginClick}>
+        Logout
+      </Button>
+    );
+  } else {
+    button = (
+      <Button outline color="primary" onClick={handleLogoutClick}>
+        <Link to="/login">Login</Link>
+      </Button>
+    );
+  }
   // a div contianer added for future usage
   return (
     <div className="container-nav">
@@ -14,11 +33,7 @@ const NavigationBar = () => {
               <Link to="/signup">Signup</Link>
             </Button>
           </NavItem>
-          <NavItem>
-            <Button outline color="primary">
-              <Link to="/login">Login</Link>
-            </Button>
-          </NavItem>
+          <NavItem>{button}</NavItem>
         </Nav>
       </Navbar>
     </div>
