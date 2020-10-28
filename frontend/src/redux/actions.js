@@ -42,12 +42,13 @@ export const login = (email, password) => {
       body: JSON.stringify({ email: email, password: password }),
     })
       .then((res) => {
-        if (res.ok) {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        } else {
           dispatch(loginSuccess());
         }
       })
       .catch((error) => {
-        console.log(error);
         dispatch(loginFailure(error.message));
       });
   };
