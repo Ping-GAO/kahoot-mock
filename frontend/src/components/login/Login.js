@@ -11,12 +11,14 @@ const Login = () => {
     fetch(`${API_URL}/admin/auth/login`, {
       method: "POST",
       headers: {
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email: email, password: password }),
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+    }).then((res) => {
+      if (!res.ok) {
+      }
+    });
   };
 
   return (
