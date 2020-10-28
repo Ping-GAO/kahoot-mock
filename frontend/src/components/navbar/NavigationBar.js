@@ -28,8 +28,9 @@ const NavigationBar = () => {
       </Button>
     );
   }
-  // a div contianer added for future usage
+
   return (
+    // a div contianer added for future usage
     <div className="container-nav">
       <Navbar color="light" light expand="md">
         <NavbarBrand href="/home">Home</NavbarBrand>
