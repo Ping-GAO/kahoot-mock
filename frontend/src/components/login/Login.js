@@ -1,24 +1,18 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-import { API_URL } from "../../constants";
+import { login } from "../../redux/actions";
 import "./Login.css";
+import { useDispatch, useSelector } from "react-redux";
 const Login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const dispatch = useDispatch();
+  const loginStatus = useSelector((state) => state.authentication);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log({ email: email, password: password });
-    fetch(`${API_URL}/admin/auth/login`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email: email, password: password }),
-    }).then((res) => {
-      if (!res.ok) {
-      }
-    });
+    dispatch(login(email, password));
+    console.log(loginStatus);
   };
 
   return (
@@ -41,7 +35,7 @@ const Login = () => {
           onChange={(event) => setPassword(event.target.value)}
         />
       </FormGroup>
-      <Button>Submit</Button>
+      <Button type="submit">Submit</Button>
     </Form>
   );
 };
