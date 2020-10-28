@@ -1,5 +1,6 @@
 import { userConstants } from "./actionTypes";
 import { API_URL } from "../constants";
+
 // this file constains all the action creators used in this project
 export const loginRequest = () => ({
   type: userConstants.LOGIN_REQUEST,
@@ -49,6 +50,7 @@ export const login = (email, password) => {
         }
       })
       .catch((error) => {
+        console.log(error);
         dispatch(loginFailure(error.message));
       });
   };

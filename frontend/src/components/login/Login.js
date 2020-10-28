@@ -2,21 +2,22 @@ import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { login } from "../../redux/actions";
 import "./Login.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const dispatch = useDispatch();
-  const loginStatus = useSelector((state) => state.authentication);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(login(email, password));
-    console.log(loginStatus);
-  };
-
+  let history = useHistory();
   return (
-    <Form className="form-login" onSubmit={handleSubmit}>
+    <Form
+      className="form-login"
+      onSubmit={(e) => {
+        e.preventDefault();
+        dispatch(login(email, password));
+        history.push("/home");
+      }}
+    >
       <FormGroup>
         <Label for="exampleEmail">Email</Label>
         <Input
