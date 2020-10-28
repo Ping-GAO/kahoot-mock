@@ -14,9 +14,19 @@ export const loginFailure = (error) => ({
   type: userConstants.LOGIN_FAILURE,
   payload: error,
 });
-export const logout = () => ({
-  type: userConstants.LOG_OUT,
+export const logoutRequest = () => ({
+  type: userConstants.LOGOUT_REQUEST,
 });
+
+export const logoutSuccess = () => ({
+  type: userConstants.LOGOUT_SUCCESS,
+});
+
+export const logoutFailure = (error) => ({
+  type: userConstants.LOGOUT_FAILURE,
+  payload: error,
+});
+
 export const registryRequest = () => ({
   type: userConstants.REGISTRY_REQUEST,
 });
@@ -52,6 +62,29 @@ export const login = (email, password) => {
       .catch((error) => {
         console.log(error);
         dispatch(loginFailure(error.message));
+      });
+  };
+};
+
+export const logout = () => {
+  return function (dispatch) {
+    dispatch(logoutRequest());
+    fetch(`${API_URL}/admin/auth/logout`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        token: localStorage.getItem("accessToken"),
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        } else {
+          dispatch(logoutSuccess());
+        }
+      })
+      .catch((error) => {
+        dispatch(logoutFailure(error.message));
       });
   };
 };
