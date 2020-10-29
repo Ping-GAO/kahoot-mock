@@ -137,7 +137,6 @@
                             "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhheWRlbkB1bnN3LmVkdS5hdSIsImlhdCI6MTYwMzk0MzIzMH0.b37PfwlcH_cue6yhgvDt2IiNvhRACf79hTNtacYB94Q"
                         },
                         "required": true,
-                        "required": true,
                         "description": "Bearer [token]"
                     }
                 ],
@@ -162,7 +161,6 @@
                             "type": "string",
                             "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImhheWRlbkB1bnN3LmVkdS5hdSIsImlhdCI6MTYwMzk0MzIzMH0.b37PfwlcH_cue6yhgvDt2IiNvhRACf79hTNtacYB94Q"
                         },
-                        "required": true,
                         "required": true,
                         "description": "Bearer [token]"
                     }
