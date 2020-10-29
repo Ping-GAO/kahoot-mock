@@ -2,8 +2,9 @@ import React from "react";
 import { Jumbotron, Button } from "reactstrap";
 import { useSelector } from "react-redux";
 import "./Home.css";
+
 const Home = () => {
-  const loginStatus = useSelector((state) => state.authentication);
+  const loginStatus = useSelector(state => state.authentication);
   return (
     <div className="container-home">
       <Jumbotron>

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { authentication } from "./Login";
+import authentication from "./Login";
 
 // will add more reducer here
-export const rootReducer = combineReducers({ authentication });
+export default combineReducers({ authentication });

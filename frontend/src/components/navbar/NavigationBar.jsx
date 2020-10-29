@@ -1,19 +1,17 @@
 import React from "react";
 import { Navbar, NavbarBrand, Nav, NavItem, Button } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./NavigationBar.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/actions";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 const NavigationBar = () => {
   // get loginStatus from reudex store
-  const loginStatus = useSelector((state) => state.authentication);
+  const loginStatus = useSelector(state => state.authentication);
   // condition rendering base on loginStatus
   let button;
   const dispatch = useDispatch();
-  let history = useHistory();
+  const history = useHistory();
   if (loginStatus.loggedIn) {
     button = (
       <Button

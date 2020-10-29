@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import { rootReducer } from "./reducers/index";
 import thunk from "redux-thunk";
+import rootReducer from "./reducers/index";
 
 // this config enalbe the chrome redux extension
 // copy paste from redux offical github page
@@ -10,4 +10,4 @@ const composeEnhancers =
     : compose;
 
 const enhancer = composeEnhancers(applyMiddleware(thunk));
-export const store = createStore(rootReducer, enhancer);
+export default createStore(rootReducer, enhancer);

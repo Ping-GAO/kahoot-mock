@@ -1,7 +1,7 @@
-import { userConstants } from "../actionTypes";
+import userConstants from "../actionTypes";
 
 // check the localStorage see if user already logged in
-let accessToken = JSON.parse(localStorage.getItem("accessToken"));
+const accessToken = JSON.parse(localStorage.getItem("accessToken"));
 
 // Shorthand property names stynex
 const initialState = accessToken
@@ -9,16 +9,16 @@ const initialState = accessToken
   : { loggedIn: false };
 
 // given the current state and action return the next state
-export const authentication = (state = initialState, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case userConstants.LOGIN_REQUEST:
       return {
-        loggingIn: true,
+        loggingIn: true
       };
     case userConstants.LOGIN_SUCCESS:
       return {
         loggedIn: true,
-        accessToken: action.accessToken,
+        accessToken: action.accessToken
       };
     case userConstants.LOGIN_FAILURE:
       return {};

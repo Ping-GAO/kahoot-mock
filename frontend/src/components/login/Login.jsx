@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-import { login } from "../../redux/actions";
 import "./Login.css";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { login } from "../../redux/actions";
+
 const Login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const dispatch = useDispatch();
-  let history = useHistory();
+  const history = useHistory();
   return (
     <Form
       className="form-login"
-      onSubmit={(e) => {
+      onSubmit={e => {
         e.preventDefault();
         dispatch(login(email, password));
         history.push("/home");
@@ -24,7 +25,7 @@ const Login = () => {
           type="email"
           name="email"
           placeholder="with a placeholder"
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={event => setEmail(event.target.value)}
         />
       </FormGroup>
       <FormGroup>
@@ -33,7 +34,7 @@ const Login = () => {
           type="password"
           name="password"
           placeholder="password placeholder"
-          onChange={(event) => setPassword(event.target.value)}
+          onChange={event => setPassword(event.target.value)}
         />
       </FormGroup>
       <Button type="submit">Submit</Button>
