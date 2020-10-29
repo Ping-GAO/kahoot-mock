@@ -22,7 +22,7 @@ import {
 const app = express();
 
 app.use(cors());
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const catchErrors = fn => async (req, res) => {
@@ -56,7 +56,7 @@ app.post('/admin/auth/login', catchErrors(async (req, res) => {
 
 app.post('/admin/auth/register', catchErrors(async (req, res) => {
   const { email, password, name } = req.body;
-  const token = await register(email, password, name); 
+  const token = await register(email, password, name);
   return res.json({ token, });
 }));
 
