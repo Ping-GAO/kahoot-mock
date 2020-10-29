@@ -56,12 +56,15 @@ export const login = (email, password) => {
       .then(res => {
         if (!res.ok) {
           throw new Error(res.statusText);
-        } else {
-          // pretent api give us an accessToken
-          const accessToken = "fuck";
-          localStorage.setItem("accessToken", accessToken);
-          dispatch(loginSuccess(accessToken));
         }
+        console.log(res);
+        return res.json();
+      })
+      .then(data => {
+        console.log("fuck", data);
+        // pretent api give us an accessToken
+        // localStorage.setItem("accessToken", accessToken);
+        // dispatch(loginSuccess(accessToken));
       })
       .catch(error => {
         // console.log(error);

@@ -17,7 +17,7 @@ let admins = {};
 let quizzes = {};
 let sessions = {};
 
-export const save = () => 
+export const save = () =>
   new Promise((resolve, reject) => {
     lock.acquire(`saveData`, () => {
       try {
@@ -88,7 +88,7 @@ export const login = (email, password) => userLock((resolve, reject) => {
   if (email in admins) {
     if (admins[email].password === password) {
       admins[email].sessionActive = true;
-      resolve(jwt.sign({ email, }, JWT_SECRET, { algorithm: 'HS256'}));
+      resolve(jwt.sign({ email, }, JWT_SECRET, { algorithm: 'HS256' }));
     }
   }
   reject(new InputError('Invalid username or password'));
@@ -108,7 +108,7 @@ export const register = (email, password, name) => userLock((resolve, reject) =>
     password,
     sessionActive: true,
   };
-  const token = jwt.sign({ email, }, JWT_SECRET, { algorithm: 'HS256'});
+  const token = jwt.sign({ email, }, JWT_SECRET, { algorithm: 'HS256' });
   resolve(token);
 });
 

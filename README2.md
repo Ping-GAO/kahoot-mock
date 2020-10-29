@@ -5,3 +5,6 @@ The specified Eslint only lint js files, don't work with JSX and other files. [p
 ## Major JS library
 * [react-redux](https://react-redux.js.org/)
 * [react-router](https://reactrouter.com/)
+
+# Note
+The database file is gitignored, so it won't show in vscode.
