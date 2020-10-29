@@ -1,6 +1,5 @@
 const fs = require("fs");
 const express = require("express");
-
 const swaggerUi = require("swagger-ui-express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
