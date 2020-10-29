@@ -1,1 +1,1 @@
-export default "http://localhost:5005/";
+export default "http://localhost:5005";

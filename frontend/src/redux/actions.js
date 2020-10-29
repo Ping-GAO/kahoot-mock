@@ -61,10 +61,9 @@ export const login = (email, password) => {
         return res.json();
       })
       .then(data => {
-        console.log("fuck", data);
         // pretent api give us an accessToken
-        // localStorage.setItem("accessToken", accessToken);
-        // dispatch(loginSuccess(accessToken));
+        localStorage.setItem("accessToken", data.token);
+        dispatch(loginSuccess(data.token));
       })
       .catch(error => {
         // console.log(error);
@@ -80,7 +79,7 @@ export const logout = () => {
       method: "POST",
       headers: {
         Accept: "application/json",
-        token: localStorage.getItem("accessToken")
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
       }
     })
       .then(res => {
