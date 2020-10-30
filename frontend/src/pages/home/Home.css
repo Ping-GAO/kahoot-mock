@@ -1,9 +1,0 @@
-.container-home {
-  display: flex;
-  flex: 1;
-  justify-content: center;
-  font-size: 2.5em;
-}
-.jumbotron {
-  margin: 0px 0px !important;
-}

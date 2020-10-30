@@ -44,11 +44,12 @@ const ButtonAppBar = () => {
     );
   } else {
     button = (
-      <Button color="inherit" className="button-inner-link">
-        <Link to="/login" className="no-link">
-          Login
-        </Link>
-      </Button>
+      <Link
+        to="/login"
+        className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
+      >
+        Login
+      </Link>
     );
   }
 
@@ -67,7 +68,13 @@ const ButtonAppBar = () => {
           <Typography variant="h6" className={classes.title}>
             News
           </Typography>
-          <Button color="inherit">Signup</Button>
+          <Link
+            to="/signup"
+            className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
+          >
+            Signup
+          </Link>
+
           {button}
         </Toolbar>
       </AppBar>
