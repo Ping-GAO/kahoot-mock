@@ -57,7 +57,6 @@ export const login = (email, password) => {
         if (!res.ok) {
           throw new Error(res.statusText);
         }
-        console.log(res);
         return res.json();
       })
       .then(data => {
