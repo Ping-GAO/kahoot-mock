@@ -1,7 +1,7 @@
 import userConstants from "../actionTypes";
 
 // check the localStorage see if user already logged in
-const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+const accessToken = localStorage.getItem("accessToken");
 
 // Shorthand property names stynex
 const initialState = accessToken
