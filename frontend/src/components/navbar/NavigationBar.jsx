@@ -62,6 +62,7 @@ const ButtonAppBar = () => {
                     <Typography variant="h6" className={classes.title}>
                         News
                     </Typography>
+                    <Button color="inherit" href="/home">Home</Button>
                     <Button color="inherit" href="/signup">Signup</Button>
                     {button}
                 </Toolbar>

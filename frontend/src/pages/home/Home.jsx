@@ -4,8 +4,7 @@ import { useSelector } from "react-redux";
 
 const Home = () => {
     const loginStatus = useSelector(state => state.authentication);
-    console.log(loginStatus);
-    return <div className="container-home">Fuck</div>;
+    return <div className="container-home">{loginStatus.loggedIn ? "Already Logged in" : "Not Log in"}</div>;
 };
 
 export default Home;
