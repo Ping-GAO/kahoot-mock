@@ -9,7 +9,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/actions";
-import "./NavigationBar.css";
 
 const useStyles = makeStyles(theme => ({
     root: {
