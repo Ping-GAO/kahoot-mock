@@ -6,22 +6,22 @@ import Home from "./pages/home/Home";
 import NavigationBar from "./components/navbar/NavigationBar";
 
 const App = () => {
-  return (
-    <Router>
-      <NavigationBar />
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/signup">
-          <Signup />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-    </Router>
-  );
+    return (
+        <Router>
+            <NavigationBar />
+            <Switch>
+                <Route path="/login">
+                    <Login />
+                </Route>
+                <Route path="/signup">
+                    <Signup />
+                </Route>
+                <Route path="/">
+                    <Home />
+                </Route>
+            </Switch>
+        </Router>
+    );
 };
 
 export default App;

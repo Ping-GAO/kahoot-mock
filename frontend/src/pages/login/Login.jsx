@@ -6,11 +6,11 @@ import React from "react";
 // import { login } from "../../redux/actions";
 
 const Login = () => {
-  // const [email, setEmail] = useState();
-  // const [password, setPassword] = useState();
-  // const dispatch = useDispatch();
-  // const history = useHistory();
-  return (
+    // const [email, setEmail] = useState();
+    // const [password, setPassword] = useState();
+    // const dispatch = useDispatch();
+    // const history = useHistory();
+    return (
     // <Form
     //   className="form-login"
     //   onSubmit={e => {
@@ -39,8 +39,8 @@ const Login = () => {
     //   </FormGroup>
     //   <Button type="submit">Submit</Button>
     // </Form>
-    <div>fuck</div>
-  );
+        <div>fuck</div>
+    );
 };
 
 export default Login;

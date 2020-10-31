@@ -5,9 +5,9 @@
     "jest": true
   },
   "extends": [
-    "plugin:react/recommended",
     "airbnb",
-    "plugin:prettier/recommended"
+    "prettier",
+    "prettier/react"
   ],
   "parserOptions": {
     "ecmaFeatures": {
@@ -20,6 +20,7 @@
     "react"
   ],
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "indent": ["error", 4]
   }
 }

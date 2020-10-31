@@ -6,8 +6,8 @@ import rootReducer from "./reducers/index";
 // copy paste from redux offical github page
 const composeEnhancers =
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose;
+      ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+      : compose;
 
 const enhancer = composeEnhancers(applyMiddleware(thunk));
 export default createStore(rootReducer, enhancer);

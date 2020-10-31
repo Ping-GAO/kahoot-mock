@@ -12,74 +12,74 @@ import { logout } from "../../redux/actions";
 import "./NavigationBar.css";
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  title: {
-    flexGrow: 1
-  }
+    root: {
+        flexGrow: 1
+    },
+    menuButton: {
+        marginRight: theme.spacing(2)
+    },
+    title: {
+        flexGrow: 1
+    }
 }));
 
 const ButtonAppBar = () => {
-  const classes = useStyles();
-  const loginStatus = useSelector(state => state.authentication);
-  const dispatch = useDispatch();
-  const history = useHistory();
-  // condition rendering base on loginStatus
-  let button;
-  if (loginStatus.loggedIn) {
-    button = (
-      <Button
-        color="inherit"
-        onClick={() => {
-          dispatch(logout());
-          history.push("/home");
-        }}
-      >
+    const classes = useStyles();
+    const loginStatus = useSelector(state => state.authentication);
+    const dispatch = useDispatch();
+    const history = useHistory();
+    // condition rendering base on loginStatus
+    let button;
+    if (loginStatus.loggedIn) {
+        button = (
+            <Button
+                color="inherit"
+                onClick={() => {
+                    dispatch(logout());
+                    history.push("/home");
+                }}
+            >
         Logout
-      </Button>
-    );
-  } else {
-    button = (
-      <Link
-        to="/login"
-        className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
-      >
+            </Button>
+        );
+    } else {
+        button = (
+            <Link
+                to="/login"
+                className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
+            >
         Login
-      </Link>
-    );
-  }
+            </Link>
+        );
+    }
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
+    return (
+        <div className={classes.root}>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        edge="start"
+                        className={classes.menuButton}
+                        color="inherit"
+                        aria-label="menu"
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" className={classes.title}>
             News
-          </Typography>
-          <Link
-            to="/signup"
-            className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
-          >
+                    </Typography>
+                    <Link
+                        to="/signup"
+                        className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
+                    >
             Signup
-          </Link>
+                    </Link>
 
-          {button}
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+                    {button}
+                </Toolbar>
+            </AppBar>
+        </div>
+    );
 };
 
 export default ButtonAppBar;
