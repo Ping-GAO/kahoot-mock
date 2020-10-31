@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/actions";
 import "./NavigationBar.css";
@@ -39,17 +39,12 @@ const ButtonAppBar = () => {
                     history.push("/home");
                 }}
             >
-        Logout
+                Logout
             </Button>
         );
     } else {
         button = (
-            <Link
-                to="/login"
-                className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
-            >
-        Login
-            </Link>
+            <Button color="inherit" href="/login" >Login</Button>
         );
     }
 
@@ -66,15 +61,9 @@ const ButtonAppBar = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-            News
+                        News
                     </Typography>
-                    <Link
-                        to="/signup"
-                        className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-colorInherit"
-                    >
-            Signup
-                    </Link>
-
+                    <Button color="inherit" href="/signup">Signup</Button>
                     {button}
                 </Toolbar>
             </AppBar>
