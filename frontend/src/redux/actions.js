@@ -2,6 +2,9 @@ import { userConstants, alertConstants } from "./actionTypes";
 import API_URL from "../constants";
 
 // this file constains all the action creators used in this project
+
+
+// action creator for user status management
 export const loginRequest = () => ({
     type: userConstants.LOGIN_REQUEST
 });
@@ -39,7 +42,7 @@ export const registryFailure = () => ({
 });
 
 
-
+// action creator for alert
 export const alertSuccess = message => ({
     type: alertConstants.SUCCESS,
     message
