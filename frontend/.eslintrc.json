@@ -5,6 +5,7 @@
     "jest": true
   },
   "extends": [
+    "plugin:react/recommended",
     "airbnb",
     "prettier",
     "prettier/react"
@@ -20,7 +21,20 @@
     "react"
   ],
   "rules": {
+    "linebreak-style": 0,
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
     "no-console": "off",
-    "indent": ["error", 4]
+    "indent": [
+      "error",
+      4
+    ]
   }
 }
