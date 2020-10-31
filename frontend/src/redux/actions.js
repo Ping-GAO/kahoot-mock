@@ -1,4 +1,4 @@
-import userConstants from "./actionTypes";
+import { userConstants, alertConstants } from "./actionTypes";
 import API_URL from "../constants";
 
 // this file constains all the action creators used in this project
@@ -11,9 +11,8 @@ export const loginSuccess = accessToken => ({
     accessToken
 });
 
-export const loginFailure = error => ({
+export const loginFailure = () => ({
     type: userConstants.LOGIN_FAILURE,
-    payload: error
 });
 export const logoutRequest = () => ({
     type: userConstants.LOGOUT_REQUEST
@@ -23,9 +22,8 @@ export const logoutSuccess = () => ({
     type: userConstants.LOGOUT_SUCCESS
 });
 
-export const logoutFailure = error => ({
+export const logoutFailure = () => ({
     type: userConstants.LOGOUT_FAILURE,
-    payload: error
 });
 
 export const registryRequest = () => ({
@@ -36,10 +34,24 @@ export const registrySuccess = () => ({
     type: userConstants.REGISTRY_SECCESS
 });
 
-export const registryFailure = error => ({
+export const registryFailure = () => ({
     type: userConstants.REGISTRY_FAILURE,
-    payload: error
 });
+
+
+
+export const alertSuccess = message => ({
+    type: alertConstants.SUCCESS,
+    message
+});
+
+
+export const alertError = message=>({
+    type: alertConstants.ERROR,
+    message
+});
+
+
 
 // async action creator
 export const login = (email, password) => {
@@ -63,10 +75,12 @@ export const login = (email, password) => {
                 // pretent api give us an accessToken
                 localStorage.setItem("accessToken", data.token);
                 dispatch(loginSuccess(data.token));
+                dispatch(alertSuccess("Login Successfully"));
             })
             .catch(error => {
-                // console.log(error);
-                dispatch(loginFailure(error.message));
+              
+                dispatch(loginFailure());
+                dispatch(alertError(error.message));
             });
     };
 };
@@ -85,6 +99,7 @@ export const logout = () => {
                 if (!res.ok) {
                     throw new Error(res.statusText);
                 } else {
+                    
                     localStorage.removeItem("accessToken");
                     dispatch(logoutSuccess());
                 }
@@ -94,3 +109,6 @@ export const logout = () => {
             });
     };
 };
+
+
+

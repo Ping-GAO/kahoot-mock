@@ -1,4 +1,4 @@
-const userConstants = {
+export const userConstants = {
     REGISTER_REQUEST: "USERS_REGISTER_REQUEST",
     REGISTER_SUCCESS: "USERS_REGISTER_SUCCESS",
     REGISTER_FAILURE: "USERS_REGISTER_FAILURE",
@@ -11,4 +11,8 @@ const userConstants = {
     LOGOUT_SUCCESS: "USERS_LOGOUT_SUCCESS",
     LOGOUT_FAILURE: "USERS_LOGOUT_FAILURE"
 };
-export default userConstants;
+
+export const alertConstants = {
+    SUCCESS: 'ALERT_SUCCESS',
+    ERROR: 'ALERT_ERROR'
+};

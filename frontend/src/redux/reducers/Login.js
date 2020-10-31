@@ -1,4 +1,4 @@
-import userConstants from "../actionTypes";
+import {userConstants} from "../actionTypes";
 
 // check the localStorage see if user already logged in
 const accessToken = localStorage.getItem("accessToken");
