@@ -14,5 +14,6 @@ export const userConstants = {
 
 export const alertConstants = {
     SUCCESS: 'ALERT_SUCCESS',
-    ERROR: 'ALERT_ERROR'
+    ERROR: 'ALERT_ERROR',
+    CLEAR: 'ALERT_CLEAR'
 };

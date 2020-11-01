@@ -29,15 +29,15 @@ export const logoutFailure = () => ({
 });
 
 export const registryRequest = () => ({
-    type: userConstants.REGISTRY_REQUEST,
+    type: userConstants.REGISTER_REQUEST,
 });
 
 export const registrySuccess = () => ({
-    type: userConstants.REGISTRY_SECCESS,
+    type: userConstants.REGISTER_SUCCESS,
 });
 
 export const registryFailure = () => ({
-    type: userConstants.REGISTRY_FAILURE,
+    type: userConstants.REGISTER_FAILURE,
 });
 
 // action creator for alert
@@ -49,6 +49,10 @@ export const alertSuccess = (message) => ({
 export const alertError = (message) => ({
     type: alertConstants.ERROR,
     message,
+});
+
+export const alertClear = () => ({
+    type: alertConstants.CLEAR,
 });
 
 // async action creator
@@ -77,6 +81,45 @@ export const login = (email, password) => {
             })
             .catch((error) => {
                 dispatch(loginFailure());
+                dispatch(alertError(error.message));
+            });
+    };
+};
+
+
+
+export const signin = (email, password, name) => {
+    return (dispatch) => {
+        dispatch(registryRequest());
+        fetch(`${API_URL}/admin/auth/register`, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password ,name}),
+        })
+            .then((res) => {
+                if (res.status === 400 || res.status === 200) {
+                    return res.json();
+                   
+                }
+                throw new Error(res.statusText);
+            })
+            .then((data) => {
+                if (data.error) {
+                    dispatch(registryFailure());
+                    dispatch(alertError(data.error));
+                } else {
+                    dispatch(registrySuccess());
+                    localStorage.setItem("accessToken", data.token);
+                    dispatch(loginSuccess(data.token));
+                    dispatch(alertSuccess("Signin Successfully"));
+                }
+               
+            })
+            .catch((error) => {
+                dispatch(registryFailure());
                 dispatch(alertError(error.message));
             });
     };

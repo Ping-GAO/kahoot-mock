@@ -12,6 +12,8 @@ const alert = (state = {}, action) => {
             type: "error",
             message: action.message,
         };
+    case alertConstants.CLEAR:
+        return {};
     default:
         return state;
     }
