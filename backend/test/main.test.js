@@ -1,9 +1,8 @@
 import request from 'supertest';
 import server from '../src/server';
-import { reset } from '../src/service';
+import { reset, } from '../src/service';
 
 describe('Test the root path', () => {
-
   beforeAll(() => {
     reset();
   });
@@ -75,7 +74,6 @@ describe('Test the root path', () => {
     expect(response2.body).toMatchObject({});
   });
 
-
   test('Logout a session without auth token', async () => {
     const response = await request(server).post('/admin/auth/login').send({
       email: 'hayden.smith@unsw.edu.au',
@@ -93,6 +91,4 @@ describe('Test the root path', () => {
   /***************************************************************
                        Auth Tests
   ***************************************************************/
-
-
 });
