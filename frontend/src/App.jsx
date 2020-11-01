@@ -8,11 +8,13 @@ import NavigationBar from "./components/navbar/NavigationBar";
 import CustomizedSnackbars from "./components/alert/Alert";
 
 const App = () => {
-    const alert = useSelector(state => state.alert);
-  
+    const alert = useSelector((state) => state.alert);
+
     return (
         <div>
-            {alert.message && <CustomizedSnackbars type={alert.type} message={alert.message}/>}
+            {alert.message && (
+                <CustomizedSnackbars type={alert.type} message={alert.message} />
+            )}
             <Router>
                 <NavigationBar />
                 <Switch>

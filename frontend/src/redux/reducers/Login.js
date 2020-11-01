@@ -1,4 +1,4 @@
-import {userConstants} from "../actionTypes";
+import { userConstants } from "../actionTypes";
 
 // check the localStorage see if user already logged in
 const accessToken = localStorage.getItem("accessToken");
@@ -13,12 +13,12 @@ export default (state = initialState, action) => {
     switch (action.type) {
     case userConstants.LOGIN_REQUEST:
         return {
-            loggingIn: true
+            loggingIn: true,
         };
     case userConstants.LOGIN_SUCCESS:
         return {
             loggedIn: true,
-            accessToken: action.accessToken
+            accessToken: action.accessToken,
         };
     case userConstants.LOGIN_FAILURE:
         return {};

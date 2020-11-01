@@ -10,21 +10,21 @@ import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../redux/actions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1
+        flexGrow: 1,
     },
     menuButton: {
-        marginRight: theme.spacing(2)
+        marginRight: theme.spacing(2),
     },
     title: {
-        flexGrow: 1
-    }
+        flexGrow: 1,
+    },
 }));
 
 const ButtonAppBar = () => {
     const classes = useStyles();
-    const loginStatus = useSelector(state => state.authentication);
+    const loginStatus = useSelector((state) => state.authentication);
     const dispatch = useDispatch();
     const history = useHistory();
     // condition rendering base on loginStatus
@@ -43,7 +43,9 @@ const ButtonAppBar = () => {
         );
     } else {
         button = (
-            <Button color="inherit" href="/login" >Login</Button>
+            <Button color="inherit" href="/login">
+                Login
+            </Button>
         );
     }
 
@@ -62,8 +64,12 @@ const ButtonAppBar = () => {
                     <Typography variant="h6" className={classes.title}>
                         News
                     </Typography>
-                    <Button color="inherit" href="/home">Home</Button>
-                    <Button color="inherit" href="/signup">Signup</Button>
+                    <Button color="inherit" href="/home">
+                        Home
+                    </Button>
+                    <Button color="inherit" href="/signup">
+                        Signup
+                    </Button>
                     {button}
                 </Toolbar>
             </AppBar>

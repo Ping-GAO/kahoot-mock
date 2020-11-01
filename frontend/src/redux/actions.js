@@ -3,26 +3,25 @@ import API_URL from "../constants";
 
 // this file constains all the action creators used in this project
 
-
 // action creator for user status management
 export const loginRequest = () => ({
-    type: userConstants.LOGIN_REQUEST
+    type: userConstants.LOGIN_REQUEST,
 });
 
-export const loginSuccess = accessToken => ({
+export const loginSuccess = (accessToken) => ({
     type: userConstants.LOGIN_SUCCESS,
-    accessToken
+    accessToken,
 });
 
 export const loginFailure = () => ({
     type: userConstants.LOGIN_FAILURE,
 });
 export const logoutRequest = () => ({
-    type: userConstants.LOGOUT_REQUEST
+    type: userConstants.LOGOUT_REQUEST,
 });
 
 export const logoutSuccess = () => ({
-    type: userConstants.LOGOUT_SUCCESS
+    type: userConstants.LOGOUT_SUCCESS,
 });
 
 export const logoutFailure = () => ({
@@ -30,58 +29,53 @@ export const logoutFailure = () => ({
 });
 
 export const registryRequest = () => ({
-    type: userConstants.REGISTRY_REQUEST
+    type: userConstants.REGISTRY_REQUEST,
 });
 
 export const registrySuccess = () => ({
-    type: userConstants.REGISTRY_SECCESS
+    type: userConstants.REGISTRY_SECCESS,
 });
 
 export const registryFailure = () => ({
     type: userConstants.REGISTRY_FAILURE,
 });
 
-
 // action creator for alert
-export const alertSuccess = message => ({
+export const alertSuccess = (message) => ({
     type: alertConstants.SUCCESS,
-    message
+    message,
 });
 
-
-export const alertError = message=>({
+export const alertError = (message) => ({
     type: alertConstants.ERROR,
-    message
+    message,
 });
-
-
 
 // async action creator
 export const login = (email, password) => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(loginRequest());
         fetch(`${API_URL}/admin/auth/login`, {
             method: "POST",
             headers: {
                 Accept: "application/json",
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ email, password }),
         })
-            .then(res => {
+            .then((res) => {
                 if (!res.ok) {
                     throw new Error(res.statusText);
                 }
                 return res.json();
             })
-            .then(data => {
+            .then((data) => {
                 // pretent api give us an accessToken
                 localStorage.setItem("accessToken", data.token);
                 dispatch(loginSuccess(data.token));
                 dispatch(alertSuccess("Login Successfully"));
             })
-            .catch(error => {
-              
+            .catch((error) => {
                 dispatch(loginFailure());
                 dispatch(alertError(error.message));
             });
@@ -89,29 +83,25 @@ export const login = (email, password) => {
 };
 
 export const logout = () => {
-    return dispatch => {
+    return (dispatch) => {
         dispatch(logoutRequest());
         fetch(`${API_URL}/admin/auth/logout`, {
             method: "POST",
             headers: {
                 Accept: "application/json",
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-            }
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
         })
-            .then(res => {
+            .then((res) => {
                 if (!res.ok) {
                     throw new Error(res.statusText);
                 } else {
-                    
                     localStorage.removeItem("accessToken");
                     dispatch(logoutSuccess());
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 dispatch(logoutFailure(error.message));
             });
     };
 };
-
-
-
