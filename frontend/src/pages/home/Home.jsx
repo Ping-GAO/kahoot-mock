@@ -39,7 +39,7 @@ const Home = () => {
             })
                 .then(res=>res.json())
                 .then((data) => {
-                    console.log(data.quizzes.length);
+                    // console.log(data.quizzes.length);
                     let i = 0;
                     let row = [];
                     let girdLocal = [];
@@ -62,12 +62,29 @@ const Home = () => {
                                     {row}
                                 </Grid>
                             ];
-                            setGrid(girdLocal);
                             i += 1;
                             row = [];
                         }
 
                     });
+                    if(row.length !== 0){
+                        // the number of quizzes is not a multiple of 3
+                        // the rest of them will be handle here
+                        girdLocal = [...girdLocal,
+                            <Grid 
+                                container 
+                                item xs={12} 
+                                spacing={4}
+                                key={i} 
+                            >
+                                {row}
+                            </Grid>
+                        ];
+                        setGrid(girdLocal);
+                    }
+                    else{
+                        setGrid(girdLocal);
+                    }
                 });
         }
     }, [loginStatus.loggedIn]);
