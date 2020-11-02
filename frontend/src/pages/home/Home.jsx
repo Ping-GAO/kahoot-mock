@@ -7,13 +7,17 @@ import API_URL from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        flexGrow: 1,
+        flexGrow: 1
     },
-    gird:{
-        display:"flex",
+    girdContainer: {
+        width: "100%",
+        display: "flex",
         justifyContent: "center",
-        margin:30
     },
+    grid: {
+        margin: 0
+    },
+
     paper: {
         padding: theme.spacing(1),
         textAlign: 'center',
@@ -22,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Home = () => {
     const loginStatus = useSelector((state) => state.authentication);
-   
+
     // a gird with 3 card contains the detail of a quiz's information
     // if the user is logged in fetch all game and show them
     const [grid, setGrid] = useState([]);
@@ -37,7 +41,7 @@ const Home = () => {
                     Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                 }
             })
-                .then(res=>res.json())
+                .then(res => res.json())
                 .then((data) => {
                     // console.log(data.quizzes.length);
                     let i = 0;
@@ -53,11 +57,11 @@ const Home = () => {
                         i += 1;
                         if (row.length === 3) {
                             girdLocal = [...girdLocal,
-                                <Grid 
-                                    container 
-                                    item xs={12} 
+                                <Grid
+                                    container
+                                    item xs={12}
                                     spacing={4}
-                                    key={i} 
+                                    key={i}
                                 >
                                     {row}
                                 </Grid>
@@ -67,22 +71,23 @@ const Home = () => {
                         }
 
                     });
-                    if(row.length !== 0){
+                    if (row.length !== 0) {
                         // the number of quizzes is not a multiple of 3
                         // the rest of them will be handle here
                         girdLocal = [...girdLocal,
-                            <Grid 
-                                container 
-                                item xs={12} 
+                            <Grid
+                                container
+                                item xs={12}
                                 spacing={4}
-                                key={i} 
+                                key={i}
+                                className={classes.grid}
                             >
                                 {row}
                             </Grid>
                         ];
                         setGrid(girdLocal);
                     }
-                    else{
+                    else {
                         setGrid(girdLocal);
                     }
                 });
@@ -95,10 +100,10 @@ const Home = () => {
 
     return (
         <div className={classes.root}>
-            {loginStatus.loggedIn ? 
-                <Grid container spacing={4}  className={classes.gird}>
+            {loginStatus.loggedIn ?
+                <Grid container spacing={4} className={classes.girdContainer}>
                     {grid}
-                </Grid> 
+                </Grid>
                 : "Not Log in"}
         </div>
     );
