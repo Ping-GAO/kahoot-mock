@@ -68,17 +68,24 @@ export const login = (email, password) => {
             body: JSON.stringify({ email, password }),
         })
             .then((res) => {
-                if (!res.ok) {
-                    throw new Error(res.statusText);
+                if (res.ok) {
+                    return Promise.resolve(res.json());
                 }
-                return res.json();
+                return Promise.resolve(res.json()).then(data => {
+                    return Promise.reject(data.error);
+                });
             })
             .then((data) => {
                 // pretent api give us an accessToken
                 localStorage.setItem("accessToken", data.token);
                 dispatch(loginSuccess(data.token));
                 dispatch(alertSuccess("Login Successfully"));
-            })
+            },
+            (error) => {
+                dispatch(loginFailure());
+                dispatch(alertError(error));
+            }
+            )
             .catch((error) => {
                 dispatch(loginFailure());
                 dispatch(alertError(error.message));
@@ -97,26 +104,27 @@ export const signin = (email, password, name) => {
                 Accept: "application/json",
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ email, password ,name}),
+            body: JSON.stringify({ email, password, name }),
         })
             .then((res) => {
-                if (res.status === 400 || res.status === 200) {
-                    return res.json();
-                   
+                if (res.ok) {
+                    return Promise.resolve(res.json());
                 }
-                throw new Error(res.statusText);
+                return Promise.resolve(res.json()).then(data => {
+                    return Promise.reject(data.error);
+                });
             })
             .then((data) => {
-                if (data.error) {
-                    dispatch(registryFailure());
-                    dispatch(alertError(data.error));
-                } else {
-                    dispatch(registrySuccess());
-                    localStorage.setItem("accessToken", data.token);
-                    dispatch(loginSuccess(data.token));
-                    dispatch(alertSuccess("Signin Successfully"));
-                }
-               
+
+                dispatch(registrySuccess());
+                localStorage.setItem("accessToken", data.token);
+                dispatch(loginSuccess(data.token));
+                dispatch(alertSuccess("Signin Successfully"));
+
+
+            }, (error) => {
+                dispatch(registryFailure());
+                dispatch(alertError(error));
             })
             .catch((error) => {
                 dispatch(registryFailure());
@@ -136,15 +144,24 @@ export const logout = () => {
             },
         })
             .then((res) => {
-                if (!res.ok) {
-                    throw new Error(res.statusText);
-                } else {
-                    localStorage.removeItem("accessToken");
-                    dispatch(logoutSuccess());
+                if (res.ok) {
+                    return Promise.resolve(res.json());
                 }
+                return Promise.resolve(res.json()).then(data => {
+                    return Promise.reject(data.error);
+                });
+
+            })
+            .then(() => {
+                localStorage.removeItem("accessToken");
+                dispatch(logoutSuccess());
+            }, (error) => {
+                alertError(error);
+                dispatch(logoutFailure());
             })
             .catch((error) => {
-                dispatch(logoutFailure(error.message));
+                alertError(error.message);
+                dispatch(logoutFailure());
             });
     };
 };
