@@ -9,6 +9,11 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
+    gird:{
+        display:"flex",
+        justifyContent: "center",
+        margin:30
+    },
     paper: {
         padding: theme.spacing(1),
         textAlign: 'center',
@@ -23,6 +28,7 @@ const Home = () => {
     const [grid, setGrid] = useState([]);
     const classes = useStyles();
 
+    // run the function body when the user login status change or componentDidMount 
     useEffect(() => {
         if (loginStatus.loggedIn) {
             fetch(`${API_URL}/admin/quiz`, {
@@ -33,10 +39,11 @@ const Home = () => {
             })
                 .then(res=>res.json())
                 .then((data) => {
+                    console.log(data.quizzes.length);
                     let i = 0;
                     let row = [];
+                    let girdLocal = [];
                     data.quizzes.forEach((quizze) => {
-                        console.log(quizze);
                         row.push(
                             <Grid item xs={4} key={i}>
                                 <Paper className={classes.paper}>
@@ -45,34 +52,36 @@ const Home = () => {
                             </Grid>);
                         i += 1;
                         if (row.length === 3) {
-                            setGrid([...grid,
+                            girdLocal = [...girdLocal,
                                 <Grid 
                                     container 
                                     item xs={12} 
-                                    spacing={3}
+                                    spacing={4}
                                     key={i} 
                                 >
                                     {row}
                                 </Grid>
-                            ]);
+                            ];
+                            setGrid(girdLocal);
                             i += 1;
                             row = [];
-
                         }
 
                     });
                 });
         }
-    }, []);
+    }, [loginStatus.loggedIn]);
 
 
 
 
 
     return (
-        <div className="container-home">
+        <div className={classes.root}>
             {loginStatus.loggedIn ? 
-                <Grid container spacing={1}>{grid}</Grid> 
+                <Grid container spacing={4}  className={classes.gird}>
+                    {grid}
+                </Grid> 
                 : "Not Log in"}
         </div>
     );
