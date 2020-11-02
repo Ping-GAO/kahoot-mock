@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         display: "flex",
         justifyContent: "center",
+        marginTop: 40,
     },
     grid: {
         margin: 0
@@ -60,7 +61,7 @@ const Home = () => {
                                 <Grid
                                     container
                                     item xs={12}
-                                    spacing={4}
+                                    spacing={2}
                                     key={i}
                                 >
                                     {row}
