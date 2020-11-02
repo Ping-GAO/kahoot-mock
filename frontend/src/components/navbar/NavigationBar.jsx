@@ -67,9 +67,10 @@ const ButtonAppBar = () => {
                     <Button color="inherit" href="/home">
                         Home
                     </Button>
-                    <Button color="inherit" href="/signup">
+                    {!loginStatus.loggedIn && <Button color="inherit" href="/signup">
                         Signup
                     </Button>
+                    }
                     {button}
                 </Toolbar>
             </AppBar>
