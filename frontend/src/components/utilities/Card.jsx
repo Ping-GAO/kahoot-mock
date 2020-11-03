@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{useState,useEffect}from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PropTypes from 'prop-types';
+import API_URL from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,12 +36,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RecipeReviewCard = (props) => {
-    const { quizzeId, quizzeName ,quizzeCreatedAt} = props;
+    const { id, name ,createdAt} = props;
     const classes = useStyles();
-
+    const [quiz, setQuiz] = useState({questions:[]});
     // the original data formal is not standard format ususlly seen convert it to standard
-    const dataFormated =  new Date(quizzeCreatedAt);
+    const dataFormated =  new Date(createdAt);
 
+
+    
+    useEffect(()=>{
+        const loadQuiz = async()=>{
+            const res = await  fetch(`${API_URL}/admin/quiz/${id}`,
+                {
+                    method:"GET",
+                    headers:{
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    }
+                }
+            );
+            const data = await res.json();
+            setQuiz(data);
+            // console.log(data)
+        }
+        loadQuiz();
+    },[]);
+    
     return (
         <Card className={classes.root}>
             <CardHeader
@@ -54,7 +74,7 @@ const RecipeReviewCard = (props) => {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title={quizzeName}
+                title={name}
                 subheader={ dataFormated.toDateString() }
             />
             <CardMedia
@@ -64,7 +84,7 @@ const RecipeReviewCard = (props) => {
             />
             <CardContent>
                 <Typography variant="body2" color="textSecondary" component="p">
-                    This question&apos;s id is {quizzeId}
+                    This question&apos;s id is {id}, it has {quiz.questions.length} questions.
                 </Typography>
             </CardContent>
 
@@ -75,13 +95,13 @@ const RecipeReviewCard = (props) => {
 
 
 RecipeReviewCard.propTypes = {
-    quizzeId: PropTypes.string.isRequired,
-    quizzeName: PropTypes.string,
-    quizzeCreatedAt: PropTypes.string.isRequired
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    createdAt: PropTypes.string.isRequired
 }
 
 // some default arguments
 RecipeReviewCard.defaultProps ={
-    quizzeName: "Don't have a name yet"
+    name: "Don't have a name yet"
 }
 export default RecipeReviewCard;

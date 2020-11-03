@@ -57,9 +57,10 @@ const Dashboard = () => {
                                 {/* <Paper className={classes.paper}>{quizze.id}</Paper> */}
                                 <Card  
                                     className={classes.paper} 
-                                    quizzeId={quizze.id} 
-                                    quizzeName={quizze.name}
-                                    quizzeCreatedAt={quizze.createdAt}
+                                    id={quizze.id} 
+                                    name={quizze.name}
+                                    createdAt={quizze.createdAt}
+
                                 />
                             </Grid>
                         );
