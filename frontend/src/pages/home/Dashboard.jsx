@@ -47,7 +47,7 @@ const Dashboard = () => {
                 .then((res) => res.json())
                 .then((data) => {
                     // console.log(data.quizzes.length);
-                    console.log(data.quizzes);
+                    // console.log(data.quizzes);
                     let i = 0;
                     let row = [];
                     let girdLocal = [];

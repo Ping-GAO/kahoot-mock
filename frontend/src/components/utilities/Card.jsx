@@ -10,8 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PropTypes from 'prop-types';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import API_URL, {stubImage} from "../../constants";
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,11 +44,12 @@ const RecipeReviewCard = (props) => {
     const [quiz, setQuiz] = useState({ questions: [] });
     // the original data formal is not standard format ususlly seen convert it to standard
     const dataFormated = new Date(createdAt);
-
-
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    // provide a stub thumbnail
     if (thumbnail === null) {
         thumbnail = `data:image/png;base64,${stubImage}`;
     }
+
     useEffect(() => {
         const loadQuiz = async () => {
             const res = await fetch(`${API_URL}/admin/quiz/${id}`,
@@ -65,35 +67,60 @@ const RecipeReviewCard = (props) => {
         loadQuiz();
     }, []);
 
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const renderMenu =(  <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+    >
+        <MenuItem onClick={handleClose}>Edit</MenuItem>
+        <MenuItem onClick={handleClose}>Delete</MenuItem>
+      
+    </Menu>);
+
+
     return (
-        <Card className={classes.root}>
-            <CardHeader
-                avatar={
-                    <Avatar aria-label="recipe" className={classes.avatar}>
+        <div>
+            <Card className={classes.root}>
+                <CardHeader
+                    avatar={
+                        <Avatar aria-label="recipe" className={classes.avatar}>
                         R
-                    </Avatar>
-                }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
-                }
-                title={name}
-                subheader={dataFormated.toDateString()}
-            />
-            <CardMedia
-                className={classes.media}
-                image={thumbnail}
-                title="Paella dish"
-            />
-            <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
+                        </Avatar>
+                    }
+                    action={
+                    
+                        <IconButton aria-label="settings" onClick={handleClick}>
+                            <MoreVertIcon   />     
+                        </IconButton>
+                   
+                    }
+                    title={name}
+                    subheader={dataFormated.toDateString()}
+                />
+                <CardMedia
+                    className={classes.media}
+                    image={thumbnail}
+                    title="Paella dish"
+                />
+                <CardContent>
+                    <Typography variant="body2" color="textSecondary" component="p">
                     This question&apos;s id is {id}, it has {quiz.questions.length} questions.
-                </Typography>
-            </CardContent>
+                    </Typography>
+                </CardContent>
 
 
-        </Card>
+            </Card>
+            {renderMenu}
+        </div>
     );
 }
 
