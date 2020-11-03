@@ -35,9 +35,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RecipeReviewCard = (props) => {
-    const { quizzeId, quizzeName } = props;
+    const { quizzeId, quizzeName ,quizzeCreatedAt} = props;
     const classes = useStyles();
 
+    // the original data formal is not standard format ususlly seen convert it to standard
+    const dataFormated =  new Date(quizzeCreatedAt);
 
     return (
         <Card className={classes.root}>
@@ -53,7 +55,7 @@ const RecipeReviewCard = (props) => {
                     </IconButton>
                 }
                 title={quizzeName}
-                subheader="September 14, 2016"
+                subheader={ dataFormated.toDateString() }
             />
             <CardMedia
                 className={classes.media}
@@ -74,6 +76,12 @@ const RecipeReviewCard = (props) => {
 
 RecipeReviewCard.propTypes = {
     quizzeId: PropTypes.string.isRequired,
-    quizzeName: PropTypes.string.isRequired
+    quizzeName: PropTypes.string,
+    quizzeCreatedAt: PropTypes.string.isRequired
+}
+
+// some default arguments
+RecipeReviewCard.defaultProps ={
+    quizzeName: "Don't have a name yet"
 }
 export default RecipeReviewCard;

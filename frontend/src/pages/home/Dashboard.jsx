@@ -59,6 +59,7 @@ const Dashboard = () => {
                                     className={classes.paper} 
                                     quizzeId={quizze.id} 
                                     quizzeName={quizze.name}
+                                    quizzeCreatedAt={quizze.createdAt}
                                 />
                             </Grid>
                         );
