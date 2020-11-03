@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 import NavigationBar from "./components/navbar/NavigationBar";
-import CustomizedSnackbars from "./components/alert/Alert";
+import CustomizedSnackbars from "./components/utilities/Alert";
 import Dashboard from "./pages/home/Dashboard";
 
 const App = () => {
@@ -24,7 +24,7 @@ const App = () => {
                     <Route path="/signup">
                         <Signup />
                     </Route>
-                    <Route path="/dashboard">
+                    <Route path="/">
                         <Dashboard />
                     </Route>
                 </Switch>

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+// import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import API_URL from "../../constants";
+import Card from "../../components/utilities/Card";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -13,10 +14,11 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         display: "flex",
         justifyContent: "center",
-        margin: "40px 0px 0px",
+        margin: "80px 0px 0px",
+        padding: "0px 150px"
     },
-    grid: {
-        margin: 0,
+    gridRow: {
+        // margin: 0
     },
 
     paper: {
@@ -51,14 +53,15 @@ const Dashboard = () => {
                     data.quizzes.forEach((quizze) => {
                         row.push(
                             <Grid item xs={4} key={i}>
-                                <Paper className={classes.paper}>{quizze.id}</Paper>
+                                {/* <Paper className={classes.paper}>{quizze.id}</Paper> */}
+                                <Card a={quizze} className={classes.paper}/>
                             </Grid>
                         );
                         i += 1;
                         if (row.length === 3) {
                             girdLocal = [
                                 ...girdLocal,
-                                <Grid container item xs={12} spacing={2} key={i}>
+                                <Grid container item xs={12} spacing={5} key={i}>
                                     {row}
                                 </Grid>,
                             ];
@@ -77,7 +80,7 @@ const Dashboard = () => {
                                 xs={12}
                                 spacing={4}
                                 key={i}
-                                className={classes.grid}
+                                className={classes.gridRow}
                             >
                                 {row}
                             </Grid>,
