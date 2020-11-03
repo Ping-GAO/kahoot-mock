@@ -60,6 +60,7 @@ const Dashboard = () => {
                                     id={quizze.id} 
                                     name={quizze.name}
                                     createdAt={quizze.createdAt}
+                                    thumbnail={quizze.thumbnail}
 
                                 />
                             </Grid>

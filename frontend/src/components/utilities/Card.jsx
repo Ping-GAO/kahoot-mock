@@ -1,4 +1,4 @@
-import React ,{useState,useEffect}from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -10,7 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PropTypes from 'prop-types';
-import API_URL from "../../constants";
+import API_URL, {stubImage} from "../../constants";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,20 +37,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RecipeReviewCard = (props) => {
-    const { id, name ,createdAt} = props;
+    const { id, name, createdAt } = props;
+    let  {thumbnail} = props;
     const classes = useStyles();
-    const [quiz, setQuiz] = useState({questions:[]});
+    const [quiz, setQuiz] = useState({ questions: [] });
     // the original data formal is not standard format ususlly seen convert it to standard
-    const dataFormated =  new Date(createdAt);
+    const dataFormated = new Date(createdAt);
 
 
-    
-    useEffect(()=>{
-        const loadQuiz = async()=>{
-            const res = await  fetch(`${API_URL}/admin/quiz/${id}`,
+    if (thumbnail === null) {
+        thumbnail = `data:image/png;base64,${stubImage}`;
+    }
+    useEffect(() => {
+        const loadQuiz = async () => {
+            const res = await fetch(`${API_URL}/admin/quiz/${id}`,
                 {
-                    method:"GET",
-                    headers:{
+                    method: "GET",
+                    headers: {
                         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                     }
                 }
@@ -59,8 +63,8 @@ const RecipeReviewCard = (props) => {
             // console.log(data)
         }
         loadQuiz();
-    },[]);
-    
+    }, []);
+
     return (
         <Card className={classes.root}>
             <CardHeader
@@ -75,11 +79,11 @@ const RecipeReviewCard = (props) => {
                     </IconButton>
                 }
                 title={name}
-                subheader={ dataFormated.toDateString() }
+                subheader={dataFormated.toDateString()}
             />
             <CardMedia
                 className={classes.media}
-                image="/static/images/cards/paella.jpg"
+                image={thumbnail}
                 title="Paella dish"
             />
             <CardContent>
@@ -97,11 +101,11 @@ const RecipeReviewCard = (props) => {
 RecipeReviewCard.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string,
-    createdAt: PropTypes.string.isRequired
+    createdAt: PropTypes.string.isRequired,
+    thumbnail: PropTypes.string.isRequired,
 }
-
 // some default arguments
-RecipeReviewCard.defaultProps ={
-    name: "Don't have a name yet"
+RecipeReviewCard.defaultProps = {
+    name: "Don't have a name yet",
 }
 export default RecipeReviewCard;
