@@ -54,7 +54,6 @@ const Dashboard = () => {
                     data.quizzes.forEach((quizze) => {
                         row.push(
                             <Grid item xs={4} key={i}>
-                                {/* <Paper className={classes.paper}>{quizze.id}</Paper> */}
                                 <Card  
                                     className={classes.paper} 
                                     id={quizze.id} 

@@ -12,6 +12,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { useHistory } from "react-router-dom";
 import API_URL, {stubImage} from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +46,7 @@ const RecipeReviewCard = (props) => {
     // the original data formal is not standard format ususlly seen convert it to standard
     const dataFormated = new Date(createdAt);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const history = useHistory();
     // provide a stub thumbnail
     if (thumbnail === null) {
         thumbnail = `data:image/png;base64,${stubImage}`;
@@ -74,6 +76,11 @@ const RecipeReviewCard = (props) => {
         setAnchorEl(null);
     };
 
+    const handleEdit = ()=>{
+        handleClose();
+        history.push(`/dashboard/${id}`);
+    };
+
     const renderMenu =(  <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -81,7 +88,7 @@ const RecipeReviewCard = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
     >
-        <MenuItem onClick={handleClose}>Edit</MenuItem>
+        <MenuItem onClick={handleEdit}>Edit</MenuItem>
         <MenuItem onClick={handleClose}>Delete</MenuItem>
       
     </Menu>);
