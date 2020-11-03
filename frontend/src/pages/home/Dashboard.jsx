@@ -47,6 +47,7 @@ const Dashboard = () => {
                 .then((res) => res.json())
                 .then((data) => {
                     // console.log(data.quizzes.length);
+                    console.log(data.quizzes);
                     let i = 0;
                     let row = [];
                     let girdLocal = [];
@@ -54,7 +55,11 @@ const Dashboard = () => {
                         row.push(
                             <Grid item xs={4} key={i}>
                                 {/* <Paper className={classes.paper}>{quizze.id}</Paper> */}
-                                <Card a={quizze} className={classes.paper}/>
+                                <Card  
+                                    className={classes.paper} 
+                                    quizzeId={quizze.id} 
+                                    quizzeName={quizze.name}
+                                />
                             </Grid>
                         );
                         i += 1;
