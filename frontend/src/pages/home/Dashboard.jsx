@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         display: "flex",
         justifyContent: "center",
-        marginTop: 40,
+        margin: "40px 0px 0px",
     },
     grid: {
         margin: 0,
@@ -28,13 +28,13 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
     const loginStatus = useSelector((state) => state.authentication);
 
-    // a gird with 3 card contains the detail of a quiz's information
-    // if the user is logged in fetch all game and show them
+    // a gird with 3 cards each row contains the detail of a quiz's information
     const [grid, setGrid] = useState([]);
     const classes = useStyles();
 
     // run the function body when the user login status change or componentDidMount
     useEffect(() => {
+        // if the user is logged in fetch all game and show them
         if (loginStatus.loggedIn) {
             fetch(`${API_URL}/admin/quiz`, {
                 method: "GET",
@@ -90,6 +90,8 @@ const Dashboard = () => {
         }
     }, [loginStatus.loggedIn]);
 
+
+    // conditional render based on user's login status
     return (
         <div className={classes.root}>
             {loginStatus.loggedIn ? (
