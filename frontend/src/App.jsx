@@ -6,6 +6,8 @@ import Signup from "./pages/signup/Signup";
 import NavigationBar from "./components/navbar/NavigationBar";
 import CustomizedSnackbars from "./components/utilities/Alert";
 import Dashboard from "./pages/home/Dashboard";
+import EditGame from "./pages/edit/EditGame";
+import EditGameQuestion from "./pages/edit/EditGameQuestion";
 
 const App = () => {
     const alert = useSelector((state) => state.alert);
@@ -18,11 +20,17 @@ const App = () => {
             <Router>
                 <NavigationBar />
                 <Switch>
-                    <Route path="/login">
+                    <Route exact path="/login">
                         <Login />
                     </Route>
-                    <Route path="/signup">
+                    <Route exact path="/signup">
                         <Signup />
+                    </Route>
+                    <Route exact path="/dashboard/:quizId">
+                        <EditGame />
+                    </Route>
+                    <Route exact path="/dashboard/:quizId/:questionId">
+                        <EditGameQuestion />
                     </Route>
                     <Route path="/">
                         <Dashboard />
