@@ -35,7 +35,7 @@ const ButtonAppBar = () => {
                 color="inherit"
                 onClick={() => {
                     dispatch(logout());
-                    history.push("/home");
+                    history.push("/dashboard");
                 }}
             >
                 Logout
@@ -64,13 +64,14 @@ const ButtonAppBar = () => {
                     <Typography variant="h6" className={classes.title}>
                         News
                     </Typography>
-                    <Button color="inherit" href="/home">
-                        Home
+                    <Button color="inherit" href="/dashboard">
+                        Dashboard
                     </Button>
-                    {!loginStatus.loggedIn && <Button color="inherit" href="/signup">
-                        Signup
-                    </Button>
-                    }
+                    {!loginStatus.loggedIn && (
+                        <Button color="inherit" href="/signup">
+                            Signup
+                        </Button>
+                    )}
                     {button}
                 </Toolbar>
             </AppBar>

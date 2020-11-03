@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
-import Home from "./pages/home/Home";
 import NavigationBar from "./components/navbar/NavigationBar";
 import CustomizedSnackbars from "./components/alert/Alert";
+import Dashboard from "./pages/home/Dashboard";
 
 const App = () => {
     const alert = useSelector((state) => state.alert);
@@ -24,8 +24,8 @@ const App = () => {
                     <Route path="/signup">
                         <Signup />
                     </Route>
-                    <Route path="/">
-                        <Home />
+                    <Route path="/dashboard">
+                        <Dashboard />
                     </Route>
                 </Switch>
             </Router>
