@@ -11,18 +11,17 @@ import PropTypes from 'prop-types';
 
 const FormDialog = ({ open, handleClose }) => {
     return <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+        <DialogTitle id="form-dialog-title">Add a new quizze</DialogTitle>
         <DialogContent>
             <DialogContentText>
-                To subscribe to this website, please enter your email address here. We will send updates
-                occasionally.
+                To add to this new quizze, please enter the name
             </DialogContentText>
             <TextField
                 autoFocus
                 margin="dense"
                 id="name"
-                label="Email Address"
-                type="email"
+                label="Quizze Name"
+                type="text"
                 fullWidth
             />
         </DialogContent>
@@ -31,7 +30,7 @@ const FormDialog = ({ open, handleClose }) => {
                 Cancel
             </Button>
             <Button onClick={handleClose} color="primary">
-                Subscribe
+                Add
             </Button>
         </DialogActions>
     </Dialog>;
