@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-// import Paper from "@material-ui/core/Paper";
+
 import Grid from "@material-ui/core/Grid";
-import API_URL from "../../constants";
+import Button from '@material-ui/core/Button';
+import AddCircleIcon from '@material-ui/icons/AddCircle';import API_URL from "../../constants";
 import Card from "../../components/utilities/Card";
 
 const useStyles = makeStyles((theme) => ({
@@ -51,6 +52,24 @@ const Dashboard = () => {
                     let i = 0;
                     let row = [];
                     let girdLocal = [];
+                    
+                    girdLocal.push(<Grid container item xs={12} spacing={5} key={i}>
+                        <Grid item xs={10} key={i} />
+                        <Grid item container xs={2} key={i}  
+                            alignItems="center"
+                            justify="flex-end"> 
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                className={classes.button}
+                                endIcon={<AddCircleIcon/>}
+                            
+                            >
+                                Add a new quizze
+                            </Button>
+                           
+                        </Grid>
+                    </Grid>,);
                     data.quizzes.forEach((quizze) => {
                         row.push(
                             <Grid item xs={4} key={i}>
