@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Button from '@material-ui/core/Button';
-import AddCircleIcon from '@material-ui/icons/AddCircle';import API_URL from "../../constants";
+import Button from "@material-ui/core/Button";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
+import API_URL from "../../constants";
 import Card from "../../components/utilities/Card";
 import FormDialogAddQuiz from "../../components/utilities/FormDialogAddQuiz";
 
@@ -16,8 +17,8 @@ const useStyles = makeStyles(() => ({
         display: "flex",
         justifyContent: "center",
         margin: "80px 0px 0px",
-        padding: "0px 150px"
-    }
+        padding: "0px 150px",
+    },
 }));
 const Dashboard = () => {
     const loginStatus = useSelector((state) => state.authentication);
@@ -30,13 +31,13 @@ const Dashboard = () => {
     const handleClickOpen = () => {
         setOpen(true);
     };
-  
+
     const handleClose = () => {
         setOpen(false);
     };
     // run the function body when the user login status change or componentDidMount
     useEffect(() => {
-        // if the user is logged in fetch all game and show them
+    // if the user is logged in fetch all game and show them
         if (loginStatus.loggedIn) {
             fetch(`${API_URL}/admin/quiz`, {
                 method: "GET",
@@ -51,34 +52,36 @@ const Dashboard = () => {
                     let i = 0;
                     let row = [];
                     let girdLocal = [];
-                    
-                    girdLocal.push(<Grid container item xs={12} spacing={5} key={i}>
-                        
-                        <Grid item container xs={12} key={i}  
-                            alignItems="center"
-                            justify="flex-end"> 
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                endIcon={<AddCircleIcon/>}
-                                onClick={handleClickOpen}
-                            
+
+                    girdLocal.push(
+                        <Grid container item xs={12} spacing={5} key={i}>
+                            <Grid
+                                item
+                                container
+                                xs={12}
+                                key={i}
+                                alignItems="center"
+                                justify="flex-end"
                             >
-                                Add a new quizze
-                            </Button>
-                           
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    endIcon={<AddCircleIcon />}
+                                    onClick={handleClickOpen}
+                                >
+                  Add a new quizze
+                                </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>,);
+                    );
                     data.quizzes.forEach((quizze) => {
                         row.push(
                             <Grid item xs={4} key={i}>
-                                <Card  
-                                    
-                                    id={quizze.id} 
+                                <Card
+                                    id={quizze.id}
                                     name={quizze.name}
                                     createdAt={quizze.createdAt}
                                     thumbnail={quizze.thumbnail}
-
                                 />
                             </Grid>
                         );
@@ -99,13 +102,7 @@ const Dashboard = () => {
                         // the rest of them will be handle here
                         girdLocal = [
                             ...girdLocal,
-                            <Grid
-                                container
-                                item
-                                xs={12}
-                                spacing={4}
-                                key={i}
-                            >
+                            <Grid container item xs={12} spacing={4} key={i}>
                                 {row}
                             </Grid>,
                         ];
@@ -117,7 +114,6 @@ const Dashboard = () => {
         }
     }, [loginStatus.loggedIn]);
 
-
     // conditional render based on user's login status
     return (
         <div className={classes.root}>
@@ -128,7 +124,7 @@ const Dashboard = () => {
             ) : (
                 "Not Log in"
             )}
-            <FormDialogAddQuiz open={open} handleClose={handleClose}/>
+            <FormDialogAddQuiz open={open} handleClose={handleClose} />
         </div>
     );
 };
