@@ -41,12 +41,11 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 120,
     },
     body: {
-        minHeight: 450,
+        minHeight: 500,
     },
     left: {
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
         alignItems: "center",
     },
     right: {
@@ -61,21 +60,20 @@ const useStyles = makeStyles((theme) => ({
     extendedIcon: {
         marginRight: theme.spacing(1),
     },
-    img:{
-        width:"100%",
-        height:"100%",
-        maxHeight:250,
-        maxWidth:250
-    }
-    ,
-    upper:{
-        flex:2,
+    img: {
+        width: "100%",
+        height: "100%",
+        maxHeight: 300,
+        maxWidth: 300,
     },
-    lower:{
-        flex:1,
-        justifyContent:"center",
-        alignContent:"center"
-    }
+    upper: {
+        flex: 2,
+    },
+    lower: {
+        flex: 1,
+        justifyContent: "center",
+        alignContent: "center",
+    },
 }));
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -100,15 +98,15 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
     });
     const handleUploadClick = (event) => {
         const file = event.target.files[0];
-        if (file && file.type.match('image.*')) {
+        if (file && file.type.match("image.*")) {
             const reader = new FileReader();
             const url = reader.readAsDataURL(file);
-            let imageLocal = {...image};
+            let imageLocal = { ...image };
             reader.onloadend = () => {
                 setImage({ ...imageLocal, selectedFile: [reader.result] });
             };
             console.log(url); // Would see a path?
-    
+
             imageLocal = {
                 ...imageLocal,
                 selectedFile: event.target.files[0],
@@ -116,9 +114,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
             };
             setImage(imageLocal);
         }
-      
     };
-
 
     return (
         <Dialog
@@ -147,8 +143,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
             </AppBar>
             <Grid container spacing={4} className={classes.girdContainer}>
                 <Grid container item xs={12} spacing={5}>
-                    <Grid item xs={1} />
-                    <Grid item container xs={10}>
+                    <Grid item container xs={12}>
                         <TextField
                             id="outlined-full-width"
                             label="Start typing your question"
@@ -162,13 +157,15 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                             variant="outlined"
                         />
                     </Grid>
-                    <Grid item xs={1} />
                 </Grid>
                 <Grid container item xs={12} spacing={5} className={classes.body}>
                     <Grid item xs={4} className={classes.left}>
-                        <Grid item xs={12} container
+                        <Grid
+                            item
+                            xs={12}
+                            container
                             justify="center"
-                            alignContent="center"
+                            alignContent="flex-start"
                         >
                             <FormControl className={classes.formControl}>
                                 <InputLabel id="demo-simple-select-label">
@@ -186,9 +183,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 </Select>
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} container
-                            justify="center"
-                            alignContent="center">
+                        <Grid item xs={12} container justify="center" alignContent="center">
                             <FormControl className={classes.formControl}>
                                 <Typography id="discrete-slider" gutterBottom>
                   Points
@@ -205,9 +200,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 />
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} container
-                            justify="center"
-                            alignContent="center">
+                        <Grid item xs={12} container justify="center" alignContent="center">
                             <FormControl className={classes.formControl}>
                                 <Chip label="Basic" />
                             </FormControl>
@@ -215,18 +208,15 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                     </Grid>
                     <Grid item xs={8} className={classes.right}>
                         <Grid item xs={12} className={classes.upper}>
-                           
                             {image.imageUploaded && (
-                                <img className={classes.img}
-                                    src={image.selectedFile[0]} 
-                                    alt="fukc" 
+                                <img
+                                    className={classes.img}
+                                    src={image.selectedFile[0]}
+                                    alt="fukc"
                                 />
                             )}
                         </Grid>
-                        <Grid item xs={12} container
-                           
-                            className={classes.lower}
-                        >
+                        <Grid item xs={12} container className={classes.lower}>
                             <label htmlFor="contained-button-file">
                                 <Fab
                                     component="span"
