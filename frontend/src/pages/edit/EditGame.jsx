@@ -16,9 +16,8 @@ const useStyles = makeStyles(() => ({
         display: "flex",
         justifyContent: "center",
         margin: "80px 0px 0px",
-        padding: "0px 150px"
-    }
-   
+        padding: "0px 150px",
+    },
 }));
 const EditGame = () => {
     const classes = useStyles();
@@ -31,7 +30,7 @@ const EditGame = () => {
     const handleClickOpen = () => {
         setOpen(true);
     };
-  
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -53,19 +52,19 @@ const EditGame = () => {
     return (
         <div className={classes.root}>
             <Grid container spacing={4} className={classes.girdContainer}>
-                <Grid container item xs={12} spacing={5} >
-                    <Grid item container  xs={12} 
-                        alignItems="center"
-                        justify="flex-end"
-                    >
-                        <Button variant="contained" color="primary"
-                            onClick={handleClickOpen}>
-                        Add A NEW QUESTION 
+                <Grid container item xs={12} spacing={5}>
+                    <Grid item container xs={12} alignItems="center" justify="flex-end">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleClickOpen}
+                        >
+              Add A NEW QUESTION
                         </Button>
                     </Grid>
                 </Grid>
             </Grid>
-            <FormDialogAddQuestion  open={open} handleClose={handleClose}/>
+            <FormDialogAddQuestion open={open} handleClose={handleClose} />
         </div>
     );
 };
