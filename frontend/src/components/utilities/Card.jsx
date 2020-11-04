@@ -13,11 +13,11 @@ import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useHistory } from "react-router-dom";
-import API_URL, {stubImage} from "../../constants";
+import API_URL, { stubImage } from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-
+        flexGrow: 1,
     },
     media: {
         height: 0,
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 const RecipeReviewCard = (props) => {
     const { id, name, createdAt } = props;
-    let  {thumbnail} = props;
+    let { thumbnail } = props;
     const classes = useStyles();
     const [quiz, setQuiz] = useState({ questions: [] });
     // the original data formal is not standard format ususlly seen convert it to standard
@@ -76,12 +76,12 @@ const RecipeReviewCard = (props) => {
         setAnchorEl(null);
     };
 
-    const handleEdit = ()=>{
+    const handleEdit = () => {
         handleClose();
         history.push(`/dashboard/${id}`);
     };
 
-    const renderMenu =(  <Menu
+    const renderMenu = (<Menu
         id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
@@ -90,7 +90,7 @@ const RecipeReviewCard = (props) => {
     >
         <MenuItem onClick={handleEdit}>Edit</MenuItem>
         <MenuItem onClick={handleClose}>Delete</MenuItem>
-      
+
     </Menu>);
 
 
@@ -100,15 +100,15 @@ const RecipeReviewCard = (props) => {
                 <CardHeader
                     avatar={
                         <Avatar aria-label="recipe" className={classes.avatar}>
-                        R
+                            R
                         </Avatar>
                     }
                     action={
-                    
+
                         <IconButton aria-label="settings" onClick={handleClick}>
-                            <MoreVertIcon   />     
+                            <MoreVertIcon />
                         </IconButton>
-                   
+
                     }
                     title={name}
                     subheader={dataFormated.toDateString()}
@@ -120,7 +120,7 @@ const RecipeReviewCard = (props) => {
                 />
                 <CardContent>
                     <Typography variant="body2" color="textSecondary" component="p">
-                    This question&apos;s id is {id}, it has {quiz.questions.length} questions.
+                        This question&apos;s id is {id}, it has {quiz.questions.length} questions.
                     </Typography>
                 </CardContent>
 
@@ -136,10 +136,11 @@ RecipeReviewCard.propTypes = {
     id: PropTypes.string.isRequired,
     name: PropTypes.string,
     createdAt: PropTypes.string.isRequired,
-    thumbnail: PropTypes.string.isRequired,
+    thumbnail: PropTypes.string,
 }
 // some default arguments
 RecipeReviewCard.defaultProps = {
     name: "Don't have a name yet",
+    thumbnail: "null"
 }
 export default RecipeReviewCard;
