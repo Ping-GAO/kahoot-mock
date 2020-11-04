@@ -5,9 +5,9 @@ import Grid from "@material-ui/core/Grid";
 import Button from '@material-ui/core/Button';
 import AddCircleIcon from '@material-ui/icons/AddCircle';import API_URL from "../../constants";
 import Card from "../../components/utilities/Card";
-import FormDialog from "../../components/utilities/FormDialog";
+import FormDialog from "../../components/utilities/FormDialogAddQuiz";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         flexGrow: 1,
     },
@@ -17,16 +17,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         margin: "80px 0px 0px",
         padding: "0px 150px"
-    },
-    gridRow: {
-        // margin: 0
-    },
-
-    paper: {
-        padding: theme.spacing(1),
-        textAlign: "center",
-        color: theme.palette.text.secondary,
-    },
+    }
 }));
 const Dashboard = () => {
     const loginStatus = useSelector((state) => state.authentication);
@@ -62,14 +53,13 @@ const Dashboard = () => {
                     let girdLocal = [];
                     
                     girdLocal.push(<Grid container item xs={12} spacing={5} key={i}>
-                        <Grid item xs={10} key={i} />
-                        <Grid item container xs={2} key={i}  
+                        
+                        <Grid item container xs={12} key={i}  
                             alignItems="center"
                             justify="flex-end"> 
                             <Button
                                 variant="contained"
                                 color="primary"
-                                className={classes.button}
                                 endIcon={<AddCircleIcon/>}
                                 onClick={handleClickOpen}
                             
@@ -83,7 +73,7 @@ const Dashboard = () => {
                         row.push(
                             <Grid item xs={4} key={i}>
                                 <Card  
-                                    className={classes.paper} 
+                                    
                                     id={quizze.id} 
                                     name={quizze.name}
                                     createdAt={quizze.createdAt}
@@ -115,7 +105,6 @@ const Dashboard = () => {
                                 xs={12}
                                 spacing={4}
                                 key={i}
-                                className={classes.gridRow}
                             >
                                 {row}
                             </Grid>,

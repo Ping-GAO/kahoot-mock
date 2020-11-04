@@ -10,6 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 
 const FormDialog = ({ open, handleClose }) => {
+    // add button should call backend api, stub for now
     return <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Add a new quizze</DialogTitle>
         <DialogContent>
