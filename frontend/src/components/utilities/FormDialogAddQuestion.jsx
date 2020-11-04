@@ -18,7 +18,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Slider from "@material-ui/core/Slider";
 import Chip from "@material-ui/core/Chip";
 import PublishIcon from "@material-ui/icons/Publish";
-
+import Checkbox from "@material-ui/core/Checkbox";
 import Fab from "@material-ui/core/Fab";
 
 const useStyles = makeStyles((theme) => ({
@@ -61,36 +61,43 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(1),
     },
     img: {
+        objectFit: "cover",
         width: "100%",
         height: "100%",
-        maxHeight: 600,
-        maxWidth: 400,
+        minHeight: 550,
     },
     upper: {
-        flex: 2,
+        width: "100%",
     },
     lower: {
-        flex: 1,
         justifyContent: "center",
-        alignContent: "center",
+        alignContent: "flex-end",
     },
-    choice:{
-       
+    choice: {
         width: "100%",
-        height: 60
+        height: 70,
+        display: "flex",
+        justifyContent: "space-around",
+        alignItems: "center",
     },
-    choice1:{
-        backgroundColor:"#e21b3c"
+    choice1: {
+        backgroundColor: "#e21b3c",
     },
-    choice2:{
-        backgroundColor:"#1368ce"
+    choice2: {
+        backgroundColor: "#1368ce",
     },
-    choice3:{
-        backgroundColor:"#d89e00"
+    choice3: {
+        backgroundColor: "#d89e00",
     },
-    choice4:{
-        backgroundColor:"#26890c"
-    }
+    choice4: {
+        backgroundColor: "#26890c",
+    },
+    inputText: {
+        color: "white",
+    },
+    upload: {
+        margin: 12,
+    },
 }));
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -132,7 +139,28 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
             setImage(imageLocal);
         }
     };
+    const [checked1, setChecked1] = React.useState(true);
+    const [checked2, setChecked2] = React.useState(true);
+    const [checked3, setChecked3] = React.useState(true);
+    const [checked4, setChecked4] = React.useState(true);
+    const handleChangeCheckBox1 = (event) => {
+        setChecked1(event.target.checked);
+    };
+    const handleChangeCheckBox2 = (event) => {
+        setChecked2(event.target.checked);
+    };
+    const handleChangeCheckBox3 = (event) => {
+        setChecked3(event.target.checked);
+    };
+    const handleChangeCheckBox4 = (event) => {
+        setChecked4(event.target.checked);
+    };
 
+    const [answer1, setAnswer1] = useState();
+    const [answer2, setAnswer2] = useState();
+    const [answer3, setAnswer3] = useState();
+    const [answer4, setAnswer4] = useState();
+    console.log(answer1, answer2, answer3, answer4);
     return (
         <Dialog
             fullScreen
@@ -159,7 +187,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                 </Toolbar>
             </AppBar>
             <Grid container spacing={1} className={classes.girdContainer}>
-                <Grid container item xs={12} spacing={5}>
+                <Grid container item xs={12} spacing={1}>
                     <Grid item container xs={12}>
                         <TextField
                             id="outlined-full-width"
@@ -175,7 +203,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         />
                     </Grid>
                 </Grid>
-                <Grid container item xs={12} spacing={5} className={classes.body}>
+                <Grid container item xs={12} spacing={1} className={classes.body}>
                     <Grid item xs={4} className={classes.left}>
                         <Grid
                             item
@@ -200,7 +228,13 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 </Select>
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} container justify="center" alignContent="center">
+                        <Grid
+                            item
+                            xs={12}
+                            container
+                            justify="center"
+                            alignContent="flex-start"
+                        >
                             <FormControl className={classes.formControl}>
                                 <Typography id="discrete-slider" gutterBottom>
                   Points
@@ -217,7 +251,13 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 />
                             </FormControl>
                         </Grid>
-                        <Grid item xs={12} container justify="center" alignContent="center">
+                        <Grid
+                            item
+                            xs={12}
+                            container
+                            justify="center"
+                            alignContent="flex-end"
+                        >
                             <FormControl className={classes.formControl}>
                                 <Chip label="Basic" />
                             </FormControl>
@@ -229,12 +269,12 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 <img
                                     className={classes.img}
                                     src={image.selectedFile[0]}
-                                    alt="fukc"
+                                    alt="question"
                                 />
                             )}
                         </Grid>
                         <Grid item xs={12} container className={classes.lower}>
-                            <label htmlFor="contained-button-file">
+                            <label htmlFor="contained-button-file" className={classes.upload}>
                                 <Fab
                                     component="span"
                                     variant="extended"
@@ -257,28 +297,84 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         </Grid>
                     </Grid>
                 </Grid>
-            
-                <Grid container item xs={12} spacing={1} >
-                    <Grid container item xs={6} >
+
+                <Grid container item xs={12} spacing={1}>
+                    <Grid container item xs={6}>
                         <div className={`${classes.choice} ${classes.choice1}`}>
-                   fuck
+                            <TextField
+                                id="standard-basic"
+                                label="Answer1"
+                                onChange={(event) => setAnswer1(event.target.value)}
+                                InputProps={{
+                                    className: classes.inputText,
+                                }}
+                            />
+                            <Checkbox
+                                checked={checked1}
+                                onChange={handleChangeCheckBox1}
+                                inputProps={{ "aria-label": "primary checkbox" }}
+                                inputStyle={{ color: "white" }}
+                                style={{ color: "white" }}
+                            />
                         </div>
                     </Grid>
-                    <Grid container item xs={6} >
+                    <Grid container item xs={6}>
                         <div className={`${classes.choice} ${classes.choice2}`}>
-                   fuck
+                            <TextField
+                                id="standard-basic"
+                                label="Answer2"
+                                onChange={(event) => setAnswer2(event.target.value)}
+                                InputProps={{
+                                    className: classes.inputText,
+                                }}
+                            />
+                            <Checkbox
+                                checked={checked2}
+                                onChange={handleChangeCheckBox2}
+                                inputProps={{ "aria-label": "primary checkbox" }}
+                                inputStyle={{ color: "white" }}
+                                style={{ color: "white" }}
+                            />
                         </div>
                     </Grid>
                 </Grid>
-                <Grid container item xs={12} spacing={1} >
-                    <Grid container item xs={6} >
+                <Grid container item xs={12} spacing={1}>
+                    <Grid container item xs={6}>
                         <div className={`${classes.choice} ${classes.choice3}`}>
-                   fuck
+                            <TextField
+                                id="standard-basic"
+                                label="Answer3"
+                                onChange={(event) => setAnswer3(event.target.value)}
+                                InputProps={{
+                                    className: classes.inputText,
+                                }}
+                            />
+                            <Checkbox
+                                checked={checked3}
+                                onChange={handleChangeCheckBox3}
+                                inputProps={{ "aria-label": "primary checkbox" }}
+                                inputStyle={{ color: "white" }}
+                                style={{ color: "white" }}
+                            />
                         </div>
                     </Grid>
-                    <Grid container item xs={6} >
+                    <Grid container item xs={6}>
                         <div className={`${classes.choice} ${classes.choice4}`}>
-                   fuck
+                            <TextField
+                                id="standard-basic"
+                                label="Answer4"
+                                onChange={(event) => setAnswer4(event.target.value)}
+                                InputProps={{
+                                    className: classes.inputText,
+                                }}
+                            />
+                            <Checkbox
+                                checked={checked4}
+                                onChange={handleChangeCheckBox4}
+                                inputProps={{ "aria-label": "primary checkbox" }}
+                                inputStyle={{ color: "white" }}
+                                style={{ color: "white" }}
+                            />
                         </div>
                     </Grid>
                 </Grid>
