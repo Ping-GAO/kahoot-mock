@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 120,
     },
     body: {
-        minHeight: 500,
+        minHeight: 650,
     },
     left: {
         display: "flex",
@@ -63,8 +63,8 @@ const useStyles = makeStyles((theme) => ({
     img: {
         width: "100%",
         height: "100%",
-        maxHeight: 300,
-        maxWidth: 300,
+        maxHeight: 600,
+        maxWidth: 400,
     },
     upper: {
         flex: 2,
@@ -74,6 +74,23 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignContent: "center",
     },
+    choice:{
+       
+        width: "100%",
+        height: 60
+    },
+    choice1:{
+        backgroundColor:"#e21b3c"
+    },
+    choice2:{
+        backgroundColor:"#1368ce"
+    },
+    choice3:{
+        backgroundColor:"#d89e00"
+    },
+    choice4:{
+        backgroundColor:"#26890c"
+    }
 }));
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -141,7 +158,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                     </Button>
                 </Toolbar>
             </AppBar>
-            <Grid container spacing={4} className={classes.girdContainer}>
+            <Grid container spacing={1} className={classes.girdContainer}>
                 <Grid container item xs={12} spacing={5}>
                     <Grid item container xs={12}>
                         <TextField
@@ -238,6 +255,31 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 />
                             </label>
                         </Grid>
+                    </Grid>
+                </Grid>
+            
+                <Grid container item xs={12} spacing={1} >
+                    <Grid container item xs={6} >
+                        <div className={`${classes.choice} ${classes.choice1}`}>
+                   fuck
+                        </div>
+                    </Grid>
+                    <Grid container item xs={6} >
+                        <div className={`${classes.choice} ${classes.choice2}`}>
+                   fuck
+                        </div>
+                    </Grid>
+                </Grid>
+                <Grid container item xs={12} spacing={1} >
+                    <Grid container item xs={6} >
+                        <div className={`${classes.choice} ${classes.choice3}`}>
+                   fuck
+                        </div>
+                    </Grid>
+                    <Grid container item xs={6} >
+                        <div className={`${classes.choice} ${classes.choice4}`}>
+                   fuck
+                        </div>
                     </Grid>
                 </Grid>
             </Grid>
