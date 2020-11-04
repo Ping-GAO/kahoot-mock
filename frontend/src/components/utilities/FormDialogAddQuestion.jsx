@@ -9,10 +9,10 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
 
-const FormDialogAddQuiz = ({ open, handleClose }) => {
+const FormDialogAddQuestion = ({ open, handleClose }) => {
     // add button should call backend api, stub for now
     return <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add a new quizze</DialogTitle>
+        <DialogTitle id="form-dialog-title">Add a new question</DialogTitle>
         <DialogContent>
             <DialogContentText>
                 To add to this new quizze, please enter the name
@@ -38,9 +38,9 @@ const FormDialogAddQuiz = ({ open, handleClose }) => {
 }
 
 
-FormDialogAddQuiz.propTypes = {
+FormDialogAddQuestion.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired
 }
 
-export default FormDialogAddQuiz;
+export default FormDialogAddQuestion;

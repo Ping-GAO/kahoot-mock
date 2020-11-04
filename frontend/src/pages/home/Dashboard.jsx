@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Button from '@material-ui/core/Button';
 import AddCircleIcon from '@material-ui/icons/AddCircle';import API_URL from "../../constants";
 import Card from "../../components/utilities/Card";
-import FormDialog from "../../components/utilities/FormDialogAddQuiz";
+import FormDialogAddQuiz from "../../components/utilities/FormDialogAddQuiz";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -128,7 +128,7 @@ const Dashboard = () => {
             ) : (
                 "Not Log in"
             )}
-            <FormDialog open={open} handleClose={handleClose}/>
+            <FormDialogAddQuiz open={open} handleClose={handleClose}/>
         </div>
     );
 };

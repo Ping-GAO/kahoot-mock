@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import Button from "@material-ui/core/Button";
 import API_URL from "../../constants";
+import FormDialogAddQuestion from "../../components/utilities/FormDialogAddQuestion";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -25,6 +26,15 @@ const EditGame = () => {
     const { quizId } = useParams();
 
     const [quizze, setQuizze] = useState();
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+  
+    const handleClose = () => {
+        setOpen(false);
+    };
     useEffect(() => {
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
             method: "GET",
@@ -45,14 +55,17 @@ const EditGame = () => {
             <Grid container spacing={4} className={classes.girdContainer}>
                 <Grid container item xs={12} spacing={5} >
                     <Grid item container  xs={12} 
+                        alignItems="center"
                         justify="flex-end"
-                        alignItems="center" >
-                        <Button variant="contained" color="primary">
+                    >
+                        <Button variant="contained" color="primary"
+                            onClick={handleClickOpen}>
                         Add A NEW QUESTION 
                         </Button>
                     </Grid>
                 </Grid>
             </Grid>
+            <FormDialogAddQuestion  open={open} handleClose={handleClose}/>
         </div>
     );
 };
