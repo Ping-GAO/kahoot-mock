@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import Slide from "@material-ui/core/Slide";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import InputLabel from "@material-ui/core/InputLabel";
+
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
@@ -20,6 +20,7 @@ import Chip from "@material-ui/core/Chip";
 import PublishIcon from "@material-ui/icons/Publish";
 import Checkbox from "@material-ui/core/Checkbox";
 import Fab from "@material-ui/core/Fab";
+import FormLabel from '@material-ui/core/FormLabel';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection:"column",
         justifyContent: "center",
-        padding: "80px 500px 0px",
+        padding: "80px 100px 0px",
         backgroundColor:"#f2f2f2"
     },
     formControl: {
@@ -54,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 
     left: {
         display: "flex",
+        padding:"40px 40px",
         flexDirection: "column",
         alignItems: "center",
     },
@@ -84,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
     },
     choice: {
         width: "100%",
-        height: 70,
+        height: "80%",
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
@@ -220,12 +222,11 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                             xs={12}
                             container
                             justify="center"
-                            alignContent="flex-start"
+                            alignContent="center"
                         >
                             <FormControl className={classes.formControl}>
-                                <InputLabel id="demo-simple-select-label">
-                  Time Limit
-                                </InputLabel>
+                                <FormLabel >Time Limit</FormLabel>
+                              
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
@@ -243,12 +244,11 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                             xs={12}
                             container
                             justify="center"
-                            alignContent="flex-start"
+                            alignContent="center"
                         >
                             <FormControl className={classes.formControl}>
-                                <Typography id="discrete-slider" gutterBottom>
-                  Points
-                                </Typography>
+                                <FormLabel >Points</FormLabel>
+                                <div style={{height:15}}/>
                                 <Slider
                                     defaultValue={1000}
                                     getAriaValueText={valuetext}
@@ -266,9 +266,11 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                             xs={12}
                             container
                             justify="center"
-                            alignContent="flex-end"
+                            alignContent="center"
                         >
                             <FormControl className={classes.formControl}>
+                                <FormLabel >Answer options</FormLabel>
+                                <div style={{height:15}}/>
                                 <Chip label="Basic" />
                             </FormControl>
                         </Grid>
