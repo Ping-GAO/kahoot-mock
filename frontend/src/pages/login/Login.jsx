@@ -12,7 +12,7 @@ import { login } from "../../redux/actions";
 
 const useStyles = makeStyles(() => ({
     root: {
-        // 64px is the height of navbar
+    // 64px is the height of navbar
         height: "calc(100vh - 64px)",
         justifyContent: "center",
         alignItems: "center",
@@ -37,7 +37,7 @@ const Login = () => {
                 onSubmit={(e) => {
                     e.preventDefault();
                     dispatch(login(email, password));
-                    history.push("/home");
+                    history.push("/dashboard");
                 }}
             >
                 <TextField
@@ -70,7 +70,7 @@ const Login = () => {
                 />
                 <div style={{ height: 20 }} />
                 <Button color="primary" variant="contained" type="submit">
-                    Log in
+          Log in
                 </Button>
             </form>
         </Grid>
