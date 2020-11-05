@@ -31,18 +31,27 @@ const useStyles = makeStyles((theme) => ({
     },
     girdContainer: {
         width: "100%",
+        height: "calc(100vh - 64px)",
         display: "flex",
+        flexDirection:"column",
         justifyContent: "center",
-        margin: "80px 0px 0px",
-        padding: "0px 500px",
+        padding: "80px 500px 0px",
+        backgroundColor:"#f2f2f2"
     },
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
     },
-    body: {
-        minHeight: 650,
+    head:{
+        flex:1
     },
+    body: {
+        flex:4
+    },
+    foot:{
+        flex:2
+    },
+
     left: {
         display: "flex",
         flexDirection: "column",
@@ -64,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
         objectFit: "cover",
         width: "100%",
         height: "100%",
-        minHeight: 550,
+        
     },
     upper: {
         width: "100%",
@@ -98,6 +107,7 @@ const useStyles = makeStyles((theme) => ({
     upload: {
         margin: 12,
     },
+
 }));
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -186,8 +196,8 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                     </Button>
                 </Toolbar>
             </AppBar>
-            <Grid container spacing={1} className={classes.girdContainer}>
-                <Grid container item xs={12} spacing={1}>
+            <Grid container  className={classes.girdContainer} spacing={2}>
+                <Grid container item xs={12} className={classes.head}>
                     <Grid item container xs={12}>
                         <TextField
                             id="outlined-full-width"
@@ -203,7 +213,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         />
                     </Grid>
                 </Grid>
-                <Grid container item xs={12} spacing={1} className={classes.body}>
+                <Grid container item xs={12}  className={classes.body}>
                     <Grid item xs={4} className={classes.left}>
                         <Grid
                             item
@@ -297,85 +307,86 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         </Grid>
                     </Grid>
                 </Grid>
-
-                <Grid container item xs={12} spacing={1}>
-                    <Grid container item xs={6}>
-                        <div className={`${classes.choice} ${classes.choice1}`}>
-                            <TextField
-                                id="standard-basic"
-                                label="Answer1"
-                                onChange={(event) => setAnswer1(event.target.value)}
-                                InputProps={{
-                                    className: classes.inputText,
-                                }}
-                            />
-                            <Checkbox
-                                checked={checked1}
-                                onChange={handleChangeCheckBox1}
-                                inputProps={{ "aria-label": "primary checkbox" }}
-                                inputStyle={{ color: "white" }}
-                                style={{ color: "white" }}
-                            />
-                        </div>
+                <Grid container item xs={12}  className={classes.foot}>
+                    <Grid container item xs={12}  spacing={2}>
+                        <Grid container item xs={6}>
+                            <div className={`${classes.choice} ${classes.choice1}`}>
+                                <TextField
+                                    id="standard-basic"
+                                    label="Answer1"
+                                    onChange={(event) => setAnswer1(event.target.value)}
+                                    InputProps={{
+                                        className: classes.inputText,
+                                    }}
+                                />
+                                <Checkbox
+                                    checked={checked1}
+                                    onChange={handleChangeCheckBox1}
+                                    inputProps={{ "aria-label": "primary checkbox" }}
+                                    inputStyle={{ color: "white" }}
+                                    style={{ color: "white" }}
+                                />
+                            </div>
+                        </Grid>
+                        <Grid container item xs={6}>
+                            <div className={`${classes.choice} ${classes.choice2}`}>
+                                <TextField
+                                    id="standard-basic"
+                                    label="Answer2"
+                                    onChange={(event) => setAnswer2(event.target.value)}
+                                    InputProps={{
+                                        className: classes.inputText,
+                                    }}
+                                />
+                                <Checkbox
+                                    checked={checked2}
+                                    onChange={handleChangeCheckBox2}
+                                    inputProps={{ "aria-label": "primary checkbox" }}
+                                    inputStyle={{ color: "white" }}
+                                    style={{ color: "white" }}
+                                />
+                            </div>
+                        </Grid>
                     </Grid>
-                    <Grid container item xs={6}>
-                        <div className={`${classes.choice} ${classes.choice2}`}>
-                            <TextField
-                                id="standard-basic"
-                                label="Answer2"
-                                onChange={(event) => setAnswer2(event.target.value)}
-                                InputProps={{
-                                    className: classes.inputText,
-                                }}
-                            />
-                            <Checkbox
-                                checked={checked2}
-                                onChange={handleChangeCheckBox2}
-                                inputProps={{ "aria-label": "primary checkbox" }}
-                                inputStyle={{ color: "white" }}
-                                style={{ color: "white" }}
-                            />
-                        </div>
-                    </Grid>
-                </Grid>
-                <Grid container item xs={12} spacing={1}>
-                    <Grid container item xs={6}>
-                        <div className={`${classes.choice} ${classes.choice3}`}>
-                            <TextField
-                                id="standard-basic"
-                                label="Answer3"
-                                onChange={(event) => setAnswer3(event.target.value)}
-                                InputProps={{
-                                    className: classes.inputText,
-                                }}
-                            />
-                            <Checkbox
-                                checked={checked3}
-                                onChange={handleChangeCheckBox3}
-                                inputProps={{ "aria-label": "primary checkbox" }}
-                                inputStyle={{ color: "white" }}
-                                style={{ color: "white" }}
-                            />
-                        </div>
-                    </Grid>
-                    <Grid container item xs={6}>
-                        <div className={`${classes.choice} ${classes.choice4}`}>
-                            <TextField
-                                id="standard-basic"
-                                label="Answer4"
-                                onChange={(event) => setAnswer4(event.target.value)}
-                                InputProps={{
-                                    className: classes.inputText,
-                                }}
-                            />
-                            <Checkbox
-                                checked={checked4}
-                                onChange={handleChangeCheckBox4}
-                                inputProps={{ "aria-label": "primary checkbox" }}
-                                inputStyle={{ color: "white" }}
-                                style={{ color: "white" }}
-                            />
-                        </div>
+                    <Grid container item xs={12} spacing={2}>
+                        <Grid container item xs={6}>
+                            <div className={`${classes.choice} ${classes.choice3}`}>
+                                <TextField
+                                    id="standard-basic"
+                                    label="Answer3"
+                                    onChange={(event) => setAnswer3(event.target.value)}
+                                    InputProps={{
+                                        className: classes.inputText,
+                                    }}
+                                />
+                                <Checkbox
+                                    checked={checked3}
+                                    onChange={handleChangeCheckBox3}
+                                    inputProps={{ "aria-label": "primary checkbox" }}
+                                    inputStyle={{ color: "white" }}
+                                    style={{ color: "white" }}
+                                />
+                            </div>
+                        </Grid>
+                        <Grid container item xs={6}>
+                            <div className={`${classes.choice} ${classes.choice4}`}>
+                                <TextField
+                                    id="standard-basic"
+                                    label="Answer4"
+                                    onChange={(event) => setAnswer4(event.target.value)}
+                                    InputProps={{
+                                        className: classes.inputText,
+                                    }}
+                                />
+                                <Checkbox
+                                    checked={checked4}
+                                    onChange={handleChangeCheckBox4}
+                                    inputProps={{ "aria-label": "primary checkbox" }}
+                                    inputStyle={{ color: "white" }}
+                                    style={{ color: "white" }}
+                                />
+                            </div>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>

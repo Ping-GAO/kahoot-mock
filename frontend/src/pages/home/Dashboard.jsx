@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from "react";
-import {useSelector} from "react-redux";
-import {makeStyles} from "@material-ui/core/styles";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import Typography from "@material-ui/core/Typography";
 import API_URL from "../../constants";
 import Card from "../../components/utilities/Card";
 import FormDialogAddQuiz from "../../components/utilities/FormDialogAddQuiz";
@@ -20,21 +21,21 @@ const useStyles = makeStyles(() => ({
         padding: "0px 150px",
     },
     myStyle: {
-        backgroundImage: `url(${'https://source.unsplash.com/random'})`,
+        backgroundImage: `url(${"https://source.unsplash.com/random"})`,
         height: "calc(100vh - 64px)",
-        width: '100%',
-        position: 'absolute',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        color: 'white',
-        display: 'flex'
+        width: "100%",
+        position: "absolute",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        color: "white",
+        display: "flex",
     },
     textStyle: {
-        margin: 'auto',
-        textAlign: 'center',
-        fontSize: '50px',
-        fontWeight: 'bold'
-    }
+        margin: "auto",
+        textAlign: "center",
+        fontSize: "50px",
+        fontWeight: "bold",
+    },
 }));
 const Dashboard = () => {
     const loginStatus = useSelector((state) => state.authentication);
@@ -53,7 +54,7 @@ const Dashboard = () => {
     };
     // run the function body when the user login status change or componentDidMount
     useEffect(() => {
-        // if the user is logged in fetch all game and show them
+    // if the user is logged in fetch all game and show them
         if (loginStatus.loggedIn) {
             fetch(`${API_URL}/admin/quiz`, {
                 method: "GET",
@@ -82,10 +83,10 @@ const Dashboard = () => {
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    endIcon={<AddCircleIcon/>}
+                                    endIcon={<AddCircleIcon />}
                                     onClick={handleClickOpen}
                                 >
-                                    Add a new quizze
+                  Add a new quizze
                                 </Button>
                             </Grid>
                         </Grid>
@@ -139,10 +140,12 @@ const Dashboard = () => {
                 </Grid>
             ) : (
                 <div className={classes.textStyle}>
-                    Welcome to the BigBrain game, please log in to play!
+                    <Typography variant="h2" gutterBottom>
+            Welcome to the BigBrain game, please log in to play!
+                    </Typography>
                 </div>
             )}
-            <FormDialogAddQuiz open={open} handleClose={handleClose}/>
+            <FormDialogAddQuiz open={open} handleClose={handleClose} />
         </div>
     );
 };
