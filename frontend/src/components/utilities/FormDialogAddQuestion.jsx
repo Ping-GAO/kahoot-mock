@@ -11,15 +11,13 @@ import PropTypes from "prop-types";
 import Slide from "@material-ui/core/Slide";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-
+import {DropzoneArea} from 'material-ui-dropzone'
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import Slider from "@material-ui/core/Slider";
 import Chip from "@material-ui/core/Chip";
-import PublishIcon from "@material-ui/icons/Publish";
 import Checkbox from "@material-ui/core/Checkbox";
-import Fab from "@material-ui/core/Fab";
 import FormLabel from '@material-ui/core/FormLabel';
 
 const useStyles = makeStyles((theme) => ({
@@ -64,25 +62,13 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        height:"80%"
     },
-    input: {
-        display: "none",
-    },
-    extendedIcon: {
-        marginRight: theme.spacing(1),
-    },
-    img: {
-        objectFit: "cover",
-        width: "100%",
-        height: "100%",
-        
-    },
-    upper: {
-        width: "100%",
-    },
-    lower: {
-        justifyContent: "center",
-        alignContent: "flex-end",
+    imgUploader:{
+        height:"100%",
+        display:"flex",
+        flexDirection:"column",
+        justifyContent:"space-evenly"
     },
     choice: {
         width: "100%",
@@ -128,29 +114,8 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
         return `${value}°C`;
     };
 
-    const [image, setImage] = useState({
-        imageUploaded: false,
-        selectedFile: null,
-    });
-    const handleUploadClick = (event) => {
-        const file = event.target.files[0];
-        if (file && file.type.match("image.*")) {
-            const reader = new FileReader();
-            const url = reader.readAsDataURL(file);
-            let imageLocal = { ...image };
-            reader.onloadend = () => {
-                setImage({ ...imageLocal, selectedFile: [reader.result] });
-            };
-            console.log(url); // Would see a path?
-
-            imageLocal = {
-                ...imageLocal,
-                selectedFile: event.target.files[0],
-                imageUploaded: true,
-            };
-            setImage(imageLocal);
-        }
-    };
+   
+   
     const [checked1, setChecked1] = React.useState(true);
     const [checked2, setChecked2] = React.useState(true);
     const [checked3, setChecked3] = React.useState(true);
@@ -275,39 +240,16 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <Grid item xs={8} className={classes.right}>
-                        <Grid item xs={12} className={classes.upper}>
-                            {image.imageUploaded && (
-                                <img
-                                    className={classes.img}
-                                    src={image.selectedFile[0]}
-                                    alt="question"
-                                />
-                            )}
-                        </Grid>
-                        <Grid item xs={12} container className={classes.lower}>
-                            <label htmlFor="contained-button-file" className={classes.upload}>
-                                <Fab
-                                    component="span"
-                                    variant="extended"
-                                    size="small"
-                                    aria-label="add"
-                                >
-                                    <PublishIcon className={classes.extendedIcon} />
-                  Upload image
-                                </Fab>
-
-                                <input
-                                    accept="image/*"
-                                    className={classes.input}
-                                    type="file"
-                                    id="contained-button-file"
-                                    multiple
-                                    onChange={handleUploadClick}
-                                />
-                            </label>
-                        </Grid>
+                    <Grid item xs={6} className={classes.right} >
+                        <DropzoneArea
+                            dropzoneClass={classes.imgUploader}
+                            acceptedFiles={['image/*']}
+                            dropzoneText="Drag and drop an image here or click"
+                        />
+                       
+                        
                     </Grid>
+                    <Grid xs={2}/>
                 </Grid>
                 <Grid container item xs={12}  className={classes.foot}>
                     <Grid container item xs={12}  spacing={2}>
