@@ -19,6 +19,7 @@ import Slider from "@material-ui/core/Slider";
 import Chip from "@material-ui/core/Chip";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormLabel from '@material-ui/core/FormLabel';
+import '../css/FormDialogAddQuestion.css';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -137,7 +138,9 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
     const [answer2, setAnswer2] = useState();
     const [answer3, setAnswer3] = useState();
     const [answer4, setAnswer4] = useState();
+    const [image, setImage]=useState();
     console.log(answer1, answer2, answer3, answer4);
+    console.log(image);
     return (
         <Dialog
             fullScreen
@@ -245,6 +248,9 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                             dropzoneClass={classes.imgUploader}
                             acceptedFiles={['image/*']}
                             dropzoneText="Drag and drop an image here or click"
+                            filesLimit={1}
+                            maxFileSize={6000000}
+                            onChange={(img)=>{setImage(img[0])}}
                         />
                        
                         

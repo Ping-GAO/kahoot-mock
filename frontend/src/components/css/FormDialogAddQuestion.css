@@ -1,0 +1,8 @@
+.MuiDropzonePreviewList-root{
+    display: flex;
+    justify-content: center;
+}
+
+.MuiDropzoneArea-icon{
+    display: none !important;
+}
