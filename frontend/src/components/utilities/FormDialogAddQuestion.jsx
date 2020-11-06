@@ -130,16 +130,17 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const [title,setTitle] = useState();
-    const [answer1, setAnswer1] = useState();
-    const [answer2, setAnswer2] = useState();
-    const [answer3, setAnswer3] = useState();
-    const [answer4, setAnswer4] = useState();
-    const [timeLimit, setTimeLimit] = React.useState("");
-    const [checked1, setChecked1] = React.useState(true);
-    const [checked2, setChecked2] = React.useState(true);
-    const [checked3, setChecked3] = React.useState(true);
-    const [checked4, setChecked4] = React.useState(true);
+    const [title,setTitle] = useState("");
+    const [answer1, setAnswer1] = useState("");
+    const [answer2, setAnswer2] = useState("");
+    const [answer3, setAnswer3] = useState("");
+    const [answer4, setAnswer4] = useState("");
+    const [timeLimit, setTimeLimit] = useState("");
+    const [points, setPoints] = useState(1000);
+    const [checked1, setChecked1] = useState(true);
+    const [checked2, setChecked2] = useState(true);
+    const [checked3, setChecked3] = useState(true);
+    const [checked4, setChecked4] = useState(true);
     const [upload, setUpload] = useState({ imagePreviewUrl: "" });
     const handleChange = (event) => {
         setTimeLimit(event.target.value);
@@ -207,6 +208,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
     }
 
     const handleSave = () => {
+        // check if user fill in all the field required to make a new question
         if (!(answer1 && answer2 && answer3 && answer4)) {
             dispatch(alertError("Please Fill In All Answers"));
             return;
@@ -215,7 +217,16 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
             dispatch(alertError("Please Fill in Title"));
             return;
         }
+        if(!timeLimit){
+            dispatch(alertError("Please Set Time Limit"));
+            return;
+        }
+        if(!upload.imagePreviewUrl){
+            dispatch(alertError("Please Upload An Image"));
+            return;
+        }
 
+        // make a new question
         handleClose();
     };
     return (
@@ -285,7 +296,6 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 <FormLabel>Points</FormLabel>
                                 <div style={{ height: 15 }} />
                                 <Slider
-                                    defaultValue={1000}
                                     getAriaValueText={valuetext}
                                     aria-labelledby="discrete-slider"
                                     valueLabelDisplay="auto"
@@ -293,6 +303,10 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                     marks
                                     min={500}
                                     max={2000}
+                                    onChange={(event, newValue) => {
+                                        setPoints(newValue);
+                                    }}
+                                    value={points}
                                 />
                             </FormControl>
                         </Grid>
@@ -338,7 +352,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                             </label>
                         </Grid>
                     </Grid>
-                    <Grid xs={2} />
+                    <Grid item xs={2} />
                 </Grid>
                 <Grid container item xs={12} className={classes.foot}>
                     <Grid container item xs={12} spacing={2}>
@@ -357,7 +371,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                     checked={checked1}
                                     onChange={handleChangeCheckBox1}
                                     inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputStyle={{ color: "white" }}
+                                    inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
                                 />
                             </div>
@@ -377,7 +391,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                     checked={checked2}
                                     onChange={handleChangeCheckBox2}
                                     inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputStyle={{ color: "white" }}
+                                    inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
                                 />
                             </div>
@@ -399,7 +413,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                     checked={checked3}
                                     onChange={handleChangeCheckBox3}
                                     inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputStyle={{ color: "white" }}
+                                    inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
                                 />
                             </div>
@@ -419,7 +433,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                     checked={checked4}
                                     onChange={handleChangeCheckBox4}
                                     inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputStyle={{ color: "white" }}
+                                    inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
                                 />
                             </div>
