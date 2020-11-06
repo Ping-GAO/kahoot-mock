@@ -19,6 +19,8 @@ import Slider from "@material-ui/core/Slider";
 import Chip from "@material-ui/core/Chip";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormLabel from "@material-ui/core/FormLabel";
+import { useDispatch } from "react-redux";
+import { alertError } from "../../redux/actions";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -116,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        fontSize: "1.5em"
+        fontSize: "1.5em",
     },
 }));
 
@@ -126,20 +128,25 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 const FormDialogAddQuestion = ({ open, handleClose }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
 
+    const [title,setTitle] = useState();
+    const [answer1, setAnswer1] = useState();
+    const [answer2, setAnswer2] = useState();
+    const [answer3, setAnswer3] = useState();
+    const [answer4, setAnswer4] = useState();
     const [timeLimit, setTimeLimit] = React.useState("");
-
+    const [checked1, setChecked1] = React.useState(true);
+    const [checked2, setChecked2] = React.useState(true);
+    const [checked3, setChecked3] = React.useState(true);
+    const [checked4, setChecked4] = React.useState(true);
+    const [upload, setUpload] = useState({ imagePreviewUrl: "" });
     const handleChange = (event) => {
         setTimeLimit(event.target.value);
     };
     const valuetext = (value) => {
         return value;
     };
-
-    const [checked1, setChecked1] = React.useState(true);
-    const [checked2, setChecked2] = React.useState(true);
-    const [checked3, setChecked3] = React.useState(true);
-    const [checked4, setChecked4] = React.useState(true);
     const handleChangeCheckBox1 = (event) => {
         setChecked1(event.target.checked);
     };
@@ -153,13 +160,10 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
         setChecked4(event.target.checked);
     };
 
-    const [answer1, setAnswer1] = useState();
-    const [answer2, setAnswer2] = useState();
-    const [answer3, setAnswer3] = useState();
-    const [answer4, setAnswer4] = useState();
+   
 
     console.log(answer1, answer2, answer3, answer4);
-    const [upload, setUpload] = useState({ imagePreviewUrl: "" });
+   
     const handleImageChange = (e) => {
         e.preventDefault();
 
@@ -194,18 +198,26 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
         imagePlaceHolder = (
             <div className={classes.placeHolder}>
                 <PanoramaOutlinedIcon className={classes.imageIcon} />
-                <div style={{height:"20px"}}/>
-                <Typography variant="body1" gutterBottom>Preview Uploaded Image Here</Typography>
+                <div style={{ height: "20px" }} />
+                <Typography variant="body1" gutterBottom>
+          Preview Uploaded Image Here
+                </Typography>
             </div>
         );
     }
 
+    const handleSave = () => {
+        if (!(answer1 && answer2 && answer3 && answer4)) {
+            dispatch(alertError("Please Fill In All Answers"));
+            return;
+        }
+        if(!title){
+            dispatch(alertError("Please Fill in Title"));
+            return;
+        }
 
-
-    const handleSave = ()=>{
-        console.log("saved");
         handleClose();
-    }
+    };
     return (
         <Dialog
             fullScreen
@@ -245,6 +257,8 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 shrink: true,
                             }}
                             variant="outlined"
+                            value={title}
+                            onChange={(event) => setTitle(event.target.value)}
                         />
                     </Grid>
                 </Grid>
@@ -337,6 +351,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                     InputProps={{
                                         className: classes.inputText,
                                     }}
+                                    value={answer1}
                                 />
                                 <Checkbox
                                     checked={checked1}
@@ -356,6 +371,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                     InputProps={{
                                         className: classes.inputText,
                                     }}
+                                    value={answer2}
                                 />
                                 <Checkbox
                                     checked={checked2}
@@ -377,6 +393,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                     InputProps={{
                                         className: classes.inputText,
                                     }}
+                                    value={answer3}
                                 />
                                 <Checkbox
                                     checked={checked3}
@@ -396,6 +413,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                     InputProps={{
                                         className: classes.inputText,
                                     }}
+                                    value={answer4}
                                 />
                                 <Checkbox
                                     checked={checked4}
