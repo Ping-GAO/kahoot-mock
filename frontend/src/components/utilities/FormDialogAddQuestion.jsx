@@ -53,24 +53,19 @@ const useStyles = makeStyles((theme) => ({
     },
 
     left: {
-        display: "flex",
         padding:"40px 40px",
-        flexDirection: "column",
         alignItems: "center",
     },
     right: {
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        margin: "0px 0px 40px",
+        border:"1px solid black",
+      
+    },
+    imageContainer:{
+
         height:"80%"
     },
-    imgUploader:{
-        height:"100%",
-        display:"flex",
-        flexDirection:"column",
-        justifyContent:"space-evenly"
-    },
+   
     choice: {
         width: "100%",
         height: "80%",
@@ -184,7 +179,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                     </Grid>
                 </Grid>
                 <Grid container item xs={12}  className={classes.body}>
-                    <Grid item xs={4} className={classes.left}>
+                    <Grid item  container xs={4} className={classes.left}>
                         <Grid
                             item
                             xs={12}
@@ -243,9 +238,15 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <Grid item xs={6} className={classes.right} >
-                        <div>fuck</div>
-                       
+                    <Grid item  container xs={6} className={classes.right}>
+                        <Grid container item xs={12} className={classes.imageContainer}>
+                            <div>fuck</div>
+                        </Grid>
+                        <Grid  item xs={12}  container
+                            justify="center"
+                            alignItems="center" >
+                            <Button  variant="contained">Upload Image</Button>
+                        </Grid>
                         
                     </Grid>
                     <Grid xs={2}/>
