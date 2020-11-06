@@ -133,7 +133,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
         setTimeLimit(event.target.value);
     };
     const valuetext = (value) => {
-        return `${value}°C`;
+        return value;
     };
 
     const [checked1, setChecked1] = React.useState(true);
@@ -200,6 +200,12 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
         );
     }
 
+
+
+    const handleSave = ()=>{
+        console.log("saved");
+        handleClose();
+    }
     return (
         <Dialog
             fullScreen
@@ -220,7 +226,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                     <Typography variant="h6" className={classes.title}>
             Sound
                     </Typography>
-                    <Button autoFocus color="inherit" onClick={handleClose}>
+                    <Button autoFocus color="inherit" onClick={handleSave}>
             save
                     </Button>
                 </Toolbar>
@@ -325,7 +331,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
                                 <TextField
-                                    id="standard-basic"
+                                    id="standard-basic1"
                                     label="Answer1"
                                     onChange={(event) => setAnswer1(event.target.value)}
                                     InputProps={{
@@ -344,7 +350,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice2}`}>
                                 <TextField
-                                    id="standard-basic"
+                                    id="standard-basic2"
                                     label="Answer2"
                                     onChange={(event) => setAnswer2(event.target.value)}
                                     InputProps={{
@@ -365,7 +371,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice3}`}>
                                 <TextField
-                                    id="standard-basic"
+                                    id="standard-basic3"
                                     label="Answer3"
                                     onChange={(event) => setAnswer3(event.target.value)}
                                     InputProps={{
@@ -384,7 +390,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice4}`}>
                                 <TextField
-                                    id="standard-basic"
+                                    id="standard-basic4"
                                     label="Answer4"
                                     onChange={(event) => setAnswer4(event.target.value)}
                                     InputProps={{
