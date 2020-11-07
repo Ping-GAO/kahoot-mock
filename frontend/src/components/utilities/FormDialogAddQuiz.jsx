@@ -16,6 +16,7 @@ const FormDialogAddQuiz = ({ open, handleClose }) => {
 
     const [name, setName] = useState("");
     const dispatch = useDispatch();
+
     const handleAdd = () => {
         fetch(`${API_URL}/admin/quiz/new`, {
             method: "POST",

@@ -24,12 +24,19 @@ const EditGame = () => {
     const { quizId } = useParams();
 
     const [quizze, setQuizze] = useState();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
     };
-    const fetchData = ()=>{
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+
+   
+    useEffect(() => {
+        // TODO handle 403 error case
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
             method: "GET",
             headers: {
@@ -40,21 +47,6 @@ const EditGame = () => {
             .then((data) => {
                 setQuizze(data);
             });
-        
-    };
-
-
-    const handleClose = () => {
-        fetchData();
-        setOpen(false);
-        
-    };
-
-
-   
-    useEffect(() => {
-        // TODO handle 403 error case
-        fetchData();
     }, [quizze]);
 
     console.log(quizze);

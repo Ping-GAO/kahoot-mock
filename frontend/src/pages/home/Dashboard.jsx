@@ -129,7 +129,7 @@ const Dashboard = () => {
                     }
                 });
         }
-    }, [loginStatus.loggedIn]);
+    }, [loginStatus.loggedIn,open]);
 
     // conditional render based on user's login status
     return (
