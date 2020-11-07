@@ -133,6 +133,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
+    // great wall of state varibles
     const [title, setTitle] = useState("");
     const [answer1, setAnswer1] = useState("");
     const [answer2, setAnswer2] = useState("");
@@ -146,6 +147,8 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
     const [checked4, setChecked4] = useState(false);
     const [questionType, setQuestionType] = useState("Question Type");
     const [upload, setUpload] = useState({ imagePreviewUrl: "" });
+
+
     const handleChange = (event) => {
         setTimeLimit(event.target.value);
     };
@@ -249,7 +252,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
         for (let i = 1; i <= 4; i += 1) {
             answers.push(newAnswer(eval(`answer${i}`), eval(`checked${i}`)));
         }
-
+        // const question = 
         handleClose();
     };
     return (
