@@ -13,3 +13,4 @@ The specified Eslint only lint js files, don't work with JSX and other files. [p
 * Alert in material ui is called snackbars, their alert can not be close which sucks so bad
 * fetch follow idiom listed in [fetch guide](https://gist.github.com/odewahn/5a5eeb23279eed6a80d7798fdb47fe91)
 * Design the form of question
+* Emma Paris is also Tim Huang, I don't know why it's Emma Paris when I pushed my code to gitlab...
