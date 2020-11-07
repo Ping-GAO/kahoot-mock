@@ -47,7 +47,7 @@ const EditGame = () => {
             .then((data) => {
                 setQuizze(data);
             });
-    }, [quizze]);
+    }, []);
 
     console.log(quizze);
 
