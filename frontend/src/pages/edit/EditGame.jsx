@@ -65,12 +65,15 @@ const EditGame = () => {
                         </Button>
                     </Grid>
                 </Grid>
-                <Grid container item xs={12} spacing={1}>
-                    
+                <Grid container item xs={12} spacing={2}>
                     {
-                        quizze.questions.map((question)=>{return <QuestionCard 
-                            key={uuid()}
-                            question={question}/>})
+                        quizze.questions.map((question)=>{return (
+                            <Grid  item xs={12}>
+                                <QuestionCard 
+                                    key={uuid()}
+                                    question={question}/>
+                            </Grid>
+                        )})
                     }
                 </Grid>
             </Grid>
