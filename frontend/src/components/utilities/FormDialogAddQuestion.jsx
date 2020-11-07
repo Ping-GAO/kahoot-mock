@@ -20,8 +20,11 @@ import Chip from "@material-ui/core/Chip";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormLabel from "@material-ui/core/FormLabel";
 import { useDispatch } from "react-redux";
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { alertError } from "../../redux/actions";
 import API_URL, { newAnswer, newQuestion } from "../../constants";
+
 import "./css/responsive_design.css";
 
 // diable eslint warning for no-eval in this file
@@ -124,6 +127,10 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         fontSize: "1.5em",
     },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 }));
 
 const Transition = forwardRef(function Transition(props, ref) {
@@ -142,7 +149,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
     const [answer4, setAnswer4] = useState("");
     const [timeLimit, setTimeLimit] = useState("");
     const [points, setPoints] = useState(1000);
-
+    const [backDrop,setBackDrop] = useState(false);
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
@@ -269,6 +276,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
         })
             .then((res) => res.json())
             .then((data) => {
+                setBackDrop(true);
                 // TDOD handle fetch error
                 fetch(`${API_URL}/admin/quiz/${id}`, {
                     method: "PUT",
@@ -284,6 +292,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                 })
                     .then((res) => console.log(res.status))
                     .then(() => {
+                        setBackDrop(false);
                         handleClose();
                     });
             })
@@ -502,6 +511,9 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                     </Grid>
                 </Grid>
             </Grid>
+            <Backdrop className={classes.backdrop} open={backDrop}>
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </Dialog>
     );
 };
