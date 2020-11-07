@@ -1,7 +1,7 @@
-import React, { forwardRef, useState } from "react";
+import React, {forwardRef, useState} from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -33,28 +33,28 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         height: "calc(100vh - 64px)",
         display: "flex",
-        flexDirection:"column",
+        flexDirection: "column",
         justifyContent: "center",
         padding: "80px 100px 0px",
-        backgroundColor:"#f2f2f2"
+        backgroundColor: "#f2f2f2"
     },
     formControl: {
         margin: theme.spacing(1),
         minWidth: 120,
     },
-    head:{
-        flex:1
+    head: {
+        flex: 1
     },
     body: {
-        flex:4
+        flex: 4
     },
-    foot:{
-        flex:2
+    foot: {
+        flex: 2
     },
 
     left: {
         display: "flex",
-        padding:"40px 40px",
+        padding: "40px 40px",
         flexDirection: "column",
         alignItems: "center",
     },
@@ -63,13 +63,13 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        height:"80%"
+        height: "80%"
     },
-    imgUploader:{
-        height:"100%",
-        display:"flex",
-        flexDirection:"column",
-        justifyContent:"space-evenly"
+    imgUploader: {
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-evenly"
     },
     choice: {
         width: "100%",
@@ -103,7 +103,7 @@ const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const FormDialogAddQuestion = ({ open, handleClose }) => {
+const FormDialogAddQuestion = ({open, handleClose}) => {
     const classes = useStyles();
 
     const [timeLimit, setTimeLimit] = React.useState("");
@@ -115,8 +115,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
         return `${value}°C`;
     };
 
-   
-   
+
     const [checked1, setChecked1] = React.useState(true);
     const [checked2, setChecked2] = React.useState(true);
     const [checked3, setChecked3] = React.useState(true);
@@ -138,7 +137,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
     const [answer2, setAnswer2] = useState();
     const [answer3, setAnswer3] = useState();
     const [answer4, setAnswer4] = useState();
-    const [image, setImage]=useState();
+    const [image, setImage] = useState();
     console.log(answer1, answer2, answer3, answer4);
     console.log(image);
     return (
@@ -156,23 +155,23 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         onClick={handleClose}
                         aria-label="close"
                     >
-                        <CloseIcon />
+                        <CloseIcon/>
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-            Sound
+                        Sound
                     </Typography>
                     <Button autoFocus color="inherit" onClick={handleClose}>
-            save
+                        save
                     </Button>
                 </Toolbar>
             </AppBar>
-            <Grid container  className={classes.girdContainer} spacing={2}>
+            <Grid container className={classes.girdContainer} spacing={2}>
                 <Grid container item xs={12} className={classes.head}>
                     <Grid item container xs={12}>
                         <TextField
                             id="outlined-full-width"
                             label="Start typing your question"
-                            style={{ margin: 8 }}
+                            style={{margin: 8}}
                             placeholder="How many hours did you spend on this assignment?"
                             fullWidth
                             margin="normal"
@@ -183,7 +182,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         />
                     </Grid>
                 </Grid>
-                <Grid container item xs={12}  className={classes.body}>
+                <Grid container item xs={12} className={classes.body}>
                     <Grid item xs={4} className={classes.left}>
                         <Grid
                             item
@@ -193,8 +192,8 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                             alignContent="center"
                         >
                             <FormControl className={classes.formControl}>
-                                <FormLabel >Time Limit</FormLabel>
-                              
+                                <FormLabel>Time Limit</FormLabel>
+
                                 <Select
                                     labelId="demo-simple-select-label"
                                     id="demo-simple-select"
@@ -215,8 +214,8 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                             alignContent="center"
                         >
                             <FormControl className={classes.formControl}>
-                                <FormLabel >Points</FormLabel>
-                                <div style={{height:15}}/>
+                                <FormLabel>Points</FormLabel>
+                                <div style={{height: 15}}/>
                                 <Slider
                                     defaultValue={1000}
                                     getAriaValueText={valuetext}
@@ -237,28 +236,30 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                             alignContent="center"
                         >
                             <FormControl className={classes.formControl}>
-                                <FormLabel >Answer options</FormLabel>
-                                <div style={{height:15}}/>
-                                <Chip label="Basic" />
+                                <FormLabel>Answer options</FormLabel>
+                                <div style={{height: 15}}/>
+                                <Chip label="Basic"/>
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <Grid item xs={6} className={classes.right} >
+                    <Grid item xs={6} className={classes.right}>
                         <DropzoneArea
                             dropzoneClass={classes.imgUploader}
                             acceptedFiles={['image/*']}
                             dropzoneText="Drag and drop an image here or click"
                             filesLimit={1}
                             maxFileSize={6000000}
-                            onChange={(img)=>{setImage(img[0])}}
+                            onChange={(img) => {
+                                setImage(img[0])
+                            }}
                         />
-                       
-                        
+
+
                     </Grid>
                     <Grid xs={2}/>
                 </Grid>
-                <Grid container item xs={12}  className={classes.foot}>
-                    <Grid container item xs={12}  spacing={2}>
+                <Grid container item xs={12} className={classes.foot}>
+                    <Grid container item xs={12} spacing={2}>
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
                                 <TextField
@@ -272,9 +273,9 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 <Checkbox
                                     checked={checked1}
                                     onChange={handleChangeCheckBox1}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputStyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputStyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>
@@ -291,9 +292,9 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 <Checkbox
                                     checked={checked2}
                                     onChange={handleChangeCheckBox2}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputStyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputStyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>
@@ -312,9 +313,9 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 <Checkbox
                                     checked={checked3}
                                     onChange={handleChangeCheckBox3}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputStyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputStyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>
@@ -331,9 +332,9 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                                 <Checkbox
                                     checked={checked4}
                                     onChange={handleChangeCheckBox4}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputStyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputStyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>

@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,29 +7,42 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
+import API_URL from "../../constants";
 
-const FormDialogAddQuiz = ({ open, handleClose }) => {
+const FormDialogAddQuiz = ({open, handleClose}) => {
     // add button should call backend api, stub for now
+
+    const [quizze, setQuizze] = useState();
+    const handleAdd = () => {
+        fetch(`${API_URL}/admin/quiz/new`, {
+            method: "POST",
+            body: JSON.stringify({'name': 'aaa'}),
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setQuizze(data);
+            });
+        handleClose();
+    }
+    console.log(quizze)
     return <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Add a new quizze</DialogTitle>
         <DialogContent>
             <DialogContentText>
                 To add to this new quizze, please enter the name
             </DialogContentText>
-            <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                label="Quizze Name"
-                type="text"
-                fullWidth
-            />
+            <TextField autoFocus margin="dense" id="name" label="Quizze Name" type="text" fullWidth/>
         </DialogContent>
         <DialogActions>
             <Button onClick={handleClose} color="primary">
                 Cancel
             </Button>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleAdd} color="primary">
                 Add
             </Button>
         </DialogActions>
