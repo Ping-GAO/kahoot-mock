@@ -9,7 +9,8 @@
     "plugin:react/recommended",
     "airbnb",
     "prettier",
-    "prettier/react"
+    "prettier/react",
+    "airbnb/hooks"
   ],
   "parserOptions": {
     "ecmaFeatures": {

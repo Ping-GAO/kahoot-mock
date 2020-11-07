@@ -21,7 +21,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormLabel from "@material-ui/core/FormLabel";
 import { useDispatch } from "react-redux";
 import { alertError } from "../../redux/actions";
-import { newAnswer } from "../../constants";
+import API_URL, { newAnswer, newQuestion } from "../../constants";
+import "./css/responsive_design.css";
 
 // diable eslint warning for no-eval in this file
 /* eslint-disable no-eval */
@@ -129,7 +130,7 @@ const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const FormDialogAddQuestion = ({ open, handleClose }) => {
+const FormDialogAddQuestion = ({ open, handleClose, id }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -141,13 +142,13 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
     const [answer4, setAnswer4] = useState("");
     const [timeLimit, setTimeLimit] = useState("");
     const [points, setPoints] = useState(1000);
+
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
     const [checked4, setChecked4] = useState(false);
     const [questionType, setQuestionType] = useState("Question Type");
     const [upload, setUpload] = useState({ imagePreviewUrl: "" });
-
 
     const handleChange = (event) => {
         setTimeLimit(event.target.value);
@@ -221,7 +222,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                 <PanoramaOutlinedIcon className={classes.imageIcon} />
                 <div style={{ height: "20px" }} />
                 <Typography variant="body1" gutterBottom>
-          Preview Uploaded Image Here
+                    <span>Preview Uploaded Image Here</span>
                 </Typography>
             </div>
         );
@@ -252,7 +253,54 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
         for (let i = 1; i <= 4; i += 1) {
             answers.push(newAnswer(eval(`answer${i}`), eval(`checked${i}`)));
         }
-        // const question = 
+        const question = newQuestion(
+            title,
+            answers,
+            questionType,
+            timeLimit,
+            points,
+            upload.imagePreviewUrl
+        );
+       
+        
+
+
+        fetch(`${API_URL}/admin/quiz/${id}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(JSON.stringify({...data, questions:[...data.questions,question]}));
+                // console.log(JSON.stringify({questions:[...data.questions,question],
+                    
+                // name:data.name,thumbnail:data.thumbnail}));
+                fetch(`${API_URL}/admin/quiz/${id}`, {
+                    method: "PUT",
+                    headers: {
+                        Accept: "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                    body:JSON.stringify({...data, questions:[...data.questions,question]})
+                })
+                    .then(res=>console.log(res.status))
+                    
+                    .then(
+
+
+                        fetch(`${API_URL}/admin/quiz/${id}`, {
+                            method: "GET",
+                            headers: {
+                                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                            },
+                        })
+                            .then((res) => res.json())
+                            .then((data2) => {console.log(data2)})
+                    );
+            });
+        
         handleClose();
     };
     return (
@@ -300,7 +348,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                     </Grid>
                 </Grid>
                 <Grid container item xs={12} className={classes.body}>
-                    <Grid item container xs={4} className={classes.left}>
+                    <Grid id="disappear" item container xs={4} className={classes.left}>
                         <Grid item xs={12} container justify="center" alignContent="center">
                             <FormControl className={classes.formControl}>
                                 <FormLabel>Time Limit</FormLabel>
@@ -339,12 +387,13 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         <Grid item xs={12} container justify="center" alignContent="center">
                             <FormControl className={classes.formControl}>
                                 <FormLabel>Answer options</FormLabel>
+
                                 <div style={{ height: 15 }} />
                                 <Chip label={questionType} />
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <Grid item container xs={6} className={classes.right}>
+                    <Grid id="uploadbox" item container xs={6} className={classes.right}>
                         <Grid
                             container
                             item
@@ -385,7 +434,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
                                 <TextField
-                                    id="standard-basic1"
+                                    className="text"
                                     label="Answer1"
                                     onChange={(event) => setAnswer1(event.target.value)}
                                     InputProps={{
@@ -405,7 +454,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice2}`}>
                                 <TextField
-                                    id="standard-basic2"
+                                    className="text"
                                     label="Answer2"
                                     onChange={(event) => setAnswer2(event.target.value)}
                                     InputProps={{
@@ -427,7 +476,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice3}`}>
                                 <TextField
-                                    id="standard-basic3"
+                                    className="text"
                                     label="Answer3"
                                     onChange={(event) => setAnswer3(event.target.value)}
                                     InputProps={{
@@ -447,7 +496,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice4}`}>
                                 <TextField
-                                    id="standard-basic4"
+                                    className="text"
                                     label="Answer4"
                                     onChange={(event) => setAnswer4(event.target.value)}
                                     InputProps={{
@@ -474,6 +523,7 @@ const FormDialogAddQuestion = ({ open, handleClose }) => {
 FormDialogAddQuestion.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
 };
 
 export default FormDialogAddQuestion;

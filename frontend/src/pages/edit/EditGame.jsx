@@ -66,7 +66,11 @@ const EditGame = () => {
                     </Grid>
                 </Grid>
             </Grid>
-            <FormDialogAddQuestion open={open} handleClose={handleClose} />
+            <FormDialogAddQuestion 
+                open={open} 
+                handleClose={handleClose} 
+                id={quizId}
+            />
         </div>
     );
 };
