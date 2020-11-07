@@ -68,8 +68,8 @@ const EditGame = () => {
                 <Grid container item xs={12} spacing={2}>
                     {quizze.questions.map((question) => {
                         return (
-                            <Grid item xs={12}>
-                                <QuestionCard key={uuid()} question={question} />
+                            <Grid item xs={12} key={uuid()}>
+                                <QuestionCard  question={question} />
                             </Grid>
                         );
                     })}
