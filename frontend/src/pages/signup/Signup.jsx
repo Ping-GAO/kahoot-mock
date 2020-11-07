@@ -8,7 +8,7 @@ import EmailIcon from "@material-ui/icons/Email";
 import LockIcon from "@material-ui/icons/Lock";
 import PersonIcon from '@material-ui/icons/Person';
 import { useDispatch } from "react-redux";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { signin, alertError } from "../../redux/actions";
 
 const useStyles = makeStyles(() => ({
@@ -32,7 +32,7 @@ const Signup = () => {
     const [name, setName] = useState();
     const classes = useStyles();
     const dispatch = useDispatch();
-    // const history = useHistory();
+    const history = useHistory();
     return (
         <Grid container className={classes.root}>
             <form
@@ -40,12 +40,13 @@ const Signup = () => {
                 onSubmit={(e) => {
                     e.preventDefault();
 
-                    // history.push("/home");
+                    
                     if (password !== passwordToVerify) {
                         dispatch(alertError("Password mismatch"));
                         return false;
                     }
                     dispatch(signin(email, password, name));
+                    history.push("/dashboard");
                     return true;
                 }}
             >

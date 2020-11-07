@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import PropTypes from "prop-types";
-import {  useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { alertClear } from "../../redux/actions";
 
 const CustomizedSnackbars = ({ type, message }) => {
-    const [open, setOpen] = useState(true);
     const dispatch = useDispatch();
+    const [open, setOpen] = useState(true);
+    const [didMount, setDidMount] = useState(false);
+
     const handleClose = (_event, reason) => {
         if (reason === "clickaway") {
             return;
@@ -15,6 +17,16 @@ const CustomizedSnackbars = ({ type, message }) => {
         dispatch(alertClear());
         setOpen(false);
     };
+
+    useEffect(() => {
+        setDidMount(true);
+        return () => setDidMount(false);
+    }, []);
+
+    if (!didMount) {
+        return null;
+    }
+
     return (
         <Snackbar
             open={open}
