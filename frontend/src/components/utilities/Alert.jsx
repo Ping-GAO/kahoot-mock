@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState ,useEffect} from "react";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import PropTypes from "prop-types";
@@ -18,11 +18,15 @@ const CustomizedSnackbars = ({ type, message }) => {
         setOpen(false);
     };
 
+    // without the mounting state checking 
+    // You will get following error:
+    // Can't perform a React state update on an unmounted component.
     useEffect(() => {
         setDidMount(true);
         return () => setDidMount(false);
     }, []);
 
+    // if the component didn't mount, just return
     if (!didMount) {
         return null;
     }
