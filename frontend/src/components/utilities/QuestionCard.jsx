@@ -10,6 +10,7 @@ const useStyles = makeStyles(() => ({
     root: {
         display: "flex",
         width: "100%",
+        justifyContent:"space-between"
     },
     details: {
         display: "flex",
@@ -19,7 +20,7 @@ const useStyles = makeStyles(() => ({
         flex: "1 0 auto",
     },
     cover: {
-        width: 151,
+        width: 200,
     },
 
     playIcon: {
@@ -51,7 +52,7 @@ const QuestionCard = (question) => {
             </div>
             <CardMedia
                 className={classes.cover}
-                image="/static/images/cards/live-from-space.jpg"
+                image={questionContent.image}
                 title="Live from space album cover"
             />
         </Card>

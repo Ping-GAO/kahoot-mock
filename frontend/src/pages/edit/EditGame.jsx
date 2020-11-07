@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import uuid from 'react-uuid'
+import uuid from "react-uuid";
 import API_URL from "../../constants";
 import FormDialogAddQuestion from "../../components/utilities/FormDialogAddQuestion";
 import QuestionCard from "../../components/utilities/QuestionCard";
@@ -25,7 +25,7 @@ const EditGame = () => {
     // extract the quizId from url path
     const { quizId } = useParams();
 
-    const [quizze, setQuizze] = useState({questions:[]});
+    const [quizze, setQuizze] = useState({ questions: [] });
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -66,15 +66,13 @@ const EditGame = () => {
                     </Grid>
                 </Grid>
                 <Grid container item xs={12} spacing={2}>
-                    {
-                        quizze.questions.map((question)=>{return (
-                            <Grid  item xs={12}>
-                                <QuestionCard 
-                                    key={uuid()}
-                                    question={question}/>
+                    {quizze.questions.map((question) => {
+                        return (
+                            <Grid item xs={12}>
+                                <QuestionCard key={uuid()} question={question} />
                             </Grid>
-                        )})
-                    }
+                        );
+                    })}
                 </Grid>
             </Grid>
             <FormDialogAddQuestion
