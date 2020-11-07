@@ -177,7 +177,6 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                 cnt += 1;
             }
         }
-        console.log(cnt);
         if (cnt === 0) {
             setQuestionType("Question Type");
         } else if (cnt > 1) {
@@ -261,9 +260,6 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
             points,
             upload.imagePreviewUrl
         );
-       
-        
-
 
         fetch(`${API_URL}/admin/quiz/${id}`, {
             method: "GET",
@@ -273,35 +269,25 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(JSON.stringify({...data, questions:[...data.questions,question]}));
-                // console.log(JSON.stringify({questions:[...data.questions,question],
-                    
-                // name:data.name,thumbnail:data.thumbnail}));
+                // TDOD handle fetch error
                 fetch(`${API_URL}/admin/quiz/${id}`, {
                     method: "PUT",
                     headers: {
                         Accept: "application/json",
+                        "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                     },
-                    body:JSON.stringify({...data, questions:[...data.questions,question]})
+                    body: JSON.stringify({
+                        ...data,
+                        questions: [...data.questions, question],
+                    }),
                 })
-                    .then(res=>console.log(res.status))
-                    
-                    .then(
-
-
-                        fetch(`${API_URL}/admin/quiz/${id}`, {
-                            method: "GET",
-                            headers: {
-                                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                            },
-                        })
-                            .then((res) => res.json())
-                            .then((data2) => {console.log(data2)})
-                    );
-            });
-        
-        handleClose();
+                    .then((res) => console.log(res.status))
+                    .then(() => {
+                        handleClose();
+                    });
+            })
+           
     };
     return (
         <Dialog

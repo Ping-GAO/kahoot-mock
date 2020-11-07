@@ -33,10 +33,8 @@ const EditGame = () => {
         setOpen(false);
     };
 
-
-   
     useEffect(() => {
-        // TODO handle 403 error case
+    // TODO handle 403 error case
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
             method: "GET",
             headers: {
@@ -47,7 +45,7 @@ const EditGame = () => {
             .then((data) => {
                 setQuizze(data);
             });
-    }, []);
+    }, [quizId, open]);
 
     console.log(quizze);
 
@@ -66,9 +64,9 @@ const EditGame = () => {
                     </Grid>
                 </Grid>
             </Grid>
-            <FormDialogAddQuestion 
-                open={open} 
-                handleClose={handleClose} 
+            <FormDialogAddQuestion
+                open={open}
+                handleClose={handleClose}
                 id={quizId}
             />
         </div>

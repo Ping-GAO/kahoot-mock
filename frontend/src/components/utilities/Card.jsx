@@ -67,7 +67,7 @@ const RecipeReviewCard = (props) => {
             // console.log(data)
         }
         loadQuiz();
-    }, []);
+    }, [id]);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -133,7 +133,7 @@ const RecipeReviewCard = (props) => {
 
 
 RecipeReviewCard.propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     name: PropTypes.string,
     createdAt: PropTypes.string.isRequired,
     thumbnail: PropTypes.string,
