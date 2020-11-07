@@ -63,6 +63,7 @@ const EditGame = () => {
                         </Button>
                     </Grid>
                 </Grid>
+                <Grid container item xs={12} spacing={1}>fuck</Grid>
             </Grid>
             <FormDialogAddQuestion
                 open={open}

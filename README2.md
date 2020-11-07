@@ -17,3 +17,4 @@ The specified Eslint only lint js files, don't work with JSX and other files. [p
 - Design the form of question
 - Emma Paris is also Tim Huang, I don't know why it's Emma Paris when I pushed my code to gitlab...
 - Found problem when develop in windows, the frontend and backend can't be kill properly with ky stroke ctrl + C, which lead to error of some coponents setState when they already unmounted.
+- Fixed multiple alert, react setState when unmounted error

@@ -18,7 +18,7 @@ const CustomizedSnackbars = ({ type, message }) => {
         setOpen(false);
     };
 
-    // without the mounting state checking 
+    // Without the mounting state checking 
     // You will get following error:
     // Can't perform a React state update on an unmounted component.
     useEffect(() => {
