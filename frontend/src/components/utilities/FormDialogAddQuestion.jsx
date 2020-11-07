@@ -19,8 +19,9 @@ import Slider from "@material-ui/core/Slider";
 import Chip from "@material-ui/core/Chip";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormLabel from "@material-ui/core/FormLabel";
-import { useDispatch } from "react-redux";
-import { alertError } from "../../redux/actions";
+import {useDispatch} from "react-redux";
+import {alertError} from "../../redux/actions";
+import './responsive_design.css'
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -122,6 +123,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+
 const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -130,7 +132,7 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const [title,setTitle] = useState("");
+    const [title, setTitle] = useState("");
     const [answer1, setAnswer1] = useState("");
     const [answer2, setAnswer2] = useState("");
     const [answer3, setAnswer3] = useState("");
@@ -141,7 +143,7 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
     const [checked2, setChecked2] = useState(true);
     const [checked3, setChecked3] = useState(true);
     const [checked4, setChecked4] = useState(true);
-    const [upload, setUpload] = useState({ imagePreviewUrl: "" });
+    const [upload, setUpload] = useState({imagePreviewUrl: ""});
     const handleChange = (event) => {
         setTimeLimit(event.target.value);
     };
@@ -161,10 +163,9 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
         setChecked4(event.target.checked);
     };
 
-   
 
     console.log(answer1, answer2, answer3, answer4);
-   
+
     const handleImageChange = (e) => {
         e.preventDefault();
 
@@ -198,10 +199,10 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
     } else {
         imagePlaceHolder = (
             <div className={classes.placeHolder}>
-                <PanoramaOutlinedIcon className={classes.imageIcon} />
-                <div style={{ height: "20px" }} />
+                <PanoramaOutlinedIcon className={classes.imageIcon}/>
+                <div style={{height: "20px"}}/>
                 <Typography variant="body1" gutterBottom>
-          Preview Uploaded Image Here
+                    <span>Preview Uploaded Image Here</span>
                 </Typography>
             </div>
         );
@@ -213,15 +214,15 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
             dispatch(alertError("Please Fill In All Answers"));
             return;
         }
-        if(!title){
+        if (!title) {
             dispatch(alertError("Please Fill in Title"));
             return;
         }
-        if(!timeLimit){
+        if (!timeLimit) {
             dispatch(alertError("Please Set Time Limit"));
             return;
         }
-        if(!upload.imagePreviewUrl){
+        if (!upload.imagePreviewUrl) {
             dispatch(alertError("Please Upload An Image"));
             return;
         }
@@ -250,7 +251,7 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
                         Sound
                     </Typography>
                     <Button autoFocus color="inherit" onClick={handleSave}>
-            save
+                        save
                     </Button>
                 </Toolbar>
             </AppBar>
@@ -274,7 +275,7 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
                     </Grid>
                 </Grid>
                 <Grid container item xs={12} className={classes.body}>
-                    <Grid item container xs={4} className={classes.left}>
+                    <Grid id="disappear" item container xs={4} className={classes.left}>
                         <Grid item xs={12} container justify="center" alignContent="center">
                             <FormControl className={classes.formControl}>
                                 <FormLabel>Time Limit</FormLabel>
@@ -294,7 +295,7 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
                         <Grid item xs={12} container justify="center" alignContent="center">
                             <FormControl className={classes.formControl}>
                                 <FormLabel>Points</FormLabel>
-                                <div style={{ height: 15 }} />
+                                <div style={{height: 15}}/>
                                 <Slider
                                     getAriaValueText={valuetext}
                                     aria-labelledby="discrete-slider"
@@ -313,12 +314,12 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
                         <Grid item xs={12} container justify="center" alignContent="center">
                             <FormControl className={classes.formControl}>
                                 <FormLabel>Answer options</FormLabel>
-                                <div style={{ height: 15 }} />
-                                <Chip label="Basic" />
+                                <div style={{height: 15}}/>
+                                <Chip label="Basic"/>
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <Grid item container xs={6} className={classes.right}>
+                    <Grid id='uploadbox' item container xs={6} className={classes.right}>
                         <Grid
                             container
                             item
@@ -334,7 +335,7 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
                                 <input
                                     accept="image/*"
                                     className={classes.input}
-                                    style={{ display: "none" }}
+                                    style={{display: "none"}}
                                     id="raised-button-file"
                                     multiple
                                     type="file"
@@ -347,19 +348,19 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
                                     className={classes.button}
                                     size="small"
                                 >
-                  Upload
+                                    Upload
                                 </Button>
                             </label>
                         </Grid>
                     </Grid>
-                    <Grid item xs={2} />
+                    <Grid item xs={2}/>
                 </Grid>
                 <Grid container item xs={12} className={classes.foot}>
                     <Grid container item xs={12} spacing={2}>
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
                                 <TextField
-                                    id="standard-basic1"
+                                    id="text"
                                     label="Answer1"
                                     onChange={(event) => setAnswer1(event.target.value)}
                                     InputProps={{
@@ -370,16 +371,16 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
                                 <Checkbox
                                     checked={checked1}
                                     onChange={handleChangeCheckBox1}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice2}`}>
                                 <TextField
-                                    id="standard-basic2"
+                                    id="text"
                                     label="Answer2"
                                     onChange={(event) => setAnswer2(event.target.value)}
                                     InputProps={{
@@ -390,9 +391,9 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
                                 <Checkbox
                                     checked={checked2}
                                     onChange={handleChangeCheckBox2}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>
@@ -401,7 +402,7 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice3}`}>
                                 <TextField
-                                    id="standard-basic3"
+                                    id="text"
                                     label="Answer3"
                                     onChange={(event) => setAnswer3(event.target.value)}
                                     InputProps={{
@@ -412,16 +413,16 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
                                 <Checkbox
                                     checked={checked3}
                                     onChange={handleChangeCheckBox3}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>
                         <Grid container item xs={6}>
                             <div className={`${classes.choice} ${classes.choice4}`}>
                                 <TextField
-                                    id="standard-basic4"
+                                    id="text"
                                     label="Answer4"
                                     onChange={(event) => setAnswer4(event.target.value)}
                                     InputProps={{
@@ -432,9 +433,9 @@ const FormDialogAddQuestion = ({open, handleClose}) => {
                                 <Checkbox
                                     checked={checked4}
                                     onChange={handleChangeCheckBox4}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>
