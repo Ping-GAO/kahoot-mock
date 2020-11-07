@@ -22,9 +22,9 @@ import FormLabel from "@material-ui/core/FormLabel";
 import { useDispatch } from "react-redux";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import uuid from 'react-uuid'
 import { alertError } from "../../redux/actions";
 import API_URL, { newAnswer, newQuestion } from "../../constants";
-
 import "./css/responsive_design.css";
 
 // diable eslint warning for no-eval in this file
@@ -260,6 +260,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
             answers.push(newAnswer(eval(`answer${i}`), eval(`checked${i}`)));
         }
         const question = newQuestion(
+            uuid(),
             title,
             answers,
             questionType,

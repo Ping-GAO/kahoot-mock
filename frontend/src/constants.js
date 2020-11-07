@@ -16,6 +16,7 @@ export const newAnswer = (answerBody, isRightOne) => ({
 // the definition of how to create a question
 // answers is a list of object created by newAnswer method
 export const newQuestion = (
+    questionId,
     questionBody,
     answers,
     type,
@@ -23,6 +24,7 @@ export const newQuestion = (
     worthOfPoints,
     image
 ) => ({
+    questionId,
     questionBody,
     answers,
     type,

@@ -43,7 +43,7 @@ const Dashboard = () => {
     // a gird with 3 cards each row contains the detail of a quiz's information
     const [grid, setGrid] = useState([]);
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);

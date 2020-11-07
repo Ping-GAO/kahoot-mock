@@ -5,61 +5,110 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
+import CardHeader from "@material-ui/core/CardHeader";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(() => ({
     root: {
         display: "flex",
-        width: "100%",
-        justifyContent:"space-between"
+        flexGrow: 1,
+        flexDirection: "column",
     },
     details: {
         display: "flex",
-        flexDirection: "column",
+        justifyContent: "space-between",
     },
     content: {
-        flex: "1 0 auto",
+    // flex: "1 0 auto",
     },
     cover: {
         width: 200,
     },
-
-    playIcon: {
-        height: 38,
-        width: 38,
+    cardHeader: {
+        flexGrow: 1,
+        padding: 0,
     },
 }));
 
-const QuestionCard = (question) => {
+function QuestionCard({ question, quizId }) {
     const classes = useStyles();
-    
-    const questionContent = question.question;
-   
-    console.log(questionContent);
-    return (
-        <Card className={classes.root}>
-            <div className={classes.details}>
-                <CardContent className={classes.content}>
-                    <Typography component="h5" variant="h5">
-                        {questionContent.questionBody}
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-            Worth {questionContent.worthOfPoints} points
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                Timit Limit {questionContent.timeLimit} secs
-                    </Typography>
-                </CardContent>
-            </div>
-            <CardMedia
-                className={classes.cover}
-                image={questionContent.image}
-                title="Live from space album cover"
-            />
-        </Card>
-    );
-};
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const history = useHistory();
 
-QuestionCard.protoTypes = {
-    question: PropTypes.shape.isRequired,
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleEdit = () => {
+        handleClose();
+        history.push(`/dashboard/${quizId}/${question.questionId}`);
+    };
+
+    const renderMenu = (
+        <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+        >
+            <MenuItem onClick={handleEdit}>Edit</MenuItem>
+            <MenuItem>Delete</MenuItem>
+        </Menu>
+    );
+    return (
+        <>
+            <Card className={classes.root}>
+                <CardHeader
+                    className={classes.cardHeader}
+                    action={
+                        <IconButton aria-label="settings" onClick={handleClick}>
+                            <MoreVertIcon />
+                        </IconButton>
+                    }
+                />
+                <div className={classes.details}>
+                    <CardContent className={classes.content}>
+                        <Typography component="h5" variant="h5">
+                            {question.questionBody}
+                        </Typography>
+                        <Typography variant="subtitle1" color="textSecondary">
+              Worth {question.worthOfPoints} points
+                        </Typography>
+                        <Typography variant="subtitle1" color="textSecondary">
+              Timit Limit {question.timeLimit} secs
+                        </Typography>
+                    </CardContent>
+
+                    <CardMedia
+                        className={classes.cover}
+                        image={question.image}
+                        title="Live from space album cover"
+                    />
+                </div>
+            </Card>
+            {renderMenu}
+        </>
+    );
+}
+
+QuestionCard.propTypes = {
+    question: PropTypes.shape({
+        questionId: PropTypes.string.isRequired,
+        questionBody: PropTypes.string.isRequired,
+        answers: PropTypes.arrayOf.isRequired,
+        type: PropTypes.string.isRequired,
+        timeLimit: PropTypes.number.isRequired,
+        worthOfPoints: PropTypes.number.isRequired,
+        image: PropTypes.string.isRequired,
+    }).isRequired,
+    quizId: PropTypes.string.isRequired,
 };
 export default QuestionCard;

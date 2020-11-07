@@ -69,7 +69,7 @@ const EditGame = () => {
                     {quizze.questions.map((question) => {
                         return (
                             <Grid item xs={12} key={uuid()}>
-                                <QuestionCard  question={question} />
+                                <QuestionCard  question={question} quizId={quizId}/>
                             </Grid>
                         );
                     })}
