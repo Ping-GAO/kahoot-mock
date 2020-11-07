@@ -29,11 +29,7 @@ const EditGame = () => {
     const handleClickOpen = () => {
         setOpen(true);
     };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-    useEffect(() => {
+    const fetchData = ()=>{
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
             method: "GET",
             headers: {
@@ -44,7 +40,22 @@ const EditGame = () => {
             .then((data) => {
                 setQuizze(data);
             });
-    }, []);
+        
+    };
+
+
+    const handleClose = () => {
+        fetchData();
+        setOpen(false);
+        
+    };
+
+
+   
+    useEffect(() => {
+        // TODO handle 403 error case
+        fetchData();
+    }, [quizze]);
 
     console.log(quizze);
 
