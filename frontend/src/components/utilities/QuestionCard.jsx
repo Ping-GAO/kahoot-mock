@@ -11,6 +11,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { useHistory } from "react-router-dom";
+import API_URL from "../../constants";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -34,10 +35,10 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-function QuestionCard({ question, quizId }) {
+function QuestionCard({ question, quizId, setToogle }) {
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
     const history = useHistory();
+    const [anchorEl, setAnchorEl] = React.useState(null);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -50,9 +51,39 @@ function QuestionCard({ question, quizId }) {
         handleClose();
         history.push(`/dashboard/${quizId}/${question.questionId}`);
     };
-	
-    const handleDelete = ()=>{
-        console.log("delete mock");
+
+    const handleDelete = () => {
+    // delete questio in the quiz with quizId
+        fetch(`${API_URL}/admin/quiz/${quizId}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                const updatedQuestion = data.questions.filter(
+                    (q) => q.questionId !== question.questionId
+                );
+
+                // TDOD handle fetch error
+                fetch(`${API_URL}/admin/quiz/${quizId}`, {
+                    method: "PUT",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                    body: JSON.stringify({
+                        ...data,
+                        questions: updatedQuestion,
+                    }),
+                }).then((res) => {
+                    console.log(res.status);
+                    // trigger parent component to rerender for updating the change
+                    setToogle((prevValue) => !prevValue);
+                });
+            });
     };
     const renderMenu = (
         <Menu
@@ -113,5 +144,6 @@ QuestionCard.propTypes = {
         image: PropTypes.string.isRequired,
     }).isRequired,
     quizId: PropTypes.string.isRequired,
+    setToogle: PropTypes.func.isRequired,
 };
 export default QuestionCard;

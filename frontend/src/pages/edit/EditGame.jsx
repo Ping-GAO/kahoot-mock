@@ -27,6 +27,7 @@ const EditGame = () => {
 
     const [quizze, setQuizze] = useState({ questions: [] });
     const [open, setOpen] = useState(false);
+    const [toogle, setToogle] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -47,9 +48,9 @@ const EditGame = () => {
             .then((data) => {
                 setQuizze(data);
             });
-    }, [quizId, open]);
+    }, [quizId, open, toogle]);
 
-    console.log(quizze);
+    // console.log(quizze);
 
     return (
         <div className={classes.root}>
@@ -69,7 +70,11 @@ const EditGame = () => {
                     {quizze.questions.map((question) => {
                         return (
                             <Grid item xs={12} key={uuid()}>
-                                <QuestionCard  question={question} quizId={quizId}/>
+                                <QuestionCard
+                                    question={question}
+                                    quizId={quizId}
+                                    setToogle={setToogle}
+                                />
                             </Grid>
                         );
                     })}
