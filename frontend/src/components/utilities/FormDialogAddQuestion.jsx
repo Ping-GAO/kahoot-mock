@@ -25,7 +25,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import uuid from 'react-uuid'
 import { alertError } from "../../redux/actions";
 import API_URL, { newAnswer, newQuestion } from "../../constants";
-import "./css/responsive_design.css";
 
 // diable eslint warning for no-eval in this file
 /* eslint-disable no-eval */
@@ -147,16 +146,16 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
     const [answer2, setAnswer2] = useState("");
     const [answer3, setAnswer3] = useState("");
     const [answer4, setAnswer4] = useState("");
-    const [timeLimit, setTimeLimit] = useState("");
     const [points, setPoints] = useState(1000);
+    const [timeLimit, setTimeLimit] = useState("");
     const [backDrop,setBackDrop] = useState(false);
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
     const [checked4, setChecked4] = useState(false);
-    const [questionType, setQuestionType] = useState("Question Type");
     const [upload, setUpload] = useState({ imagePreviewUrl: "" });
-
+    const [questionType, setQuestionType] = useState("Question Type");
+	
     const handleChange = (event) => {
         setTimeLimit(event.target.value);
     };
@@ -344,7 +343,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                     </Grid>
                 </Grid>
                 <Grid container item xs={12} className={classes.body}>
-                    <Grid id="disappear" item container xs={4} className={classes.left}>
+                    <Grid id="disappear" item container xs={12} sm={4}  md={4} className={classes.left}>
                         <Grid item xs={12} container justify="center" alignContent="center">
                             <FormControl className={classes.formControl}>
                                 <FormLabel>Time Limit</FormLabel>
@@ -389,7 +388,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <Grid id="uploadbox" item container xs={6} className={classes.right}>
+                    <Grid id="uploadbox" item container  xs={12} sm={8}  md={6} className={classes.right}>
                         <Grid
                             container
                             item
@@ -423,11 +422,11 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                             </label>
                         </Grid>
                     </Grid>
-                    <Grid item xs={2} />
+                    <Grid item   md={2}/>
                 </Grid>
                 <Grid container item xs={12} className={classes.foot}>
                     <Grid container item xs={12} spacing={2}>
-                        <Grid container item xs={6}>
+                        <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
                                 <TextField
                                     className="text"
@@ -447,7 +446,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                                 />
                             </div>
                         </Grid>
-                        <Grid container item xs={6}>
+                        <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice2}`}>
                                 <TextField
                                     className="text"
@@ -469,7 +468,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                         </Grid>
                     </Grid>
                     <Grid container item xs={12} spacing={2}>
-                        <Grid container item xs={6}>
+                        <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice3}`}>
                                 <TextField
                                     className="text"
@@ -489,7 +488,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                                 />
                             </div>
                         </Grid>
-                        <Grid container item xs={6}>
+                        <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice4}`}>
                                 <TextField
                                     className="text"
