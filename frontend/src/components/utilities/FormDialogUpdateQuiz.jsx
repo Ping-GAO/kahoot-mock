@@ -1,4 +1,4 @@
-import React, { useState ,useMemo} from "react";
+import React, { useState ,useEffect} from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -24,7 +24,7 @@ const Container = styled.div`
   padding: 20px;
   border-width: 2px;
   border-radius: 2px;
-  border-color: #2196f3;
+  border-color: #eeeeee;
   border-style: dashed;
   background-color: #fafafa;
   color: #bdbdbd;
@@ -37,8 +37,8 @@ const FormDialogUpdateQuiz = ({ open, handleClose }) => {
     // add button should call backend api, stub for now
 
     const [name, setName] = useState("");
-
-    
+    const [image,setImage] = useState(null);
+    const [imageData,setImageData] = useState();
     const handleAdd = () => {
         console.log("ok");
         
@@ -55,28 +55,26 @@ const FormDialogUpdateQuiz = ({ open, handleClose }) => {
         noDrag: true,
     });
 
-    // const acceptedFileItems = 
+
     
-    const memoizedValue = useMemo( ()=>{
+
+    
+    useEffect(()=>{
         if(acceptedFiles[0]){
             const imageLocal = acceptedFiles[0];
-            // setImage(imageLocal);
-            return(<li key={imageLocal.path}>
-                {imageLocal.path} - {imageLocal.size} bytes
-		  </li>);
+            setImage(imageLocal);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImageData(reader.result);
+            };
+	
+            reader.readAsDataURL(imageLocal);
         }
-        return "No image has been uploaded yet";
-    }
-
-    ,[acceptedFiles]);
-
     
+    },[acceptedFiles]);
     
-
-        
-        
-        
-        
+    console.log(imageData);
+    
     return (
         <Dialog
             open={open}
@@ -119,7 +117,13 @@ const FormDialogUpdateQuiz = ({ open, handleClose }) => {
                     </Container>
                     <aside>
                         <h4>Accepted files</h4>
-                        <ul>{memoizedValue}</ul>
+                        <ul>{
+                            image === null ?
+                                "No image has been uploaded yet":
+                                <li key={image.path}>
+                                    {image.path} - {image.size} bytes
+							  </li>
+                        }</ul>
                
                     </aside>
                 </section>
