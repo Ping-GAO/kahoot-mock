@@ -50,7 +50,10 @@ function QuestionCard({ question, quizId }) {
         handleClose();
         history.push(`/dashboard/${quizId}/${question.questionId}`);
     };
-
+	
+    const handleDelete = ()=>{
+        console.log("delete mock");
+    };
     const renderMenu = (
         <Menu
             id="simple-menu"
@@ -60,7 +63,7 @@ function QuestionCard({ question, quizId }) {
             onClose={handleClose}
         >
             <MenuItem onClick={handleEdit}>Edit</MenuItem>
-            <MenuItem>Delete</MenuItem>
+            <MenuItem onClick={handleDelete}>Delete</MenuItem>
         </Menu>
     );
     return (
