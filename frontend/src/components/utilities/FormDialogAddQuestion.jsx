@@ -1,3 +1,5 @@
+import uuid from 'react-uuid'
+import PropTypes from "prop-types";
 import React, { forwardRef, useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -7,11 +9,9 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
-import PropTypes from "prop-types";
 import Slide from "@material-ui/core/Slide";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import PanoramaOutlinedIcon from "@material-ui/icons/PanoramaOutlined";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
@@ -22,8 +22,7 @@ import FormLabel from "@material-ui/core/FormLabel";
 import { useDispatch } from "react-redux";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import uuid from 'react-uuid'
-import withWidth from '@material-ui/core/withWidth';
+import PanoramaOutlinedIcon from "@material-ui/icons/PanoramaOutlined";
 import { alertError } from "../../redux/actions";
 import API_URL, { newAnswer, newQuestion } from "../../constants";
 
@@ -111,16 +110,16 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
     },
     choice1: {
-        backgroundColor: "#e21b3c",
+        backgroundColor: props=>props.answer1 ?"#e21b3c":"#ffffff"
     },
     choice2: {
-        backgroundColor: "#1368ce",
+        backgroundColor: props=>props.answer2 ?"#1368ce":"#ffffff"
     },
     choice3: {
-        backgroundColor: "#d89e00",
+        backgroundColor: props=>props.answer3 ?"#d89e00":"#ffffff"
     },
     choice4: {
-        backgroundColor: "#26890c",
+        backgroundColor: props=>props.answer4 ?"#26890c":"#ffffff"
     },
     inputText: {
         color: "white",
@@ -145,10 +144,9 @@ const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const FormDialogAddQuestion = ({ open, handleClose, id ,width}) => {
-    const classes = useStyles();
+const FormDialogAddQuestion = ({ open, handleClose, id}) => {
+   
     const dispatch = useDispatch();
-    console.log(width);
     // great wall of state varibles
     const [title, setTitle] = useState("");
     const [answer1, setAnswer1] = useState("");
@@ -164,6 +162,9 @@ const FormDialogAddQuestion = ({ open, handleClose, id ,width}) => {
     const [checked4, setChecked4] = useState(false);
     const [upload, setUpload] = useState({ imagePreviewUrl: "" });
     const [questionType, setQuestionType] = useState("Question Type");
+	
+    // dynamic apply css corespond to user input
+    const classes = useStyles({answer1,answer2,answer3,answer4});
 	
     const handleChange = (event) => {
         setTimeLimit(event.target.value);
@@ -531,9 +532,8 @@ FormDialogAddQuestion.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
-    width: PropTypes.oneOf(['lg', 'md', 'sm', 'xl', 'xs']).isRequired,
 };
 
 
 
-export default withWidth()(FormDialogAddQuestion);
+export default FormDialogAddQuestion;
