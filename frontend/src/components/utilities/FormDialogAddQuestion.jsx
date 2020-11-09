@@ -105,7 +105,7 @@ const useStyles = makeStyles((theme) => ({
     },
     choice: {
         width: "100%",
-        height: "80%",
+        margin:8,
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
@@ -434,7 +434,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id ,width}) => {
                     <Grid item   md={2}/>
                 </Grid>
                 <Grid container item xs={12} className={classes.foot}>
-                    <Grid container item xs={12} spacing={2}>
+                    <Grid container item xs={12} spacing={1}>               
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
                                 <TextField
@@ -476,7 +476,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id ,width}) => {
                             </div>
                         </Grid>
                     </Grid>
-                    <Grid container item xs={12} spacing={2}>
+                    <Grid container item xs={12} spacing={1}>
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice3}`}>
                                 <TextField
