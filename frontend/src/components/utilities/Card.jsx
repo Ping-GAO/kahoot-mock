@@ -13,7 +13,8 @@ import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useHistory } from "react-router-dom";
-import API_URL, { stubImage } from "../../constants";
+import API_URL from "../../constants";
+import FormDialogUpdateQuiz from "./FormDialogUpdateQuiz";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,19 +39,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const RecipeReviewCard = (props) => {
-    const { id, name, createdAt } = props;
-    let { thumbnail } = props;
+const RecipeReviewCard = ({id, name, createdAt,thumbnail}) => {
+  
     const classes = useStyles();
+    const history = useHistory();
     const [quiz, setQuiz] = useState({ questions: [] });
     // the original data formal is not standard format ususlly seen convert it to standard
     const dataFormated = new Date(createdAt);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const history = useHistory();
-    // provide a stub thumbnail
-    if (thumbnail === null) {
-        thumbnail = `data:image/png;base64,${stubImage}`;
-    }
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [edit,setEdit] =useState(false);
+    
+   
 
     useEffect(() => {
         const loadQuiz = async () => {
@@ -75,11 +74,28 @@ const RecipeReviewCard = (props) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const handleEditClose = ()=>{
+        setEdit(false);
+    }
+    const handleEditOpen=()=>{
+        setEdit(true);
+    }
+    
+    const handeEditQuizze=()=>{
+        handleClose();
+        handleEditOpen();
+    };
 
-    const handleEdit = () => {
+    const handleEditQuestion = () => {
         handleClose();
         history.push(`/dashboard/${id}`);
     };
+    
+    const handleDelete=()=>{
+        handleClose();
+    };
+   
+	
 
     const renderMenu = (<Menu
         id="simple-menu"
@@ -88,8 +104,9 @@ const RecipeReviewCard = (props) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
     >
-        <MenuItem onClick={handleEdit}>Edit</MenuItem>
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={handeEditQuizze}>Edit quizze</MenuItem>
+        <MenuItem onClick={handleEditQuestion}>Edit question</MenuItem>
+        <MenuItem onClick={handleDelete}>Delete</MenuItem>
 
     </Menu>);
 
@@ -127,6 +144,9 @@ const RecipeReviewCard = (props) => {
 
             </Card>
             {renderMenu}
+            <FormDialogUpdateQuiz open={edit}
+                handleClose={handleEditClose}
+            />
         </div>
     );
 }
@@ -134,13 +154,9 @@ const RecipeReviewCard = (props) => {
 
 RecipeReviewCard.propTypes = {
     id: PropTypes.number.isRequired,
-    name: PropTypes.string,
+    name: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
-    thumbnail: PropTypes.string,
+    thumbnail: PropTypes.string.isRequired,
 }
-// some default arguments
-RecipeReviewCard.defaultProps = {
-    name: "Don't have a name yet",
-    thumbnail: "null"
-}
+
 export default RecipeReviewCard;
