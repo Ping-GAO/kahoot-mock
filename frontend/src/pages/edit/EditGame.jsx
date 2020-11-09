@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import uuid from "react-uuid";
 import API_URL from "../../constants";
 import FormDialogAddQuestion from "../../components/utilities/FormDialogAddQuestion";
-import QuestionCard from "../../components/utilities/QuestionCard";
+import QuestionEditCard from "../../components/utilities/QuestionEditCard";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -70,7 +70,7 @@ const EditGame = () => {
                     {quizze.questions.map((question) => {
                         return (
                             <Grid item xs={12} key={uuid()}>
-                                <QuestionCard
+                                <QuestionEditCard
                                     question={question}
                                     quizId={quizId}
                                     setToogle={setToogle}

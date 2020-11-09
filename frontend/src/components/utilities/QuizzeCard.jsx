@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const RecipeReviewCard = ({id, name, createdAt,thumbnail}) => {
+const QuizzeCard = ({id, name, createdAt,thumbnail}) => {
   
     const classes = useStyles();
     const history = useHistory();
@@ -104,8 +104,8 @@ const RecipeReviewCard = ({id, name, createdAt,thumbnail}) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
     >
-        <MenuItem onClick={handeEditQuizze}>Edit quizze</MenuItem>
-        <MenuItem onClick={handleEditQuestion}>Edit question</MenuItem>
+        <MenuItem onClick={handeEditQuizze}>Edit Quizze</MenuItem>
+        <MenuItem onClick={handleEditQuestion}>Edit Question</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
 
     </Menu>);
@@ -144,7 +144,8 @@ const RecipeReviewCard = ({id, name, createdAt,thumbnail}) => {
 
             </Card>
             {renderMenu}
-            <FormDialogUpdateQuiz open={edit}
+            <FormDialogUpdateQuiz 
+                open={edit}
                 handleClose={handleEditClose}
             />
         </div>
@@ -152,11 +153,14 @@ const RecipeReviewCard = ({id, name, createdAt,thumbnail}) => {
 }
 
 
-RecipeReviewCard.propTypes = {
+QuizzeCard.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
-    thumbnail: PropTypes.string.isRequired,
+    thumbnail: PropTypes.string,
 }
 
-export default RecipeReviewCard;
+QuizzeCard.defaultProps = {
+    thumbnail: 'john'
+};
+export default QuizzeCard;

@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-function QuestionCard({ question, quizId, setToogle }) {
+const QuestionEditCard=({ question, quizId, setToogle }) =>{
     const classes = useStyles();
     const history = useHistory();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -133,7 +133,7 @@ function QuestionCard({ question, quizId, setToogle }) {
     );
 }
 
-QuestionCard.propTypes = {
+QuestionEditCard.propTypes = {
     question: PropTypes.shape({
         questionId: PropTypes.string.isRequired,
         questionBody: PropTypes.string.isRequired,
@@ -146,4 +146,4 @@ QuestionCard.propTypes = {
     quizId: PropTypes.string.isRequired,
     setToogle: PropTypes.func.isRequired,
 };
-export default QuestionCard;
+export default QuestionEditCard;

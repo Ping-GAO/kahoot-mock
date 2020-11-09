@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Typography from "@material-ui/core/Typography";
 import API_URL from "../../constants";
-import Card from "../../components/utilities/Card";
+import QuizzeCard from "../../components/utilities/QuizzeCard";
 import FormDialogAddQuiz from "../../components/utilities/FormDialogAddQuiz";
 
 const useStyles = makeStyles(() => ({
@@ -94,7 +94,7 @@ const Dashboard = () => {
                     data.quizzes.forEach((quizze) => {
                         row.push(
                             <Grid item xs={4} key={i}>
-                                <Card
+                                <QuizzeCard
                                     id={quizze.id}
                                     name={quizze.name}
                                     createdAt={quizze.createdAt}

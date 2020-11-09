@@ -7,45 +7,18 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
-import API_URL from "../../constants";
-import { alertError, alertSuccess } from "../../redux/actions";
+// import { useDispatch } from "react-redux";
+// import API_URL from "../../constants";
+// import { alertError, alertSuccess } from "../../redux/actions";
 
 const FormDialogUpdateQuiz = ({ open, handleClose }) => {
     // add button should call backend api, stub for now
 
     const [name, setName] = useState("");
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     const handleAdd = () => {
-        fetch(`${API_URL}/admin/quiz/new`, {
-            method: "POST",
-            body: JSON.stringify({ name }),
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-        })
-            .then((res) => {
-                if (res.ok) {
-                    return Promise.resolve(res.json());
-                }
-                return Promise.resolve(res.json()).then((data) => {
-                    return Promise.reject(data.error);
-                });
-            })
-            .then(
-                () => {
-                    dispatch(alertSuccess("Create Quizz Success"));
-                    handleClose();
-                },
-                (error) => {
-                    dispatch(alertError(error));
-                }
-            ) .catch((error) => {
-                dispatch(alertError(error.message));
-            });;
+        console.log("ok");
         
     };
 
