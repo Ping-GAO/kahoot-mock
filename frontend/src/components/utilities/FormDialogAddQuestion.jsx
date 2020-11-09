@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import uuid from 'react-uuid'
+import withWidth from '@material-ui/core/withWidth';
 import { alertError } from "../../redux/actions";
 import API_URL, { newAnswer, newQuestion } from "../../constants";
 
@@ -38,12 +39,20 @@ const useStyles = makeStyles((theme) => ({
     },
     girdContainer: {
         width: "100%",
-        height: "calc(100vh - 64px)",
+        minHeight: "calc(100vh - 64px)",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        padding: "80px 100px 0px",
         backgroundColor: "#f2f2f2",
+        [theme.breakpoints.down('sm')]:{
+            padding: "10px 20px 0px",
+        },
+        [theme.breakpoints.up('md')]: {
+            padding: "80px 100px 0px",
+        },
+        [theme.breakpoints.up('lg')]: {
+            padding: "80px 150px 0px",
+        },
     },
     formControl: {
         margin: theme.spacing(1),
@@ -136,10 +145,10 @@ const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const FormDialogAddQuestion = ({ open, handleClose, id }) => {
+const FormDialogAddQuestion = ({ open, handleClose, id ,width}) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-
+    console.log(width);
     // great wall of state varibles
     const [title, setTitle] = useState("");
     const [answer1, setAnswer1] = useState("");
@@ -323,7 +332,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                     </Button>
                 </Toolbar>
             </AppBar>
-            <Grid container className={classes.girdContainer} spacing={2}>
+            <Grid container   className={classes.girdContainer} spacing={2}>
                 <Grid container item xs={12} className={classes.head}>
                     <Grid item container xs={12}>
                         <TextField
@@ -522,6 +531,9 @@ FormDialogAddQuestion.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     id: PropTypes.string.isRequired,
+    width: PropTypes.oneOf(['lg', 'md', 'sm', 'xl', 'xs']).isRequired,
 };
 
-export default FormDialogAddQuestion;
+
+
+export default withWidth()(FormDialogAddQuestion);
