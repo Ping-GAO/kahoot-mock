@@ -54,6 +54,8 @@ const FormDialogAddQuiz = ({ open, handleClose }) => {
             open={open}
             onClose={handleClose}
             aria-labelledby="form-dialog-title"
+            fullWidth
+            maxWidth="sm"
         >
             <DialogTitle id="form-dialog-title">Add a new quizze</DialogTitle>
             <DialogContent>
