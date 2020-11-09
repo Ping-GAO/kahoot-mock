@@ -110,7 +110,6 @@ const QuizzeCard = ({id, name, createdAt,thumbnail}) => {
 
     </Menu>);
 
-
     return (
         <div>
             <Card className={classes.root}>
@@ -130,11 +129,13 @@ const QuizzeCard = ({id, name, createdAt,thumbnail}) => {
                     title={name}
                     subheader={dataFormated.toDateString()}
                 />
+                
                 <CardMedia
                     className={classes.media}
-                    image={thumbnail}
+                    image={thumbnail ?? `${process.env.PUBLIC_URL  }/trump.jpg`}
                     title="Paella dish"
                 />
+                
                 <CardContent>
                     <Typography variant="body2" color="textSecondary" component="p">
                         This question&apos;s id is {id}, it has {quiz.questions.length} questions.
@@ -161,6 +162,6 @@ QuizzeCard.propTypes = {
 }
 
 QuizzeCard.defaultProps = {
-    thumbnail: 'john'
+    thumbnail: null
 };
 export default QuizzeCard;
