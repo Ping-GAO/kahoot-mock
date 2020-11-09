@@ -44,10 +44,11 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         backgroundColor: "#f2f2f2",
         [theme.breakpoints.down('sm')]:{
-            padding: "10px 20px 0px",
+            padding: "70px 20px 0px",
+            flexWrap:"nowrap"
         },
         [theme.breakpoints.up('md')]: {
-            padding: "80px 100px 0px",
+            padding: "20px 40px 0px",
         },
         [theme.breakpoints.up('lg')]: {
             padding: "80px 150px 0px",
@@ -83,10 +84,21 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: 2,
         border: "1px solid #eaeaea",
         margin: 10,
-        maxWidth: 600,
-        maxHeight: 370,
         padding: 4,
         boxSizing: "border-box",
+        
+        [theme.breakpoints.down('sm')]:{
+            maxWidth: 220,
+            maxHeight: 370,
+        },
+        [theme.breakpoints.up('md')]: {
+            maxWidth: 240,
+            maxHeight: 370,
+        },
+        [theme.breakpoints.up('lg')]: {
+            maxWidth: 300,
+            maxHeight: 370,
+        },
     },
     imageFrameInner: {
         display: "flex",
