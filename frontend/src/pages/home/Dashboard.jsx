@@ -44,7 +44,9 @@ const Dashboard = () => {
     const [grid, setGrid] = useState([]);
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-
+    // the edit state varible is a shared varible shared by all the Qestions card
+    // if any of them changed, will trigger the useEffect and update the edit change
+    const [edit, setEdit] =useState(false);
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -99,6 +101,7 @@ const Dashboard = () => {
                                     name={quizze.name}
                                     createdAt={quizze.createdAt}
                                     thumbnail={quizze.thumbnail}
+                                    setEdit={setEdit}
                                 />
                             </Grid>
                         );
@@ -129,7 +132,7 @@ const Dashboard = () => {
                     }
                 });
         }
-    }, [loginStatus.loggedIn,open]);
+    }, [loginStatus.loggedIn,open,edit]);
 
     // conditional render based on user's login status
     return (

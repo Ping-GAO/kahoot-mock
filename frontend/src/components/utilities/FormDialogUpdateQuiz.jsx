@@ -10,7 +10,7 @@ import PropTypes from "prop-types";
 import { useDropzone } from "react-dropzone";
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
-
+import API_URL from "../../constants";
 // import { useDispatch } from "react-redux";
 // import API_URL from "../../constants";
 // import { alertError, alertSuccess } from "../../redux/actions";
@@ -33,14 +33,47 @@ const Container = styled.div`
 `;
 
 
-const FormDialogUpdateQuiz = ({ open, handleClose }) => {
+const FormDialogUpdateQuiz = ({ open, handleClose,id }) => {
     // add button should call backend api, stub for now
 
     const [name, setName] = useState("");
     const [image,setImage] = useState(null);
     const [imageData,setImageData] = useState();
-    const handleAdd = () => {
-        console.log("ok");
+   
+    const handleEdit = () => {
+       
+        fetch(`${API_URL}/admin/quiz/${id}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+            
+                fetch(`${API_URL}/admin/quiz/${id}`, {
+                    method: "PUT",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                    body: JSON.stringify({
+                        ...data,
+                        name,
+                        thumbnail:imageData
+                    })
+                })
+                    .then((res) => console.log(res.status))
+                    .then(() => { 
+                        handleClose();
+                    });
+            
+            
+            
+            
+            
+            });
         
     };
 
@@ -73,7 +106,9 @@ const FormDialogUpdateQuiz = ({ open, handleClose }) => {
     
     },[acceptedFiles]);
     
-    console.log(imageData);
+    
+    // console.log(imageData);
+    
     
     return (
         <Dialog
@@ -91,7 +126,6 @@ const FormDialogUpdateQuiz = ({ open, handleClose }) => {
                 <TextField
                     autoFocus
                     margin="dense"
-                    id="name"
                     label="Quizze Name"
                     type="text"
                     fullWidth
@@ -132,7 +166,7 @@ const FormDialogUpdateQuiz = ({ open, handleClose }) => {
                 <Button onClick={handleClose} color="primary">
           Cancel
                 </Button>
-                <Button onClick={handleAdd} color="primary">
+                <Button onClick={handleEdit} color="primary">
           Add
                 </Button>
             </DialogActions>
@@ -143,6 +177,7 @@ const FormDialogUpdateQuiz = ({ open, handleClose }) => {
 FormDialogUpdateQuiz.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
+    id:PropTypes.number.isRequired
 };
 
 export default FormDialogUpdateQuiz;

@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const QuizzeCard = ({id, name, createdAt,thumbnail}) => {
+const QuizzeCard = ({id, name, createdAt,thumbnail,setEdit}) => {
   
     const classes = useStyles();
     const history = useHistory();
@@ -47,8 +47,8 @@ const QuizzeCard = ({id, name, createdAt,thumbnail}) => {
     // the original data formal is not standard format ususlly seen convert it to standard
     const dataFormated = new Date(createdAt);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [edit,setEdit] =useState(false);
     
+    const [editLocal,setEditLocal] = useState(false);
    
 
     useEffect(() => {
@@ -63,7 +63,6 @@ const QuizzeCard = ({id, name, createdAt,thumbnail}) => {
             );
             const data = await res.json();
             setQuiz(data);
-            // console.log(data)
         }
         loadQuiz();
     }, [id]);
@@ -75,10 +74,12 @@ const QuizzeCard = ({id, name, createdAt,thumbnail}) => {
         setAnchorEl(null);
     };
     const handleEditClose = ()=>{
-        setEdit(false);
+        // toogle the edit global state vairlbe because the user may edit multiple times
+        setEdit(prevState=>!prevState);
+        setEditLocal(false);
     }
     const handleEditOpen=()=>{
-        setEdit(true);
+        setEditLocal(true);
     }
     
     const handeEditQuizze=()=>{
@@ -146,8 +147,9 @@ const QuizzeCard = ({id, name, createdAt,thumbnail}) => {
             </Card>
             {renderMenu}
             <FormDialogUpdateQuiz 
-                open={edit}
+                open={editLocal}
                 handleClose={handleEditClose}
+                id={id}
             />
         </div>
     );
@@ -159,6 +161,7 @@ QuizzeCard.propTypes = {
     name: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
     thumbnail: PropTypes.string,
+    setEdit: PropTypes.func.isRequired
 }
 
 QuizzeCard.defaultProps = {
