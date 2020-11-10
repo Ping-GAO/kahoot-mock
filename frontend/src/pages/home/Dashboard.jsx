@@ -46,17 +46,17 @@ const Dashboard = () => {
     const [open, setOpen] = useState(false);
     // the edit state varible is a shared varible shared by all the Qestions card
     // if any of them changed, will trigger the useEffect and update the edit change
-    const [edit, setEdit] =useState(false);
+    const [edit, setEdit] = useState(false);
     const handleClickOpen = () => {
         setOpen(true);
     };
-    
+
     const handleClose = () => {
         setOpen(false);
     };
     // run the function body when the user login status change or componentDidMount
     useEffect(() => {
-    // if the user is logged in fetch all game and show them
+        // if the user is logged in fetch all game and show them
         if (loginStatus.loggedIn) {
             fetch(`${API_URL}/admin/quiz`, {
                 method: "GET",
@@ -88,7 +88,7 @@ const Dashboard = () => {
                                     endIcon={<AddCircleIcon />}
                                     onClick={handleClickOpen}
                                 >
-                  Add a new quizze
+                                    Add a new quizze
                                 </Button>
                             </Grid>
                         </Grid>
@@ -132,7 +132,7 @@ const Dashboard = () => {
                     }
                 });
         }
-    }, [loginStatus.loggedIn,open,edit]);
+    }, [loginStatus.loggedIn, open, edit]);
 
     // conditional render based on user's login status
     return (
@@ -141,13 +141,12 @@ const Dashboard = () => {
                 <Grid container spacing={4} className={classes.girdContainer}>
                     {grid}
                 </Grid>
-            ) : (
-                <div className={classes.textStyle}>
+            ) :
+                (<div className={classes.textStyle}>
                     <Typography variant="h2" gutterBottom>
-            Welcome to the BigBrain game, please log in to play!
+                        Welcome to the BigBrain game, please log in to play!
                     </Typography>
-                </div>
-            )}
+                </div>)}
             <FormDialogAddQuiz open={open} handleClose={handleClose} />
         </div>
     );

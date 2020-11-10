@@ -7,10 +7,10 @@ const EditGameQuestion = () => {
     return (
         <div>
             <Typography variant="h5" gutterBottom>
-        quizId: {quizId}
+                quizId: {quizId}
             </Typography>
             <Typography variant="h5" gutterBottom>
-        questionId: {questionId}
+                questionId: {questionId}
             </Typography>
         </div>
     );

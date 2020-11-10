@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
         justifyContent: "space-between",
     },
     content: {
-    // flex: "1 0 auto",
+        // flex: "1 0 auto",
     },
     cover: {
         width: 200,
@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const QuestionEditCard=({ question, quizId, setToogle }) =>{
+const QuestionEditCard = ({ question, quizId, setToogle }) => {
     const classes = useStyles();
     const history = useHistory();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -53,7 +53,7 @@ const QuestionEditCard=({ question, quizId, setToogle }) =>{
     };
 
     const handleDelete = () => {
-    // delete questio in the quiz with quizId
+        // delete questio in the quiz with quizId
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
             method: "GET",
             headers: {
@@ -114,10 +114,10 @@ const QuestionEditCard=({ question, quizId, setToogle }) =>{
                             {question.questionBody}
                         </Typography>
                         <Typography variant="subtitle1" color="textSecondary">
-              Worth {question.worthOfPoints} points
+                            Worth {question.worthOfPoints} points
                         </Typography>
                         <Typography variant="subtitle1" color="textSecondary">
-              Timit Limit {question.timeLimit} secs
+                            Timit Limit {question.timeLimit} secs
                         </Typography>
                     </CardContent>
 

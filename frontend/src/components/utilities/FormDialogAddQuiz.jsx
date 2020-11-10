@@ -43,10 +43,10 @@ const FormDialogAddQuiz = ({ open, handleClose }) => {
                 (error) => {
                     dispatch(alertError(error));
                 }
-            ) .catch((error) => {
+            ).catch((error) => {
                 dispatch(alertError(error.message));
             });;
-        
+
     };
 
     return (
@@ -60,7 +60,7 @@ const FormDialogAddQuiz = ({ open, handleClose }) => {
             <DialogTitle id="form-dialog-title">Add a new quizze</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-          To add to this new quizze, please enter the name
+                    To add to this new quizze, please enter the name
                 </DialogContentText>
                 <TextField
                     autoFocus
@@ -77,10 +77,10 @@ const FormDialogAddQuiz = ({ open, handleClose }) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
-          Cancel
+                    Cancel
                 </Button>
                 <Button onClick={handleAdd} color="primary">
-          Add
+                    Add
                 </Button>
             </DialogActions>
         </Dialog>

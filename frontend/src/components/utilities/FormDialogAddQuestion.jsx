@@ -43,9 +43,9 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         justifyContent: "center",
         backgroundColor: "#f2f2f2",
-        [theme.breakpoints.down('sm')]:{
+        [theme.breakpoints.down('sm')]: {
             padding: "70px 20px 0px",
-            flexWrap:"nowrap"
+            flexWrap: "nowrap"
         },
         [theme.breakpoints.up('md')]: {
             padding: "20px 40px 0px",
@@ -86,8 +86,8 @@ const useStyles = makeStyles((theme) => ({
         margin: 10,
         padding: 4,
         boxSizing: "border-box",
-        
-        [theme.breakpoints.down('sm')]:{
+
+        [theme.breakpoints.down('sm')]: {
             maxWidth: 220,
             maxHeight: 370,
         },
@@ -116,22 +116,22 @@ const useStyles = makeStyles((theme) => ({
     },
     choice: {
         width: "100%",
-        margin:8,
+        margin: 8,
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
     },
     choice1: {
-        backgroundColor: props=>props.answer1 ?"#e21b3c":"#ffffff"
+        backgroundColor: props => props.answer1 ? "#e21b3c" : "#ffffff"
     },
     choice2: {
-        backgroundColor: props=>props.answer2 ?"#1368ce":"#ffffff"
+        backgroundColor: props => props.answer2 ? "#1368ce" : "#ffffff"
     },
     choice3: {
-        backgroundColor: props=>props.answer3 ?"#d89e00":"#ffffff"
+        backgroundColor: props => props.answer3 ? "#d89e00" : "#ffffff"
     },
     choice4: {
-        backgroundColor: props=>props.answer4 ?"#26890c":"#ffffff"
+        backgroundColor: props => props.answer4 ? "#26890c" : "#ffffff"
     },
     inputText: {
         color: "white",
@@ -156,8 +156,8 @@ const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const FormDialogAddQuestion = ({ open, handleClose, id}) => {
-   
+const FormDialogAddQuestion = ({ open, handleClose, id }) => {
+
     const dispatch = useDispatch();
     // great wall of state varibles
     const [title, setTitle] = useState("");
@@ -167,17 +167,17 @@ const FormDialogAddQuestion = ({ open, handleClose, id}) => {
     const [answer4, setAnswer4] = useState("");
     const [points, setPoints] = useState(1000);
     const [timeLimit, setTimeLimit] = useState("");
-    const [backDrop,setBackDrop] = useState(false);
+    const [backDrop, setBackDrop] = useState(false);
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
     const [checked4, setChecked4] = useState(false);
     const [upload, setUpload] = useState({ imagePreviewUrl: "" });
     const [questionType, setQuestionType] = useState("Question Type");
-	
+
     // dynamic apply css corespond to user input
-    const classes = useStyles({answer1,answer2,answer3,answer4});
-	
+    const classes = useStyles({ answer1, answer2, answer3, answer4 });
+
     const handleChange = (event) => {
         setTimeLimit(event.target.value);
     };
@@ -256,7 +256,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id}) => {
     }
 
     const handleSave = () => {
-    // check if user fill in all the field required to make a new question
+        // check if user fill in all the field required to make a new question
         if (!(answer1 && answer2 && answer3 && answer4)) {
             dispatch(alertError("Please Fill In All Answers"));
             return;
@@ -318,7 +318,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id}) => {
                         handleClose();
                     });
             })
-           
+
     };
     return (
         <Dialog
@@ -338,14 +338,14 @@ const FormDialogAddQuestion = ({ open, handleClose, id}) => {
                         <CloseIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-            Sound
+                        Sound
                     </Typography>
                     <Button autoFocus color="inherit" onClick={handleSave}>
-            save
+                        save
                     </Button>
                 </Toolbar>
             </AppBar>
-            <Grid container   className={classes.girdContainer} spacing={2}>
+            <Grid container className={classes.girdContainer} spacing={2}>
                 <Grid container item xs={12} className={classes.head}>
                     <Grid item container xs={12}>
                         <TextField
@@ -365,7 +365,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id}) => {
                     </Grid>
                 </Grid>
                 <Grid container item xs={12} className={classes.body}>
-                    <Grid id="disappear" item container xs={12} sm={4}  md={4} className={classes.left}>
+                    <Grid id="disappear" item container xs={12} sm={4} md={4} className={classes.left}>
                         <Grid item xs={12} container justify="center" alignContent="center">
                             <FormControl className={classes.formControl}>
                                 <FormLabel>Time Limit</FormLabel>
@@ -410,7 +410,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id}) => {
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <Grid id="uploadbox" item container  xs={12} sm={8}  md={6} className={classes.right}>
+                    <Grid id="uploadbox" item container xs={12} sm={8} md={6} className={classes.right}>
                         <Grid
                             container
                             item
@@ -439,15 +439,15 @@ const FormDialogAddQuestion = ({ open, handleClose, id}) => {
                                     className={classes.button}
                                     size="small"
                                 >
-                  Upload
+                                    Upload
                                 </Button>
                             </label>
                         </Grid>
                     </Grid>
-                    <Grid item   md={2}/>
+                    <Grid item md={2} />
                 </Grid>
                 <Grid container item xs={12} className={classes.foot}>
-                    <Grid container item xs={12} spacing={1}>               
+                    <Grid container item xs={12} spacing={1}>
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
                                 <TextField

@@ -37,7 +37,7 @@ const EditGame = () => {
     };
 
     useEffect(() => {
-    // TODO handle 403 error case
+        // TODO handle 403 error case
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
             method: "GET",
             headers: {
@@ -62,7 +62,7 @@ const EditGame = () => {
                             color="primary"
                             onClick={handleClickOpen}
                         >
-              Add A NEW QUESTION
+                            Add A NEW QUESTION
                         </Button>
                     </Grid>
                 </Grid>

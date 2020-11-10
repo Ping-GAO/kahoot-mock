@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -33,15 +33,15 @@ const Container = styled.div`
 `;
 
 
-const FormDialogUpdateQuiz = ({ open, handleClose,id }) => {
+const FormDialogUpdateQuiz = ({ open, handleClose, id }) => {
     // add button should call backend api, stub for now
 
     const [name, setName] = useState("");
-    const [image,setImage] = useState(null);
-    const [imageData,setImageData] = useState();
-   
+    const [image, setImage] = useState(null);
+    const [imageData, setImageData] = useState();
+
     const handleEdit = () => {
-       
+
         fetch(`${API_URL}/admin/quiz/${id}`, {
             method: "GET",
             headers: {
@@ -50,7 +50,7 @@ const FormDialogUpdateQuiz = ({ open, handleClose,id }) => {
         })
             .then((res) => res.json())
             .then((data) => {
-            
+
                 fetch(`${API_URL}/admin/quiz/${id}`, {
                     method: "PUT",
                     headers: {
@@ -61,24 +61,19 @@ const FormDialogUpdateQuiz = ({ open, handleClose,id }) => {
                     body: JSON.stringify({
                         ...data,
                         name,
-                        thumbnail:imageData
+                        thumbnail: imageData
                     })
                 })
                     .then((res) => console.log(res.status))
-                    .then(() => { 
+                    .then(() => {
                         handleClose();
                     });
-            
-            
-            
-            
-            
             });
-        
+
     };
 
-    
-    
+
+
     const {
         acceptedFiles,
         getRootProps,
@@ -89,27 +84,27 @@ const FormDialogUpdateQuiz = ({ open, handleClose,id }) => {
     });
 
 
-    
 
-    
-    useEffect(()=>{
-        if(acceptedFiles[0]){
+
+
+    useEffect(() => {
+        if (acceptedFiles[0]) {
             const imageLocal = acceptedFiles[0];
             setImage(imageLocal);
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImageData(reader.result);
             };
-	
+
             reader.readAsDataURL(imageLocal);
         }
-    
-    },[acceptedFiles]);
-    
-    
+
+    }, [acceptedFiles]);
+
+
     // console.log(imageData);
-    
-    
+
+
     return (
         <Dialog
             open={open}
@@ -121,7 +116,7 @@ const FormDialogUpdateQuiz = ({ open, handleClose,id }) => {
             <DialogTitle id="form-dialog-title">Edit Quizze</DialogTitle>
             <DialogContent>
                 <DialogContentText>
-         Change the title of the created quizze
+                    Change the title of the created quizze
                 </DialogContentText>
                 <TextField
                     autoFocus
@@ -134,16 +129,16 @@ const FormDialogUpdateQuiz = ({ open, handleClose,id }) => {
                         setName(e.target.value);
                     }}
                 />
-                <div style={{height:"30px"}} />
+                <div style={{ height: "30px" }} />
                 <DialogContentText>
-         Change the thumbnail of created quizze
+                    Change the thumbnail of created quizze
                 </DialogContentText>
-                <div style={{height:"20px"}} />
+                <div style={{ height: "20px" }} />
                 <section className="container">
                     <Container {...getRootProps({ className: 'dropzone' })}>
                         <input {...getInputProps()} />
                         <Typography variant="body2" gutterBottom>
-                Click to select an image
+                            Click to select an image
                         </Typography>
                         <Typography variant="body2" gutterBottom>
                             <em>(Only *.jpeg and *.png images will be accepted)</em>
@@ -153,21 +148,21 @@ const FormDialogUpdateQuiz = ({ open, handleClose,id }) => {
                         <h4>Accepted files</h4>
                         <ul>{
                             image === null ?
-                                "No image has been uploaded yet":
+                                "No image has been uploaded yet" :
                                 <li key={image.path}>
                                     {image.path} - {image.size} bytes
 							  </li>
                         }</ul>
-               
+
                     </aside>
                 </section>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
-          Cancel
+                    Cancel
                 </Button>
                 <Button onClick={handleEdit} color="primary">
-          Add
+                    Add
                 </Button>
             </DialogActions>
         </Dialog>
@@ -177,7 +172,7 @@ const FormDialogUpdateQuiz = ({ open, handleClose,id }) => {
 FormDialogUpdateQuiz.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
-    id:PropTypes.number.isRequired
+    id: PropTypes.number.isRequired
 };
 
 export default FormDialogUpdateQuiz;

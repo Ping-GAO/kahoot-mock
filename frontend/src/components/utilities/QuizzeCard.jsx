@@ -39,17 +39,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const QuizzeCard = ({id, name, createdAt,thumbnail,setEdit}) => {
-  
+const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
+
     const classes = useStyles();
     const history = useHistory();
     const [quiz, setQuiz] = useState({ questions: [] });
     // the original data formal is not standard format ususlly seen convert it to standard
     const dataFormated = new Date(createdAt);
     const [anchorEl, setAnchorEl] = useState(null);
-    
-    const [editLocal,setEditLocal] = useState(false);
-   
+
+    const [editLocal, setEditLocal] = useState(false);
+
 
     useEffect(() => {
         const loadQuiz = async () => {
@@ -73,16 +73,16 @@ const QuizzeCard = ({id, name, createdAt,thumbnail,setEdit}) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const handleEditClose = ()=>{
+    const handleEditClose = () => {
         // toogle the edit global state vairlbe because the user may edit multiple times
-        setEdit(prevState=>!prevState);
+        setEdit(prevState => !prevState);
         setEditLocal(false);
     }
-    const handleEditOpen=()=>{
+    const handleEditOpen = () => {
         setEditLocal(true);
     }
-    
-    const handeEditQuizze=()=>{
+
+    const handeEditQuizze = () => {
         handleClose();
         handleEditOpen();
     };
@@ -91,12 +91,12 @@ const QuizzeCard = ({id, name, createdAt,thumbnail,setEdit}) => {
         handleClose();
         history.push(`/dashboard/${id}`);
     };
-    
-    const handleDelete=()=>{
+
+    const handleDelete = () => {
         handleClose();
     };
-   
-	
+
+
 
     const renderMenu = (<Menu
         id="simple-menu"
@@ -130,13 +130,13 @@ const QuizzeCard = ({id, name, createdAt,thumbnail,setEdit}) => {
                     title={name}
                     subheader={dataFormated.toDateString()}
                 />
-                
+
                 <CardMedia
                     className={classes.media}
-                    image={thumbnail ?? `${process.env.PUBLIC_URL  }/trump.jpg`}
+                    image={thumbnail ?? `${process.env.PUBLIC_URL}/trump.jpg`}
                     title="Paella dish"
                 />
-                
+
                 <CardContent>
                     <Typography variant="body2" color="textSecondary" component="p">
                         This question&apos;s id is {id}, it has {quiz.questions.length} questions.
@@ -146,7 +146,7 @@ const QuizzeCard = ({id, name, createdAt,thumbnail,setEdit}) => {
 
             </Card>
             {renderMenu}
-            <FormDialogUpdateQuiz 
+            <FormDialogUpdateQuiz
                 open={editLocal}
                 handleClose={handleEditClose}
                 id={id}
