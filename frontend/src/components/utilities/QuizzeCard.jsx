@@ -58,7 +58,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [gameDialog, setGameDialog] = useState(false);
     const [editLocal, setEditLocal] = useState(false);
-
+    const [endGame, setEndGame] = useState(false);
     useEffect(() => {
         const loadQuiz = async () => {
             const res = await fetch(`${API_URL}/admin/quiz/${id}`,
@@ -74,7 +74,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
 
         }
         loadQuiz();
-    }, [id, gameDialog]);
+    }, [id, gameDialog, endGame]);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -111,6 +111,21 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         handleClose();
 
     };
+    const handleEndGame = () => {
+        fetch(`${API_URL}/admin/quiz/${id}/end`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            }
+        })
+            .then(res => {
+                console.log(res.status);
+                setEndGame(prevState => !prevState);
+            });
+
+
+    };
+
 
     const renderMenu = (<Menu
         id="simple-menu"
@@ -128,11 +143,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
 
 
 
-    const handleEndGame = () => {
-        console.log("awe");
 
-
-    };
 
 
 
@@ -171,6 +182,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
                             className={classes.but}
                             color="primary"
                             disabled={quiz.active && true}
+                            onClick={handleStartGame}
                         >
                             Start Game
                         </Button>

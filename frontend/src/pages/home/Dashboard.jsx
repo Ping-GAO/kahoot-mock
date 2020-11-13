@@ -95,7 +95,7 @@ const Dashboard = () => {
                     );
                     data.quizzes.forEach((quizze) => {
                         row.push(
-                            <Grid item xs={4} sm={12} key={i}>
+                            <Grid item xs={12} lg={4} key={i}>
                                 <QuizzeCard
                                     id={quizze.id}
                                     name={quizze.name}

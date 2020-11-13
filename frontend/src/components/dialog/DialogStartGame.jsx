@@ -7,7 +7,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import PropTypes from 'prop-types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch } from "react-redux";
 import API_URL from "../../constants";
@@ -19,6 +18,7 @@ const useStyles = makeStyles(() => ({
         justifyContent: "space-between",
         alignItems: "center"
     },
+
 }));
 const DialogStartGame = ({ open, handleClose, quizid }) => {
     const dispatch = useDispatch();
@@ -26,12 +26,14 @@ const DialogStartGame = ({ open, handleClose, quizid }) => {
     const [sessionId, setSessionId] = useState("");
 
 
-    const handleOnCopy = () => { dispatch(alertSuccess("awe")) };
+    const handleOnCopy = () => { dispatch(alertSuccess("Copy Success")) };
 
 
 
     useEffect(() => {
-        if (open) {
+        // only run fetch when open is set from false to true
+        if (open === true) {
+
             fetch(`${API_URL}/admin/quiz/${quizid}/start`, {
                 method: "POST",
                 headers: {
@@ -76,13 +78,14 @@ const DialogStartGame = ({ open, handleClose, quizid }) => {
                         dispatch(alertError(error.message));
                     }
                 );
-
         }
 
 
 
 
     }, [quizid, dispatch, open]);
+
+
     return (
 
 
@@ -99,17 +102,13 @@ const DialogStartGame = ({ open, handleClose, quizid }) => {
                     Copy the link to join the game
                 </DialogContentText>
                 <div className={classes.link}>
-                    <TextField
-
-                        label="Session Id"
-                        defaultValue={sessionId}
-                        InputProps={{
-                            readOnly: true,
-                        }}
-
-                    />
-                    <CopyToClipboard text={sessionId}
-                        onCopy={handleOnCopy}>
+                    <div>
+                        {sessionId}
+                    </div>
+                    <CopyToClipboard
+                        text={sessionId}
+                        onCopy={handleOnCopy}
+                    >
                         <button type="button" style={{ height: "30px" }}>
                             Copy to clipboard with button
                         </button>
