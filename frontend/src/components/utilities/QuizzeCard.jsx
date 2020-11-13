@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "flex-end",
     },
     but: {
-        margin: "10px 15px 0px"
+        margin: "10px 5px 0px"
     }
 }));
 
@@ -52,13 +52,12 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
 
     const classes = useStyles();
     const history = useHistory();
-    const [quiz, setQuiz] = useState({ questions: [], active: null });
+    const [quiz, setQuiz] = useState({ questions: [], active: false });
     // the original data formal is not standard format ususlly seen convert it to standard
     const dataFormated = new Date(createdAt);
     const [anchorEl, setAnchorEl] = useState(null);
     const [gameDialog, setGameDialog] = useState(false);
     const [editLocal, setEditLocal] = useState(false);
-
 
     useEffect(() => {
         const loadQuiz = async () => {
@@ -72,6 +71,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
             );
             const data = await res.json();
             setQuiz(data);
+
         }
         loadQuiz();
     }, [id, gameDialog]);
@@ -125,7 +125,17 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
 
     </Menu>);
-    console.log("acitve", quiz.active);
+
+
+
+    const handleEndGame = () => {
+        console.log("awe");
+
+
+    };
+
+
+
     return (
         <div>
             <Card className={classes.root}>
@@ -156,21 +166,24 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
                     <Typography variant="body2" color="textSecondary" component="p">
                         This question&apos;s id is {id}, it has {quiz.questions.length} questions.
                     </Typography>
-                    <div className={classes.butContainer}>
-                        {
-
-                            quiz.active === null ?
-                                (<Button variant="contained"
-                                    className={classes.but}>
-                                    Start Game
-                                </Button>)
-                                : (<Button variant="contained"
-                                    className={classes.but}>
-                                    End Current Game
-                                </Button>)
-
-                        }
+                    <div className={classes.butContainer} >
+                        <Button variant="contained"
+                            className={classes.but}
+                            color="primary"
+                            disabled={quiz.active && true}
+                        >
+                            Start Game
+                        </Button>
+                        <Button variant="contained"
+                            className={classes.but}
+                            color="secondary"
+                            onClick={handleEndGame}
+                            disabled={!quiz.active && true}
+                        >
+                            End Current Game
+                        </Button>
                     </div>
+
                 </CardContent>
 
 
