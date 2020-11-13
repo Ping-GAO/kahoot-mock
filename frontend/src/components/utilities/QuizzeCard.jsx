@@ -14,7 +14,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useHistory } from "react-router-dom";
 import API_URL from "../../constants";
-import FormDialogUpdateQuiz from "./FormDialogUpdateQuiz";
+import FormDialogUpdateQuiz from "../dialog/FormDialogUpdateQuiz";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -96,7 +96,11 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         handleClose();
     };
 
+    const handleStartGame = () => {
 
+
+
+    };
 
     const renderMenu = (<Menu
         id="simple-menu"
@@ -105,6 +109,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
     >
+        <MenuItem onClick={handleStartGame}>Start Game</MenuItem>
         <MenuItem onClick={handeEditQuizze}>Edit Quizze</MenuItem>
         <MenuItem onClick={handleEditQuestion}>Edit Question</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>

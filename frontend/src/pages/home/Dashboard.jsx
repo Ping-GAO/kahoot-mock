@@ -7,7 +7,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Typography from "@material-ui/core/Typography";
 import API_URL from "../../constants";
 import QuizzeCard from "../../components/utilities/QuizzeCard";
-import FormDialogAddQuiz from "../../components/utilities/FormDialogAddQuiz";
+import FormDialogAddQuiz from "../../components/dialog/FormDialogAddQuiz";
 
 const useStyles = makeStyles(() => ({
     root: {

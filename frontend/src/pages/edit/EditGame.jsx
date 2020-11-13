@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import uuid from "react-uuid";
 import API_URL from "../../constants";
-import FormDialogAddQuestion from "../../components/utilities/FormDialogAddQuestion";
+import FormDialogAddQuestion from "../../components/dialog/FormDialogAddQuestion";
 import QuestionEditCard from "../../components/utilities/QuestionEditCard";
 
 const useStyles = makeStyles(() => ({
