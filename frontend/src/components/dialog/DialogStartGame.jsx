@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -23,6 +23,13 @@ const useStyles = makeStyles(() => ({
 const DialogStartGame = ({ open, handleClose, quizid }) => {
     const dispatch = useDispatch();
     const classes = useStyles();
+    const [sessionId, setSessionId] = useState("");
+
+
+    const handleOnCopy = () => { dispatch(alertSuccess("awe")) };
+
+
+
     useEffect(() => {
         if (open) {
             fetch(`${API_URL}/admin/quiz/${quizid}/start`, {
@@ -54,7 +61,11 @@ const DialogStartGame = ({ open, handleClose, quizid }) => {
                             },
                         })
                             .then(res => res.json())
-                            .then(data => { console.log(data) });
+                            .then(data => {
+                                console.log(data.active)
+                                setSessionId(data.active);
+
+                            });
                     },
                     error => {
                         dispatch(alertError(error));
@@ -91,14 +102,14 @@ const DialogStartGame = ({ open, handleClose, quizid }) => {
                     <TextField
 
                         label="Session Id"
-                        defaultValue="Hello World"
+                        defaultValue={sessionId}
                         InputProps={{
                             readOnly: true,
                         }}
 
                     />
-                    <CopyToClipboard text="fucxk"
-                        onCopy={() => console.log("ok")}>
+                    <CopyToClipboard text={sessionId}
+                        onCopy={handleOnCopy}>
                         <button type="button" style={{ height: "30px" }}>
                             Copy to clipboard with button
                         </button>
@@ -111,7 +122,7 @@ const DialogStartGame = ({ open, handleClose, quizid }) => {
                 </Button>
 
             </DialogActions>
-        </Dialog>
+        </Dialog >
 
     );
 }
