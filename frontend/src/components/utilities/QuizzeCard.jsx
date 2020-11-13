@@ -15,6 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { useHistory } from "react-router-dom";
 import API_URL from "../../constants";
 import FormDialogUpdateQuiz from "../dialog/FormDialogUpdateQuiz";
+import DialogStartGame from "../dialog/DialogStartGame";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,7 +48,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
     // the original data formal is not standard format ususlly seen convert it to standard
     const dataFormated = new Date(createdAt);
     const [anchorEl, setAnchorEl] = useState(null);
-
+    const [gameDialog, setGameDialog] = useState(false);
     const [editLocal, setEditLocal] = useState(false);
 
 
@@ -98,7 +99,8 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
 
     const handleStartGame = () => {
 
-
+        setGameDialog(true);
+        handleClose();
 
     };
 
@@ -155,6 +157,9 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
                 open={editLocal}
                 handleClose={handleEditClose}
                 id={id}
+            />
+            <DialogStartGame open={gameDialog}
+                handleClose={() => { setGameDialog(false) }}
             />
         </div>
     );
