@@ -160,6 +160,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
             />
             <DialogStartGame open={gameDialog}
                 handleClose={() => { setGameDialog(false) }}
+                quizid={id}
             />
         </div>
     );
