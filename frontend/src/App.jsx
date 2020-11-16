@@ -9,6 +9,7 @@ import Dashboard from "./pages/home/Dashboard";
 import EditGame from "./pages/edit/EditGame";
 import EditGameQuestion from "./pages/edit/EditGameQuestion";
 import GameProgression from './pages/game-progression/GameProgression';
+import GameJoin from './pages/game-user/GameJoin';
 
 const App = () => {
     const alert = useSelector((state) => state.alert);
@@ -34,10 +35,10 @@ const App = () => {
                         <EditGameQuestion />
                     </Route>
                     <Route exact path="/game/join/:sessionId"> 
-                        <div>fuck1</div>
+                        <GameJoin/>
                     </Route>
                     <Route exact path="/game/play/:sessionId/:name"> 
-                        <div>fuck2</div>
+                        <div>fuck1</div>
                     </Route>
                     <Route exact path="/game/progression/:sessionId"> 
                         <GameProgression/>

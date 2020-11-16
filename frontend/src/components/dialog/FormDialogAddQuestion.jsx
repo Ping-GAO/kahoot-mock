@@ -361,6 +361,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                             variant="outlined"
                             value={title}
                             onChange={(event) => setTitle(event.target.value)}
+                            inputProps={{ style: {textAlign: 'center'} }}
                         />
                     </Grid>
                 </Grid>

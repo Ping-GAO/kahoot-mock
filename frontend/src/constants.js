@@ -28,4 +28,10 @@ export const newQuestion = (
     image,
 });
 
+
+// get the base url of app is running on include the port number
+const urlFull = window.location.href;
+const urlSplit = urlFull.split("/");
+export const urlBase = `${urlSplit[0]  }//${  urlSplit[2]}`
+
 export default API_URL;

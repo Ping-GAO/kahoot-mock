@@ -9,7 +9,7 @@ import PropTypes from "prop-types";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
-import API_URL from "../../constants";
+import API_URL, {urlBase} from "../../constants";
 import { alertError, alertSuccess } from "../../redux/actions";
 
 const useStyles = makeStyles(() => ({
@@ -90,7 +90,11 @@ const DialogStartGame = ({ open, handleClose, quizid, quizStatus }) => {
             }
         }
     }, [quizid, dispatch, quizStatus, open]);
+    
 
+    
+   
+    
     return (
         <Dialog
             open={open}
@@ -104,9 +108,9 @@ const DialogStartGame = ({ open, handleClose, quizid, quizStatus }) => {
                 <DialogContentText>Copy the link to join the game</DialogContentText>
                 <div className={classes.link}>
                     <div>{sessionId}</div>
-                    <CopyToClipboard text={sessionId} onCopy={handleOnCopy}>
+                    <CopyToClipboard text={`${urlBase}/game/join/${sessionId}`} onCopy={handleOnCopy}>
                         <button type="button" style={{ height: "30px" }}>
-              Copy to clipboard with button
+              Copy to Clipboard
                         </button>
                     </CopyToClipboard>
                 </div>
