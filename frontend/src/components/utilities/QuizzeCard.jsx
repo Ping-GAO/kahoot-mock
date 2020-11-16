@@ -108,6 +108,13 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         handleClose();
     };
 
+    const handleShowGameProgression= ()=>{
+        handleClose();
+        history.push(`/game/progression/${quiz.active}`);
+    };
+
+
+
     const renderMenu = (
         <Menu
             id="simple-menu"
@@ -117,6 +124,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
             onClose={handleClose}
         >
             {quiz.active && <MenuItem onClick={handleShowClipBoard}>Show ClipBoard</MenuItem>}
+            {quiz.active && <MenuItem onClick={handleShowGameProgression}>Show Game Progression</MenuItem>}
             <MenuItem onClick={handeEditQuizze}>Edit Quizze</MenuItem>
             <MenuItem onClick={handleEditQuestion}>Edit Question</MenuItem>
             <MenuItem onClick={handleDelete}>Delete</MenuItem>

@@ -8,6 +8,7 @@ import CustomizedSnackbars from "./components/utilities/Alert";
 import Dashboard from "./pages/home/Dashboard";
 import EditGame from "./pages/edit/EditGame";
 import EditGameQuestion from "./pages/edit/EditGameQuestion";
+import GameProgression from './pages/game-progression/GameProgression';
 
 const App = () => {
     const alert = useSelector((state) => state.alert);
@@ -38,8 +39,8 @@ const App = () => {
                     <Route exact path="/game/play/:sessionId/:name"> 
                         <div>fuck2</div>
                     </Route>
-                    <Route exact path="/game/status/:sessionId"> 
-                        <div>fuck3</div>
+                    <Route exact path="/game/progression/:sessionId"> 
+                        <GameProgression/>
                     </Route>
                     <Route path="/">
                         <Dashboard />
