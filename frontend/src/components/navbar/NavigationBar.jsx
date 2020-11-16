@@ -43,12 +43,21 @@ const ButtonAppBar = () => {
         );
     } else {
         button = (
-            <Button color="inherit" href="/login">
+            <Button color="inherit" onClick={()=>{history.push('/login')}}>
                 Login
             </Button>
         );
     }
 
+
+
+    const toDashBoard = ()=>{
+        history.push('/dashboard');
+    };
+    
+    const toSignUp=()=>{
+        history.push('/signup');
+    };
     return (
         <div className={classes.root}>
             <AppBar position="static">
@@ -64,11 +73,11 @@ const ButtonAppBar = () => {
                     <Typography variant="h6" className={classes.title}>
                         News
                     </Typography>
-                    <Button color="inherit" href="/dashboard">
+                    <Button color="inherit" onClick={toDashBoard}>
                         Dashboard
                     </Button>
                     {!loginStatus.loggedIn && (
-                        <Button color="inherit" href="/signup">
+                        <Button color="inherit" onClick={toSignUp}>
                             Signup
                         </Button>
                     )}
