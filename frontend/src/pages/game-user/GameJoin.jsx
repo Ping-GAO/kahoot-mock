@@ -1,9 +1,11 @@
 import React,{useState} from "react";
-import { useParams , useHistory } from "react-router-dom";
+import { useParams ,useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-
+import { useDispatch } from "react-redux";
+import API_URL from "../../constants";
+import { alertError, alertSuccess } from "../../redux/actions";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -26,11 +28,37 @@ const GameJoin = () => {
     const { sessionId } = useParams();
     const classes = useStyles();
     const history = useHistory();
+    const dispatch = useDispatch();
+
     const [name,setName] = useState('');
     const handleSubmit = (e)=>{
         e.preventDefault();
-        history.push(`/game/play/${sessionId}/${name}`);
+        // api call to join the game
+        fetch(`${API_URL}/play/join/${sessionId}`,{
+        
+            method: "POST",
+            headers:{
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({name})
+        }).then((res) => {
+            if (res.ok) {
+                return Promise.resolve(res.json());
+            }
+            return Promise.resolve(res.json()).then(data => {
+                return Promise.reject(data.error);
+            });
+        })
+            .then(data=>{
+                dispatch(alertSuccess("Join Game Success"));
+                history.push(`/game/play/${data.playerId}`);
+            },(error)=>{
+                dispatch(alertError(error));
+            });
+        
     };
+    
     return (
         <div className={classes.root}>
             <form className={classes.form} onSubmit={handleSubmit}>
