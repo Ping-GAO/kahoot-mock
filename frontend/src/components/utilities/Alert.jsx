@@ -20,7 +20,6 @@ const CustomizedSnackbars = ({ type, message }) => {
             // if component hasn't yet mount, call setState will cause error
             setOpen(false);
         }
-        
     };
 
 
