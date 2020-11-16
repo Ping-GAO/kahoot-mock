@@ -149,9 +149,11 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
 		
             };
             if(quiz.active === false){
+                // component hasn't mount 
                 return null;
             }
             if(quiz.active === null){
+                // quiz is not active, we can start a game
                 return (<Button variant="contained"                    
                     color="primary"
                     onClick={handleStartGame}

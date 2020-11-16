@@ -1,35 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import MuiAlert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
+import useIsMounted from 'ismounted';
 import { alertClear } from "../../redux/actions";
 
 const CustomizedSnackbars = ({ type, message }) => {
     const dispatch = useDispatch();
     const [open, setOpen] = useState(true);
-    const [didMount, setDidMount] = useState(false);
+    const isMounted = useIsMounted();
 
     const handleClose = (_event, reason) => {
         if (reason === "clickaway") {
             return;
         }
         dispatch(alertClear());
-        setOpen(false);
+        if(isMounted.current){
+            // if component hasn't yet mount, call setState will cause error
+            setOpen(false);
+        }
+        
     };
 
-    // Without the mounting state checking 
-    // You will get following error:
-    // Can't perform a React state update on an unmounted component.
-    useEffect(() => {
-        setDidMount(true);
-        return () => setDidMount(false);
-    }, []);
-
-    // if the component didn't mount, just return
-    if (!didMount) {
-        return null;
-    }
 
     return (
         <Snackbar
