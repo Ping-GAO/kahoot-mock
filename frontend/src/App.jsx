@@ -32,6 +32,15 @@ const App = () => {
                     <Route exact path="/dashboard/:quizId/:questionId">
                         <EditGameQuestion />
                     </Route>
+                    <Route exact path="/game/join/:sessionId"> 
+                        <div>fuck1</div>
+                    </Route>
+                    <Route exact path="/game/play/:sessionId/:name"> 
+                        <div>fuck2</div>
+                    </Route>
+                    <Route exact path="/game/status/:sessionId"> 
+                        <div>fuck3</div>
+                    </Route>
                     <Route path="/">
                         <Dashboard />
                     </Route>
