@@ -101,6 +101,13 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         handleClose();
     };
 
+
+
+    const handleShowClipBoard = ()=>{
+        setGameDialog(true);
+        handleClose();
+    };
+
     const renderMenu = (
         <Menu
             id="simple-menu"
@@ -109,6 +116,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
         >
+            {quiz.active && <MenuItem onClick={handleShowClipBoard}>Show ClipBoard</MenuItem>}
             <MenuItem onClick={handeEditQuizze}>Edit Quizze</MenuItem>
             <MenuItem onClick={handleEditQuestion}>Edit Question</MenuItem>
             <MenuItem onClick={handleDelete}>Delete</MenuItem>
@@ -122,8 +130,8 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
     // useCallback help us memorize the value
     const changeQuizStatusButton = useCallback(() => {
         const handleStartGame = () => {
+            // display the clipboard for user to copy the url used for joining the game
             setGameDialog(true);
-            handleClose();
         };
         const handleEndGame = () => {
             fetch(`${API_URL}/admin/quiz/${id}/end`, {
@@ -210,6 +218,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
                     setGameDialog(false);
                 }}
                 quizid={id}
+                quizStatus={quiz.active} 
             />
         </div>
     );
