@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import API_URL from "../../constants";
 import FormDialogUpdateQuiz from "../dialog/FormDialogUpdateQuiz";
 import DialogStartGame from "../dialog/DialogStartGame";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -105,26 +106,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         handleClose();
     };
 
-    const handleStartGame = () => {
 
-        setGameDialog(true);
-        handleClose();
-
-    };
-    const handleEndGame = () => {
-        fetch(`${API_URL}/admin/quiz/${id}/end`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            }
-        })
-            .then(res => {
-                console.log(res.status);
-                setEndGame(prevState => !prevState);
-            });
-
-
-    };
 
 
     const renderMenu = (<Menu
@@ -134,7 +116,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
     >
-        <MenuItem onClick={handleStartGame}>Start Game</MenuItem>
+        
         <MenuItem onClick={handeEditQuizze}>Edit Quizze</MenuItem>
         <MenuItem onClick={handleEditQuestion}>Edit Question</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
@@ -144,7 +126,52 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
 
 
 
-
+    const changeQuizStatusButton = useCallback(
+        ()=>{
+            
+            const handleStartGame = () => {
+                setGameDialog(true);
+                handleClose();
+		
+            };
+            const handleEndGame = () => {
+                fetch(`${API_URL}/admin/quiz/${id}/end`, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    }
+                })
+                    .then(res => {
+                        console.log(res.status);
+                        setEndGame(prevState => !prevState);
+                    });
+		
+		
+            };
+            if(quiz.active === false){
+                return null;
+            }
+            if(quiz.active === null){
+                return (<Button variant="contained"                    
+                    color="primary"
+                    onClick={handleStartGame}
+                >
+				Start Game
+                </Button>);
+            }
+            
+            return ( <Button variant="contained"
+                
+                color="secondary"
+                onClick={handleEndGame}
+                
+            >
+			End Current Game
+            </Button>);
+            
+        
+        },[id, quiz.active]
+    )
 
 
     return (
@@ -177,24 +204,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
                     <Typography variant="body2" color="textSecondary" component="p">
                         This question&apos;s id is {id}, it has {quiz.questions.length} questions.
                     </Typography>
-                    <div className={classes.butContainer} >
-                        <Button variant="contained"
-                            className={classes.but}
-                            color="primary"
-                            disabled={quiz.active && true}
-                            onClick={handleStartGame}
-                        >
-                            Start Game
-                        </Button>
-                        <Button variant="contained"
-                            className={classes.but}
-                            color="secondary"
-                            onClick={handleEndGame}
-                            disabled={!quiz.active && true}
-                        >
-                            End Current Game
-                        </Button>
-                    </div>
+                    {changeQuizStatusButton()}
 
                 </CardContent>
 
