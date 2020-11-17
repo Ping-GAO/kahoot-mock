@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, {useState} from "react";
+import {makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import EmailIcon from "@material-ui/icons/Email";
 import LockIcon from "@material-ui/icons/Lock";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { login } from "../../redux/actions";
+import {useDispatch} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {login} from "../../redux/actions";
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -48,7 +48,7 @@ const Login = () => {
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
-                                <EmailIcon />
+                                <EmailIcon/>
                             </InputAdornment>
                         ),
                     }}
@@ -62,13 +62,13 @@ const Login = () => {
                     InputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
-                                <LockIcon />
+                                <LockIcon/>
                             </InputAdornment>
                         ),
                     }}
                     onChange={(event) => setPassword(event.target.value)}
                 />
-                <div style={{ height: 20 }} />
+                <div style={{height: 20}}/>
                 <Button color="primary" variant="contained" type="submit">
                     Log in
                 </Button>
