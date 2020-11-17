@@ -110,7 +110,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
 
     const handleShowGameProgression= ()=>{
         handleClose();
-        history.push(`/game/progression/${quiz.active}`);
+        history.push(`/game/progression/${id}/${quiz.active}`);
     };
 
 
@@ -165,7 +165,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
                     onClick={handleStartGame}
                     className={classes.but}
                 >
-          Start Game
+          Start Session
                 </Button>
             );
         }
@@ -177,7 +177,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
                 onClick={handleEndGame}
                 className={classes.but}
             >
-        End Current Game
+        Stop Session
             </Button>
         );
     }, [classes.but, id, quiz.active]);

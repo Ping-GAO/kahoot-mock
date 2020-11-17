@@ -41,7 +41,7 @@ const App = () => {
                     <Route exact path="/game/play/:playerId"> 
                         <GamePlay/>
                     </Route>
-                    <Route exact path="/game/progression/:sessionId"> 
+                    <Route exact path="/game/progression/:quizId/:sessionId"> 
                         <GameProgression/>
                     </Route>
                     <Route path="/">
