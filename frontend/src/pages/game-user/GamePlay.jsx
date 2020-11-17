@@ -2,6 +2,7 @@ import React ,{useEffect, useState}from 'react';
 import { useParams  } from "react-router-dom";
 import API_URL from '../../constants';
 
+let pollingTimeout = null;
 const GamePlay = () => {
     const { playerId } = useParams();
     
@@ -16,30 +17,23 @@ const GamePlay = () => {
             })
                 .then(res=>res.json())
                 .then(data=>{
-                
-                
                     console.log(data);
                     if(data.started === true){
                         setStarted(true);
                     }   
-                
                 })
-            
         }
-    
-    
-        let interval;
+
         if(started === false){
-        
             getGameStutus();
-            interval = setInterval(()=>getGameStutus(),1000);
+            pollingTimeout = setInterval(()=>getGameStutus(),1000);
         }
         else{
-            clearInterval(interval);
+            clearInterval(pollingTimeout);
             console.log("game already started");
         }   
         return()=>{
-            clearInterval(interval);
+            clearInterval(pollingTimeout);
         }
     
     },[playerId, started]);
