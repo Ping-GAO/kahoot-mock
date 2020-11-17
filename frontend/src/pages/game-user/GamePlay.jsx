@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from '@material-ui/core/Typography';
@@ -43,6 +42,11 @@ const useStyles = makeStyles((theme) => ({
     },
     head: {
         flex: 1,
+       
+    },
+    headWrapper:{
+        display:"flex",
+        justifyContent:"center"
     },
     body: {
         flex: 4,
@@ -105,16 +109,16 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
     },
     choice1: {
-        backgroundColor: props => props.answer1 ? "#e21b3c" : "#ffffff"
+        backgroundColor: "#e21b3c"
     },
     choice2: {
-        backgroundColor: props => props.answer2 ? "#1368ce" : "#ffffff"
+        backgroundColor: "#1368ce"
     },
     choice3: {
-        backgroundColor: props => props.answer3 ? "#d89e00" : "#ffffff"
+        backgroundColor:  "#d89e00" 
     },
     choice4: {
-        backgroundColor: props => props.answer4 ? "#26890c" : "#ffffff"
+        backgroundColor: "#26890c" 
     },
     inputText: {
         color: "white",
@@ -137,14 +141,12 @@ const useStyles = makeStyles((theme) => ({
 
 const GamePlay = () => {
     const { playerId } = useParams();
-
+    const classes = useStyles();
+    
+    
     const [started, setStarted] = useState(false);
-    const [questionCurrent, setQuestionCurrent] = useState(null);
+    const [questionCurrent, setQuestionCurrent] = useState({questionBody:'',answers:[{answerBody:''},{answerBody:''},{answerBody:''},{answerBody:''}]});
     const [isoTimeCurrent, setIsoTimeCurrent] = useState();
-    const [answer1, setAnswer1] = useState("");
-    const [answer2, setAnswer2] = useState("");
-    const [answer3, setAnswer3] = useState("");
-    const [answer4, setAnswer4] = useState("");
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
@@ -164,7 +166,7 @@ const GamePlay = () => {
     };
     
     
-    const classes = useStyles({ answer1, answer2, answer3, answer4 });
+
 
 
     console.log(questionCurrent, isoTimeCurrent);
@@ -202,12 +204,12 @@ const GamePlay = () => {
             pollingTimeout = setInterval(() => getGameStutus(), 1000);
         } else {
             clearInterval(pollingTimeout);
+            getQuestion();
             console.log("game already started");
             // should fetch the first question of the game here
         }
         return () => {
             clearInterval(pollingTimeout);
-            getQuestion();
         };
     }, [playerId, started]);
 
@@ -218,9 +220,9 @@ const GamePlay = () => {
         pageContent = (
             <Grid container className={classes.girdContainer} spacing={2}>
                 <Grid container item xs={12} className={classes.head}>
-                    <Grid item container xs={12}>
+                    <Grid item container xs={12} className={classes.headWrapper}>
                         <Typography variant="h3" gutterBottom>
-        h3. Heading
+                            {questionCurrent.questionBody}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -247,15 +249,11 @@ const GamePlay = () => {
                     <Grid container item xs={12} spacing={1}>
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
-                                <TextField
-                                    className="text"
-                                    label="Answer1"
-                                    onChange={(event) => setAnswer1(event.target.value)}
-                                    InputProps={{
-                                        className: classes.inputText,
-                                    }}
-                                    value={answer1}
-                                />
+                               
+                                
+                                <Typography variant="button" display="block" gutterBottom>
+                                    {questionCurrent.answers[0].answerBody}
+                                </Typography>
                                 <Checkbox
                                     checked={checked1}
                                     onChange={handleChangeCheckBox1}
@@ -267,15 +265,9 @@ const GamePlay = () => {
                         </Grid>
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice2}`}>
-                                <TextField
-                                    className="text"
-                                    label="Answer2"
-                                    onChange={(event) => setAnswer2(event.target.value)}
-                                    InputProps={{
-                                        className: classes.inputText,
-                                    }}
-                                    value={answer2}
-                                />
+                                <Typography variant="button" display="block" gutterBottom>
+                                    {questionCurrent.answers[1].answerBody}
+                                </Typography>
                                 <Checkbox
                                     checked={checked2}
                                     onChange={handleChangeCheckBox2}
@@ -289,15 +281,9 @@ const GamePlay = () => {
                     <Grid container item xs={12} spacing={1}>
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice3}`}>
-                                <TextField
-                                    className="text"
-                                    label="Answer3"
-                                    onChange={(event) => setAnswer3(event.target.value)}
-                                    InputProps={{
-                                        className: classes.inputText,
-                                    }}
-                                    value={answer3}
-                                />
+                                <Typography variant="button" display="block" gutterBottom>
+                                    {questionCurrent.answers[2].answerBody}
+                                </Typography>
                                 <Checkbox
                                     checked={checked3}
                                     onChange={handleChangeCheckBox3}
@@ -309,15 +295,9 @@ const GamePlay = () => {
                         </Grid>
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice4}`}>
-                                <TextField
-                                    className="text"
-                                    label="Answer4"
-                                    onChange={(event) => setAnswer4(event.target.value)}
-                                    InputProps={{
-                                        className: classes.inputText,
-                                    }}
-                                    value={answer4}
-                                />
+                                <Typography variant="button" display="block" gutterBottom>
+                                    {questionCurrent.answers[3].answerBody}
+                                </Typography>
                                 <Checkbox
                                     checked={checked4}
                                     onChange={handleChangeCheckBox4}
