@@ -278,7 +278,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
         const answers = [];
 
         for (let i = 1; i <= 4; i += 1) {
-            answers.push(newAnswer(eval(`answer${i}`), eval(`checked${i}`)));
+            answers.push(newAnswer(uuid(),eval(`answer${i}`), eval(`checked${i}`)));
         }
         const question = newQuestion(
             uuid(),

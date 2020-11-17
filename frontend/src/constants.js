@@ -2,8 +2,9 @@ import data from "./config.json";
 
 const API_URL = `http://localhost:${data.BACKEND_PORT}`;
 
-
-export const newAnswer = (answerBody, isRightOne) => ({
+// the answerId is required in custom.js
+export const newAnswer = (answerId,answerBody, isRightOne) => ({
+    answerId,
     answerBody,
     isRightOne,
 });
