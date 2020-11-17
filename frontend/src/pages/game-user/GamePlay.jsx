@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from '@material-ui/core/Typography';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import API_URL from "../../constants";
 
 let pollingTimeout = null;
@@ -132,6 +133,21 @@ const useStyles = makeStyles((theme) => ({
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
+    
+    
+    
+    timer:{
+        fontFamily:"Montserrat",
+        display:"flex",
+        flexDirection:"column",
+        alignItems:"center"
+    },
+    text:{
+        color: "#aaa"
+    },
+    value:{
+        fontSize:"40px"
+    },
 }));
 
 const GamePlay = () => {
@@ -140,19 +156,21 @@ const GamePlay = () => {
     
     
     const [started, setStarted] = useState(false);
+    const [key, setKey] = useState(0);
+    const [checked1, setChecked1] = useState(false);
+    const [checked2, setChecked2] = useState(false);
+    const [checked3, setChecked3] = useState(false);
+    const [checked4, setChecked4] = useState(false);
+    const [isoTimeCurrent, setIsoTimeCurrent] = useState();
     const [questionCurrent, setQuestionCurrent] = useState({questionBody:'',
         answers:[
             {answerBody:''},
             {answerBody:''},
             {answerBody:''},
             {answerBody:''}
-        ]
+        ],
+        timeLimit: 0
     });
-    const [isoTimeCurrent, setIsoTimeCurrent] = useState();
-    const [checked1, setChecked1] = useState(false);
-    const [checked2, setChecked2] = useState(false);
-    const [checked3, setChecked3] = useState(false);
-    const [checked4, setChecked4] = useState(false);
 
     const handleChangeCheckBox1 = (event) => {
         setChecked1(event.target.checked);
@@ -167,7 +185,19 @@ const GamePlay = () => {
         setChecked4(event.target.checked);
     };
     
-    
+    const renderTime = ({ remainingTime }) => {
+        if (remainingTime === 0) {
+		  return <div className={classes.timer}>Too lale...</div>;
+        }
+	  
+        return (
+		  <div className={classes.timer}>
+                <div className={classes.text}>Remaining</div>
+                <div className={classes.value}>{remainingTime}</div>
+                <div className={classes.text}>seconds</div>
+		  </div>
+        );
+	  };
 
 
 
@@ -199,6 +229,10 @@ const GamePlay = () => {
                     setIsoTimeCurrent(isoTimeLastQuestionStarted);
                     // console.log(rest);
                     setQuestionCurrent(rest);
+                    
+                    // need redux here, need way to preserve value between render
+                    setKey(prevKey => prevKey + 1);
+                   
                 });
         };
         if (started === false) {
@@ -208,17 +242,22 @@ const GamePlay = () => {
             clearInterval(pollingTimeout);
             getQuestion();
             console.log("game already started");
+            
+           
             // should fetch the first question of the game here
         }
         return () => {
             clearInterval(pollingTimeout);
         };
     }, [playerId, started]);
-
+   
+    
+    console.log(key);
     let pageContent = null;
     if (started === false) {
         pageContent = <div>awd{playerId}</div>;
     } else {
+        console.log("awdawd",questionCurrent.timeLimit);
         pageContent = (
             <Grid container className={classes.girdContainer} spacing={2}>
                 <Grid container item xs={12} className={classes.head}>
@@ -231,10 +270,26 @@ const GamePlay = () => {
                 <Grid container item xs={12} className={classes.body}>
                     <Grid item container xs={12} sm={4} md={4} className={classes.left}>
                         <Grid item xs={12} container justify="center" alignContent="center" >
-                        fuck
+                            <CountdownCircleTimer
+                                onComplete={() => {
+                                    // should to some api call
+                                    console.log("end");
+                                }}
+                                isPlaying
+                                key={key}
+                                duration={questionCurrent.timeLimit}
+                                colors={[
+                                    ['#004777', 0.33],
+                                    ['#F7B801', 0.33],
+                                    ['#A30000', 0.33],
+								  ]}
+								 
+                            >
+                                {renderTime}
+                            </CountdownCircleTimer>
                         </Grid>
                         <Grid item xs={12} container justify="center" alignContent="center" >
-                        fuck2
+                            number of points
                         </Grid>
                         <Grid item xs={12} container justify="center" alignContent="center">
                            
