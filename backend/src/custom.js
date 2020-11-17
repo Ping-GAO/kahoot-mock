@@ -4,12 +4,9 @@
  to return to a "player"
 */
 export const quizQuestionPublicReturn = question => {
-  console.log('See question: ', question);
-
   const { answers, } = question;
-  const answesrPublic = answers.map((isRightOne, ...keepAttrs) => keepAttrs);
-  console.log('after update qesuton', { ...question, answer: answesrPublic, });
-  return { ...question, answer: answesrPublic, };
+  const answesrPublic = answers.map(({ isRightOne, ...keepAttrs }) => keepAttrs);
+  return { ...question, answers: answesrPublic, };
 };
 
 /*
