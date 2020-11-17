@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
-
+import Chip from "@material-ui/core/Chip";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from '@material-ui/core/Typography';
 import API_URL from "../../constants";
@@ -96,11 +96,6 @@ const useStyles = makeStyles((theme) => ({
         width: "100%",
         height: "100%",
     },
-    imageIcon: {
-        width: 100,
-        height: 100,
-        color: "rgb(101, 105, 105)",
-    },
     choice: {
         width: "100%",
         margin: 8,
@@ -145,7 +140,14 @@ const GamePlay = () => {
     
     
     const [started, setStarted] = useState(false);
-    const [questionCurrent, setQuestionCurrent] = useState({questionBody:'',answers:[{answerBody:''},{answerBody:''},{answerBody:''},{answerBody:''}]});
+    const [questionCurrent, setQuestionCurrent] = useState({questionBody:'',
+        answers:[
+            {answerBody:''},
+            {answerBody:''},
+            {answerBody:''},
+            {answerBody:''}
+        ]
+    });
     const [isoTimeCurrent, setIsoTimeCurrent] = useState();
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
@@ -228,8 +230,24 @@ const GamePlay = () => {
                 </Grid>
                 <Grid container item xs={12} className={classes.body}>
                     <Grid item container xs={12} sm={4} md={4} className={classes.left}>
-                        <div>should be a vounter down timer</div>
+                        <Grid item xs={12} container justify="center" alignContent="center" >
+                        fuck
+                        </Grid>
+                        <Grid item xs={12} container justify="center" alignContent="center" >
+                        fuck2
+                        </Grid>
+                        <Grid item xs={12} container justify="center" alignContent="center">
+                           
+                            <Chip label={questionCurrent.type} />
+                            
+                        </Grid>
                     </Grid>
+                    
+                    
+                    
+                    
+                    
+                    
                     <Grid item container xs={12} sm={8} md={6} className={classes.right}>
                         <Grid
                             container
@@ -239,7 +257,16 @@ const GamePlay = () => {
                             justify="center"
                             alignItems="center"
                         >
-                            <div>image</div>
+                           
+                            <div className={classes.imageFrameInner}>
+                                <div className={classes.imageFrame}>
+                                    <img src={questionCurrent.image} 
+                                        alt="question"
+                                        className={classes.image}
+                                    />
+                                </div>
+                            </div>
+                        
                         </Grid>
                         
                     </Grid>

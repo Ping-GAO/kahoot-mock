@@ -366,7 +366,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                     </Grid>
                 </Grid>
                 <Grid container item xs={12} className={classes.body}>
-                    <Grid id="disappear" item container xs={12} sm={4} md={4} className={classes.left}>
+                    <Grid  item container xs={12} sm={4} md={4} className={classes.left}>
                         <Grid item xs={12} container justify="center" alignContent="center">
                             <FormControl className={classes.formControl}>
                                 <FormLabel>Time Limit</FormLabel>
@@ -411,7 +411,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                             </FormControl>
                         </Grid>
                     </Grid>
-                    <Grid id="uploadbox" item container xs={12} sm={8} md={6} className={classes.right}>
+                    <Grid  item container xs={12} sm={8} md={6} className={classes.right}>
                         <Grid
                             container
                             item
