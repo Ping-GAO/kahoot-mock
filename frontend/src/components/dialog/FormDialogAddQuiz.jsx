@@ -45,7 +45,7 @@ const FormDialogAddQuiz = ({ open, handleClose }) => {
                 }
             ).catch((error) => {
                 dispatch(alertError(error.message));
-            });;
+            });
 
     };
 
