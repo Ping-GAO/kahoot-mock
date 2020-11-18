@@ -4,12 +4,12 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 import Checkbox from "@material-ui/core/Checkbox";
-import Typography from '@material-ui/core/Typography';
-import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import Typography from "@material-ui/core/Typography";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import moment from "moment";
 import API_URL from "../../constants";
 
 let pollingTimeout = null;
-
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -26,14 +26,14 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         justifyContent: "center",
         backgroundColor: "#f2f2f2",
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down("sm")]: {
             padding: "70px 20px 0px",
-            flexWrap: "nowrap"
+            flexWrap: "nowrap",
         },
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up("md")]: {
             padding: "20px 40px 0px",
         },
-        [theme.breakpoints.up('lg')]: {
+        [theme.breakpoints.up("lg")]: {
             padding: "80px 150px 0px",
         },
     },
@@ -43,11 +43,10 @@ const useStyles = makeStyles((theme) => ({
     },
     head: {
         flex: 1,
-       
     },
-    headWrapper:{
-        display:"flex",
-        justifyContent:"center"
+    headWrapper: {
+        display: "flex",
+        justifyContent: "center",
     },
     body: {
         flex: 4,
@@ -75,15 +74,15 @@ const useStyles = makeStyles((theme) => ({
         padding: 4,
         boxSizing: "border-box",
 
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down("sm")]: {
             maxWidth: 220,
             maxHeight: 370,
         },
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up("md")]: {
             maxWidth: 240,
             maxHeight: 370,
         },
-        [theme.breakpoints.up('lg')]: {
+        [theme.breakpoints.up("lg")]: {
             maxWidth: 300,
             maxHeight: 370,
         },
@@ -105,16 +104,16 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
     },
     choice1: {
-        backgroundColor: "#e21b3c"
+        backgroundColor: "#e21b3c",
     },
     choice2: {
-        backgroundColor: "#1368ce"
+        backgroundColor: "#1368ce",
     },
     choice3: {
-        backgroundColor:  "#d89e00" 
+        backgroundColor: "#d89e00",
     },
     choice4: {
-        backgroundColor: "#26890c" 
+        backgroundColor: "#26890c",
     },
     inputText: {
         color: "white",
@@ -131,45 +130,43 @@ const useStyles = makeStyles((theme) => ({
     },
     backdrop: {
         zIndex: theme.zIndex.drawer + 1,
-        color: '#fff',
+        color: "#fff",
     },
-    
-    
-    
-    timer:{
-        fontFamily:"Montserrat",
-        display:"flex",
-        flexDirection:"column",
-        alignItems:"center"
+
+    timer: {
+        fontFamily: "Montserrat",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
     },
-    text:{
-        color: "#aaa"
+    text: {
+        color: "#aaa",
     },
-    value:{
-        fontSize:"40px"
+    value: {
+        fontSize: "40px",
     },
 }));
 
 const GamePlay = () => {
     const { playerId } = useParams();
     const classes = useStyles();
-    
-    
+
     const [started, setStarted] = useState(false);
     const [key, setKey] = useState(0);
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
     const [checked4, setChecked4] = useState(false);
-    const [isoTimeCurrent, setIsoTimeCurrent] = useState();
-    const [questionCurrent, setQuestionCurrent] = useState({questionBody:'',
-        answers:[
-            {answerBody:''},
-            {answerBody:''},
-            {answerBody:''},
-            {answerBody:''}
+    // const [isoTimeCurrent, setIsoTimeCurrent] = useState();
+    const [remainTime, setRemainTime] = useState(0);
+    const [questionCurrent, setQuestionCurrent] = useState({
+        questionBody: "",
+        answers: [
+            { answerBody: "" },
+            { answerBody: "" },
+            { answerBody: "" },
+            { answerBody: "" },
         ],
-        timeLimit: 0
     });
 
     const handleChangeCheckBox1 = (event) => {
@@ -184,24 +181,22 @@ const GamePlay = () => {
     const handleChangeCheckBox4 = (event) => {
         setChecked4(event.target.checked);
     };
-    
+
     const renderTime = ({ remainingTime }) => {
         if (remainingTime === 0) {
-		  return <div className={classes.timer}>Too lale...</div>;
+            return <div className={classes.timer}>Too lale...</div>;
         }
-	  
+
         return (
-		  <div className={classes.timer}>
+            <div className={classes.timer}>
                 <div className={classes.text}>Remaining</div>
                 <div className={classes.value}>{remainingTime}</div>
                 <div className={classes.text}>seconds</div>
-		  </div>
+            </div>
         );
-	  };
+    };
 
-
-
-    console.log(questionCurrent, isoTimeCurrent);
+    // console.log( isoTimeCurrent);
 
     useEffect(() => {
     // using polling to get the ongoing game status
@@ -226,13 +221,24 @@ const GamePlay = () => {
                 .then((data) => {
                     const { question } = data;
                     const { isoTimeLastQuestionStarted, ...rest } = question;
-                    setIsoTimeCurrent(isoTimeLastQuestionStarted);
+                    // setIsoTimeCurrent(isoTimeLastQuestionStarted);
                     // console.log(rest);
                     setQuestionCurrent(rest);
-                    
-                    // need redux here, need way to preserve value between render
-                    setKey(prevKey => prevKey + 1);
-                   
+
+                    // need a way to perserve the time remaining value between user refresh page
+
+                    const now = moment(new Date());
+                    const questionStart = moment(isoTimeLastQuestionStarted);
+                    const questionEnd = questionStart.add(rest.timeLimit, "seconds");
+                    console.log(now, questionStart, questionEnd);
+                    const diffInSeconds = moment
+                        .duration(questionEnd.diff(now))
+                        .asSeconds();
+                    console.log(diffInSeconds);
+                    if (diffInSeconds > 0) {
+                        setRemainTime(diffInSeconds);
+                        setKey((prevKey) => prevKey + 1);
+                    }
                 });
         };
         if (started === false) {
@@ -240,24 +246,22 @@ const GamePlay = () => {
             pollingTimeout = setInterval(() => getGameStutus(), 1000);
         } else {
             clearInterval(pollingTimeout);
+            // should fetch the first question of the game here
             getQuestion();
             console.log("game already started");
-            
-           
-            // should fetch the first question of the game here
         }
         return () => {
+            // when component unmounted, stop pooling
             clearInterval(pollingTimeout);
         };
     }, [playerId, started]);
-   
-    
+
     console.log(key);
     let pageContent = null;
     if (started === false) {
         pageContent = <div>awd{playerId}</div>;
     } else {
-        console.log("awdawd",questionCurrent.timeLimit);
+        console.log("awdawd", questionCurrent.timeLimit);
         pageContent = (
             <Grid container className={classes.girdContainer} spacing={2}>
                 <Grid container item xs={12} className={classes.head}>
@@ -269,7 +273,7 @@ const GamePlay = () => {
                 </Grid>
                 <Grid container item xs={12} className={classes.body}>
                     <Grid item container xs={12} sm={4} md={4} className={classes.left}>
-                        <Grid item xs={12} container justify="center" alignContent="center" >
+                        <Grid item xs={12} container justify="center" alignContent="center">
                             <CountdownCircleTimer
                                 onComplete={() => {
                                     // should to some api call
@@ -277,32 +281,24 @@ const GamePlay = () => {
                                 }}
                                 isPlaying
                                 key={key}
-                                duration={questionCurrent.timeLimit}
+                                duration={remainTime}
                                 colors={[
-                                    ['#004777', 0.33],
-                                    ['#F7B801', 0.33],
-                                    ['#A30000', 0.33],
-								  ]}
-								 
+                                    ["#004777", 0.33],
+                                    ["#F7B801", 0.33],
+                                    ["#A30000", 0.33],
+                                ]}
                             >
                                 {renderTime}
                             </CountdownCircleTimer>
                         </Grid>
-                        <Grid item xs={12} container justify="center" alignContent="center" >
-                            number of points
+                        <Grid item xs={12} container justify="center" alignContent="center">
+              number of points
                         </Grid>
                         <Grid item xs={12} container justify="center" alignContent="center">
-                           
                             <Chip label={questionCurrent.type} />
-                            
                         </Grid>
                     </Grid>
-                    
-                    
-                    
-                    
-                    
-                    
+
                     <Grid item container xs={12} sm={8} md={6} className={classes.right}>
                         <Grid
                             container
@@ -312,18 +308,16 @@ const GamePlay = () => {
                             justify="center"
                             alignItems="center"
                         >
-                           
                             <div className={classes.imageFrameInner}>
                                 <div className={classes.imageFrame}>
-                                    <img src={questionCurrent.image} 
+                                    <img
+                                        src={questionCurrent.image}
                                         alt="question"
                                         className={classes.image}
                                     />
                                 </div>
                             </div>
-                        
                         </Grid>
-                        
                     </Grid>
                     <Grid item md={2} />
                 </Grid>
@@ -331,8 +325,6 @@ const GamePlay = () => {
                     <Grid container item xs={12} spacing={1}>
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
-                               
-                                
                                 <Typography variant="button" display="block" gutterBottom>
                                     {questionCurrent.answers[0].answerBody}
                                 </Typography>
@@ -391,7 +383,8 @@ const GamePlay = () => {
                         </Grid>
                     </Grid>
                 </Grid>
-            </Grid>);
+            </Grid>
+        );
     }
     return pageContent;
 };
