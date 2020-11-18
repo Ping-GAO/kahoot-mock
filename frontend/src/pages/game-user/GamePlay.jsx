@@ -167,6 +167,7 @@ const GamePlay = () => {
             { answerBody: "" },
             { answerBody: "" },
         ],
+        timeLimit:0
     });
 
     const handleChangeCheckBox1 = (event) => {
@@ -226,17 +227,18 @@ const GamePlay = () => {
                     setQuestionCurrent(rest);
 
                     // need a way to perserve the time remaining value between user refresh page
-
+                    // i used real time calculation, so no matter how you refrest the page
+                    // the time remain is presist
                     const now = moment(new Date());
                     const questionStart = moment(isoTimeLastQuestionStarted);
                     const questionEnd = questionStart.add(rest.timeLimit, "seconds");
-                    console.log(now, questionStart, questionEnd);
+                    
                     const diffInSeconds = moment
                         .duration(questionEnd.diff(now))
                         .asSeconds();
-                    console.log(diffInSeconds);
                     if (diffInSeconds > 0) {
                         setRemainTime(diffInSeconds);
+                        // reset the coutdown based on real time value
                         setKey((prevKey) => prevKey + 1);
                     }
                 });
@@ -281,7 +283,8 @@ const GamePlay = () => {
                                 }}
                                 isPlaying
                                 key={key}
-                                duration={remainTime}
+                                duration={questionCurrent.timeLimit}
+                                initialRemainingTime={remainTime}
                                 colors={[
                                     ["#004777", 0.33],
                                     ["#F7B801", 0.33],
