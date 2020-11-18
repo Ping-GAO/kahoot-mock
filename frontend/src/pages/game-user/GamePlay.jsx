@@ -7,7 +7,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import moment from "moment";
+import { useDispatch } from "react-redux";
 import API_URL from "../../constants";
+import { alertError, alertSuccess } from "../../redux/actions";
 
 /* eslint-disable no-eval */
 let pollingTimeout = null;
@@ -151,8 +153,10 @@ const useStyles = makeStyles((theme) => ({
 const GamePlay = () => {
     const { playerId } = useParams();
     const classes = useStyles();
+    const dispatch = useDispatch();
 
-    const [gameStatus, setGameStatus] = useState("not started");
+    // gameStatus is one of { game not started, question started, question end, game end }
+    const [gameStatus, setGameStatus] = useState("game not started");
     const [key, setKey] = useState(0);
     const [checked0, setChecked0] = useState(false);
     const [checked1, setChecked1] = useState(false);
@@ -208,7 +212,7 @@ const GamePlay = () => {
                 .then((data) => {
                     console.log(data);
                     if (data.started === true) {
-                        setGameStatus("started");
+                        setGameStatus("question started");
                     }
                 });
         };
@@ -241,6 +245,12 @@ const GamePlay = () => {
                         setKey((prevKey) => prevKey + 1);
                         // should set a setTimeout api call when the countdown reach 0
                         console.log("remain", diffInSeconds);
+
+                        // note the (diffInSeconds - 1) * 1000
+                        // there is a small delay due to code need time to excute
+                        // i am asuming that in my machine its less than 1 sec
+                        // so submit the answer 1 sec early
+
                         answerTimeOut = setTimeout(() => {
                             console.log("awd");
                             // get the id of user selected choice
@@ -253,8 +263,31 @@ const GamePlay = () => {
                                     answerIds.push(rest.answers[i].answerId);
                                 }
                             }
-                            console.log("answerIds", answerIds);
-                        }, diffInSeconds * 1000);
+                            // console.log("answerIds", answerIds);
+                            fetch(`${API_URL}/play/${playerId}/answer`, {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({ answerIds }),
+                            })
+                                .then((res) => {
+                                    if (res.ok) {
+                                        return Promise.resolve(res.json());
+                                    }
+                                    return Promise.resolve(res.json()).then((data2) => {
+                                        return Promise.reject(data2.error);
+                                    });
+                                })
+                                .then(
+                                    () => {
+                                        dispatch(alertSuccess("Answer Submit Success"));
+                                    },
+                                    (error) => {
+                                        dispatch(alertError(error));
+                                    }
+                                );
+                        }, (diffInSeconds - 1) * 1000);
                     }
                 });
         };
@@ -262,7 +295,7 @@ const GamePlay = () => {
         // if game start, stop pooling and get question, page should work correctly
         // even if user refresh the page
         // if counterdown end, should wait admin to advance to next question
-        if (gameStatus === "not started") {
+        if (gameStatus === "game not started") {
             getGameStutus();
             // point of declare pollingTimeout as a global object is
             // making sure there are only one pooling function get runned
@@ -270,7 +303,7 @@ const GamePlay = () => {
             if (!pollingTimeout) {
                 pollingTimeout = setInterval(() => getGameStutus(), 1000);
             }
-        } else if (gameStatus === "started") {
+        } else if (gameStatus === "question started") {
             clearInterval(pollingTimeout);
             pollingTimeout = null;
             // should fetch the first question of the game here
@@ -285,13 +318,13 @@ const GamePlay = () => {
             clearTimeout(answerTimeOut);
             pollingTimeout = null;
         };
-    }, [playerId, gameStatus, checked0, checked1, checked2, checked3]);
+    }, [playerId, gameStatus, checked0, checked1, checked2, checked3, dispatch]);
 
     // console.log(questionCurrent);
     let pageContent = null;
     if (gameStatus === "not started") {
         pageContent = <div>Game not started yet</div>;
-    } else if (gameStatus === "started") {
+    } else if (gameStatus === "question started") {
         console.log("awdawd", questionCurrent.timeLimit);
         pageContent = (
             <Grid container className={classes.girdContainer} spacing={2}>
