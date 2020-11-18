@@ -156,8 +156,8 @@ const GamePlay = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    // gameStatus is one of { game unknown status, game not started, question started, question end, game end }
-    const [gameStatus, setGameStatus] = useState("game unknown status");
+    // gameStatus is one of { game not started, question started, question end, game end }
+    const [gameStatus, setGameStatus] = useState("game not started");
     const [key, setKey] = useState(0);
     const [checked0, setChecked0] = useState(false);
     const [checked1, setChecked1] = useState(false);
@@ -212,6 +212,7 @@ const GamePlay = () => {
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.started === true) {
+                        // check if the qestion is active 
                         setGameStatus("question started");
                     } else {
                         setGameStatus("game not started");
@@ -228,86 +229,89 @@ const GamePlay = () => {
                     
                     
                     const { question } = data;	
-                    const { isoTimeLastQuestionStarted, ...rest } = question;
-	
-                    // console.log(rest);
+                    const previousQestionId =localStorage.getItem(`${playerId}${question.questionId}`);
                     
-          
+                    // console.log(previousQestionId);
+                    
+                    if(previousQestionId === null || previousQestionId !== question.questionId){
+                   
+                        const { isoTimeLastQuestionStarted, ...rest } = question;
                         
-                    // need a way to perserve the time remaining value between user refresh page
-                    // i used real time calculation, so no matter how you refrest the page
-                    // the time remain is presist
-                    const now = moment(new Date());
-                    const questionStart = moment(isoTimeLastQuestionStarted);
-                    const questionEnd = questionStart.add(rest.timeLimit, "seconds");
+                        
+                        setQuestionCurrent(rest);
+                        // console.log(rest);
+                        // need a way to perserve the time remaining value between user refresh page
+                        // i used real time calculation, so no matter how you refrest the page
+                        // the time remain is presist
+                        const now = moment(new Date());
+                        const questionStart = moment(isoTimeLastQuestionStarted);
+                        const questionEnd = questionStart.add(rest.timeLimit, "seconds");
+					
+                        const diffInSeconds = moment
+                            .duration(questionEnd.diff(now))
+                            .asSeconds();
+                        if (diffInSeconds > 0) {
+                            setRemainTime(diffInSeconds);
+                            // reset the coutdown based on real time value
+                            setKey((prevKey) => prevKey + 1);
+                            // should set a setTimeout api call when the countdown reach 0
+                            console.log("remain", diffInSeconds);
 	
-                    const diffInSeconds = moment
-                        .duration(questionEnd.diff(now))
-                        .asSeconds();
-                    if (diffInSeconds > 0) {
-                        setRemainTime(diffInSeconds);
-                        // reset the coutdown based on real time value
-                        setKey((prevKey) => prevKey + 1);
-                        // should set a setTimeout api call when the countdown reach 0
-                        console.log("remain", diffInSeconds);
+                            // note the (diffInSeconds - 1) * 1000
+                            // there is a small delay due to code need time to excute
+                            // i am asuming that in my machine its less than 1 sec
+                            // so submit the answer 1 sec early
 	
-                        // note the (diffInSeconds - 1) * 1000
-                        // there is a small delay due to code need time to excute
-                        // i am asuming that in my machine its less than 1 sec
-                        // so submit the answer 1 sec early
-	
-                        answerTimeOut = setTimeout(() => {
+                            answerTimeOut = setTimeout(() => {
                             // get the id of user selected choice
 	
-                            const answerIds = [];
+                                const answerIds = [];
 	
-                            for (let i = 0; i < 4; i += 1) {
+                                for (let i = 0; i < 4; i += 1) {
                                 // console.log(eval(`checked${i}`));
-                                if (eval(`checked${i}`) === true) {
-                                    answerIds.push(rest.answers[i].answerId);
+                                    if (eval(`checked${i}`) === true) {
+                                        answerIds.push(rest.answers[i].answerId);
+                                    }
                                 }
-                            }
-                            console.log("answerIds", answerIds);
-                            fetch(`${API_URL}/play/${playerId}/answer`, {
-                                method: "PUT",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({ answerIds }),
-                            })
-                                .then((res) => {
-                                    if (res.ok) {
-                                        return Promise.resolve(res.json());
-                                    }
-                                    return Promise.resolve(res.json()).then((data2) => {
-                                        return Promise.reject(data2.error);
-                                    });
-                                })
-                                .then(
-                                    () => {
-                                        dispatch(alertSuccess("Answer Submit Success"));
+                                console.log("answerIds", answerIds);
+                                fetch(`${API_URL}/play/${playerId}/answer`, {
+                                    method: "PUT",
+                                    headers: {
+                                        "Content-Type": "application/json",
                                     },
-                                    (error) => {
-                                        dispatch(alertError(error));
-                                    }
-                                );
-                        }, (diffInSeconds - 1) * 1000);
+                                    body: JSON.stringify({ answerIds }),
+                                })
+                                    .then((res) => {
+                                        if (res.ok) {
+                                            return Promise.resolve(res.json());
+                                        }
+                                        return Promise.resolve(res.json()).then((data2) => {
+                                            return Promise.reject(data2.error);
+                                        });
+                                    })
+                                    .then(
+                                        () => {
+                                            dispatch(alertSuccess("Answer Submit Success"));
+                                        },
+                                        (error) => {
+                                            dispatch(alertError(error));
+                                        }
+                                    );
+                            }, (diffInSeconds - 1) * 1000);
 	
-                        // use a timeout to end the question
-                        questionEndTimeOut = setTimeout(() => {
-                            console.log("qestuin end234234");
-                            // preserve the questionId in localStorage
-                            localStorage.setItem(`${playerId}${question.questionId}`,question.questionId);
-                        
-                            setGameStatus("question end");
-                        }, (diffInSeconds + 1) * 1000);
+                            // use a timeout to end the question
+                            questionEndTimeOut = setTimeout(() => {
+                                // preserve the questionId in localStorage
+                                localStorage.setItem(`${playerId}${question.questionId}`,question.questionId);
+                                setGameStatus("question end");
+                            }, (diffInSeconds + 1) * 1000);
+                        }
                     }
+                    else{						
+                        setGameStatus("question end");
+                    }
+                   
                     
-                    
-                    
-                    // put setState in the end beacause it will trigger react rerender
-                    // if rerender earilier, will skip the setTimeout code
-                    setQuestionCurrent(rest);
                     
                 });
         };
@@ -316,14 +320,7 @@ const GamePlay = () => {
         // even if user refresh the page
         // if counterdown end, should wait admin to advance to next question
 
-        if (gameStatus === "game unknown status") {
-            // this is added to handle some edge case
-            // for example, user may refresh the page between questions
-            // in this case, the game already started but the admin didn't advance to next question
-            // so should set the game to started and check if the qestion fetched from api is the same as the previous one
-            console.log("game unknown status aweawe");
-            getGameStutus();
-        } else if (gameStatus === "game not started") {
+        if (gameStatus === "game not started") {
             getGameStutus();
             // point of declare pollingTimeout as a global object is
             // making sure there are only one pooling function get runned
@@ -334,20 +331,10 @@ const GamePlay = () => {
         } else if (gameStatus === "question started") {
             clearInterval(pollingTimeout);
             pollingTimeout = null;
-            // should fetch the first question of the game here
-          
-            const previousQestionId =localStorage.getItem(`${playerId}${questionCurrent.questionId}`);
-            // question fetched is the same as the previous one
-            console.log("previousQestionId",previousQestionId);
-			 if(previousQestionId === null || previousQestionId !== questionCurrent.questionId){      
-                getQuestion();
-            }
-            else{
-                setGameStatus("question end");
-            }
-            console.log("game already started");
+            getQuestion();
         } else if (gameStatus === "question end") {
             console.log("question end1");
+            // do a pooling to get next question
         } else {
             console.log("fuckaweawe");
         }
@@ -362,13 +349,11 @@ const GamePlay = () => {
             answerTimeOut = null;
             questionEndTimeOut = null;
         };
-    }, [playerId, gameStatus, checked0, checked1, checked2, checked3, dispatch, questionCurrent.questionId]);
+    }, [playerId, gameStatus, checked0, checked1, checked2, checked3, dispatch]);
     // console.log(gameStatus);
     // console.log(questionCurrent);
     let pageContent = null;
-    if (gameStatus === "game unknown status") {
-        return null;
-    }
+    
     if (gameStatus === "game not started") {
         pageContent = <div>Game not started yet</div>;
     } else if (gameStatus === "question end") {
