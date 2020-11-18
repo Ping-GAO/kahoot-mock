@@ -14,6 +14,7 @@ import { alertError, alertSuccess } from "../../redux/actions";
 /* eslint-disable no-eval */
 let pollingTimeout = null;
 let answerTimeOut = null;
+let questionEndTimeOut = null;
 const useStyles = makeStyles((theme) => ({
     appBar: {
         position: "relative",
@@ -212,8 +213,7 @@ const GamePlay = () => {
                     console.log(data);
                     if (data.started === true) {
                         setGameStatus("question started");
-                    }
-                    else{
+                    } else {
                         setGameStatus("game not started");
                     }
                 });
@@ -227,7 +227,10 @@ const GamePlay = () => {
                 .then((data) => {
                     const { question } = data;
                     const { isoTimeLastQuestionStarted, ...rest } = question;
-                    // setIsoTimeCurrent(isoTimeLastQuestionStarted);
+
+                    // need to compare the previous question
+                    // if not change need to run pooling on question
+
                     // console.log(rest);
                     setQuestionCurrent(rest);
 
@@ -290,6 +293,12 @@ const GamePlay = () => {
                                     }
                                 );
                         }, (diffInSeconds - 1) * 1000);
+
+                        // use a timeout to end the question
+                        questionEndTimeOut = setTimeout(() => {
+                            console.log("qestuin end");
+                            setGameStatus("question end");
+                        }, (diffInSeconds + 1) * 1000);
                     }
                 });
         };
@@ -297,17 +306,15 @@ const GamePlay = () => {
         // if game start, stop pooling and get question, page should work correctly
         // even if user refresh the page
         // if counterdown end, should wait admin to advance to next question
-        
-        
-        if(gameStatus === "game unknown status"){
+
+        if (gameStatus === "game unknown status") {
             // this is added to handle some edge case
             // for example, user may refresh the page between questions
             // in this case, the game already started but the admin didn't advance to next question
             // so should set the game to started and check if the qestion fetched from api is the same as the previous one
             console.log("game unknown status aweawe");
             getGameStutus();
-        }
-        else if (gameStatus === "game not started") {
+        } else if (gameStatus === "game not started") {
             getGameStutus();
             // point of declare pollingTimeout as a global object is
             // making sure there are only one pooling function get runned
@@ -321,6 +328,8 @@ const GamePlay = () => {
             // should fetch the first question of the game here
             getQuestion();
             console.log("game already started");
+        } else if (gameStatus === "question end") {
+            console.log("fuck2");
         } else {
             console.log("fuck");
         }
@@ -328,16 +337,21 @@ const GamePlay = () => {
             // when component unmounted, stop pooling
             clearInterval(pollingTimeout);
             clearTimeout(answerTimeOut);
+            clearTimeout(questionEndTimeOut);
             pollingTimeout = null;
         };
     }, [playerId, gameStatus, checked0, checked1, checked2, checked3, dispatch]);
 
     // console.log(questionCurrent);
     let pageContent = null;
+    if (gameStatus === "game unknown status") {
+        return null;
+    }
     if (gameStatus === "not started") {
         pageContent = <div>Game not started yet</div>;
+    } else if (gameStatus === "question end") {
+        pageContent = <div>Wait admin to advance to next question</div>;
     } else if (gameStatus === "question started") {
-        console.log("awdawd", questionCurrent.timeLimit);
         pageContent = (
             <Grid container className={classes.girdContainer} spacing={2}>
                 <Grid container item xs={12} className={classes.head}>
