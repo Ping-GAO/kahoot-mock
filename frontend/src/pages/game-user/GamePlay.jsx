@@ -12,9 +12,11 @@ import API_URL from "../../constants";
 import { alertError, alertSuccess } from "../../redux/actions";
 
 /* eslint-disable no-eval */
-let pollingTimeout = null;
+let gamePollingInterval = null;
+let questionPollingInterval = null;
 let answerTimeOut = null;
 let questionEndTimeOut = null;
+
 const useStyles = makeStyles((theme) => ({
     appBar: {
         position: "relative",
@@ -212,7 +214,7 @@ const GamePlay = () => {
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.started === true) {
-                        // check if the qestion is active 
+                        // check if the qestion is active
                         setGameStatus("question started");
                     } else {
                         setGameStatus("game not started");
@@ -226,18 +228,19 @@ const GamePlay = () => {
                 .then((res) => res.json())
 
                 .then((data) => {
-                    
-                    
-                    const { question } = data;	
-                    const previousQestionId =localStorage.getItem(`${playerId}${question.questionId}`);
-                    
+                    const { question } = data;
+                    const previousQestionId = localStorage.getItem(playerId);
+
                     // console.log(previousQestionId);
-                    
-                    if(previousQestionId === null || previousQestionId !== question.questionId){
-                   
+                    // console.log(question.questionId);
+                    // no question is current active, fetch one from api
+                    if (
+                        previousQestionId === null ||
+            previousQestionId !== question.questionId
+                    ) {
+                        // console.log("get nexy qesiotn");
                         const { isoTimeLastQuestionStarted, ...rest } = question;
-                        
-                        
+
                         setQuestionCurrent(rest);
                         // console.log(rest);
                         // need a way to perserve the time remaining value between user refresh page
@@ -246,7 +249,7 @@ const GamePlay = () => {
                         const now = moment(new Date());
                         const questionStart = moment(isoTimeLastQuestionStarted);
                         const questionEnd = questionStart.add(rest.timeLimit, "seconds");
-					
+
                         const diffInSeconds = moment
                             .duration(questionEnd.diff(now))
                             .asSeconds();
@@ -256,19 +259,19 @@ const GamePlay = () => {
                             setKey((prevKey) => prevKey + 1);
                             // should set a setTimeout api call when the countdown reach 0
                             console.log("remain", diffInSeconds);
-	
+
                             // note the (diffInSeconds - 1) * 1000
                             // there is a small delay due to code need time to excute
                             // i am asuming that in my machine its less than 1 sec
                             // so submit the answer 1 sec early
-	
+
                             answerTimeOut = setTimeout(() => {
-                            // get the id of user selected choice
-	
+                                // get the id of user selected choice
+
                                 const answerIds = [];
-	
+
                                 for (let i = 0; i < 4; i += 1) {
-                                // console.log(eval(`checked${i}`));
+                                    // console.log(eval(`checked${i}`));
                                     if (eval(`checked${i}`) === true) {
                                         answerIds.push(rest.answers[i].answerId);
                                     }
@@ -298,23 +301,33 @@ const GamePlay = () => {
                                         }
                                     );
                             }, (diffInSeconds - 1) * 1000);
-	
+
                             // use a timeout to end the question
                             questionEndTimeOut = setTimeout(() => {
                                 // preserve the questionId in localStorage
-                                localStorage.setItem(`${playerId}${question.questionId}`,question.questionId);
+                                // it is just indicate current quesion is active
+                                localStorage.setItem(playerId, question.questionId);
                                 setGameStatus("question end");
                             }, (diffInSeconds + 1) * 1000);
                         }
                     }
-                    else{						
-                        setGameStatus("question end");
+                    if (
+                        previousQestionId !== null &&
+            previousQestionId !== question.questionId
+                    ) {
+                        if (questionPollingInterval !== null) {
+                            clearInterval(questionPollingInterval);
+                            questionPollingInterval = null;
+                        }
+                        if (localStorage.getItem(playerId) !== null) {
+                            localStorage.removeItem(playerId);
+                        }
+                        console.log("agert update", localStorage.getItem(playerId));
+                        setGameStatus("question started");
                     }
-                   
-                    
-                    
                 });
         };
+
         // if game is not start, keep pooling
         // if game start, stop pooling and get question, page should work correctly
         // even if user refresh the page
@@ -325,35 +338,46 @@ const GamePlay = () => {
             // point of declare pollingTimeout as a global object is
             // making sure there are only one pooling function get runned
             // avoid multiple copy of pooling give server too much preasure
-            if (!pollingTimeout) {
-                pollingTimeout = setInterval(() => getGameStutus(), 1000);
+            if (!gamePollingInterval) {
+                gamePollingInterval = setInterval(() => getGameStutus(), 1000);
             }
         } else if (gameStatus === "question started") {
-            clearInterval(pollingTimeout);
-            pollingTimeout = null;
+            console.log("questuion stated");
+            clearInterval(gamePollingInterval);
+            gamePollingInterval = null;
+
             getQuestion();
         } else if (gameStatus === "question end") {
-            console.log("question end1");
             // do a pooling to get next question
+
+            if (!questionPollingInterval) {
+                // in validate the previous question
+                questionPollingInterval = setInterval(() => {
+                    // console.log("pooling next question");
+                    getQuestion();
+                }, 1000);
+            }
         } else {
             console.log("fuckaweawe");
         }
         return () => {
             // when component unmounted, stop pooling
-            clearInterval(pollingTimeout);
+            clearInterval(gamePollingInterval);
             clearTimeout(answerTimeOut);
             clearTimeout(questionEndTimeOut);
+            clearInterval(questionPollingInterval);
             // do below when quiz end
             // localStorage.removeItem(`${playerId}${questionCurrent.questionId}`);
-            pollingTimeout = null;
+            gamePollingInterval = null;
             answerTimeOut = null;
             questionEndTimeOut = null;
+            questionPollingInterval = null;
         };
     }, [playerId, gameStatus, checked0, checked1, checked2, checked3, dispatch]);
     // console.log(gameStatus);
     // console.log(questionCurrent);
     let pageContent = null;
-    
+
     if (gameStatus === "game not started") {
         pageContent = <div>Game not started yet</div>;
     } else if (gameStatus === "question end") {
