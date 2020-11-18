@@ -9,8 +9,9 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import moment from "moment";
 import API_URL from "../../constants";
 
+/* eslint-disable no-eval */
 let pollingTimeout = null;
-
+let answerTimeOut = null;
 const useStyles = makeStyles((theme) => ({
     appBar: {
         position: "relative",
@@ -153,10 +154,10 @@ const GamePlay = () => {
 
     const [gameStatus, setGameStatus] = useState("not started");
     const [key, setKey] = useState(0);
+    const [checked0, setChecked0] = useState(false);
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
-    const [checked4, setChecked4] = useState(false);
     // const [isoTimeCurrent, setIsoTimeCurrent] = useState();
     const [remainTime, setRemainTime] = useState(0);
     const [questionCurrent, setQuestionCurrent] = useState({
@@ -167,9 +168,12 @@ const GamePlay = () => {
             { answerBody: "" },
             { answerBody: "" },
         ],
-        timeLimit: 0
+        timeLimit: 0,
     });
 
+    const handleChangeCheckBox0 = (event) => {
+        setChecked0(event.target.checked);
+    };
     const handleChangeCheckBox1 = (event) => {
         setChecked1(event.target.checked);
     };
@@ -178,9 +182,6 @@ const GamePlay = () => {
     };
     const handleChangeCheckBox3 = (event) => {
         setChecked3(event.target.checked);
-    };
-    const handleChangeCheckBox4 = (event) => {
-        setChecked4(event.target.checked);
     };
 
     const renderTime = ({ remainingTime }) => {
@@ -197,7 +198,6 @@ const GamePlay = () => {
         );
     };
 
-
     useEffect(() => {
     // using polling to get the ongoing game status
         const getGameStutus = () => {
@@ -208,7 +208,7 @@ const GamePlay = () => {
                 .then((data) => {
                     console.log(data);
                     if (data.started === true) {
-                        setGameStatus('started');
+                        setGameStatus("started");
                     }
                 });
         };
@@ -231,7 +231,7 @@ const GamePlay = () => {
                     const now = moment(new Date());
                     const questionStart = moment(isoTimeLastQuestionStarted);
                     const questionEnd = questionStart.add(rest.timeLimit, "seconds");
-                    
+
                     const diffInSeconds = moment
                         .duration(questionEnd.diff(now))
                         .asSeconds();
@@ -240,6 +240,21 @@ const GamePlay = () => {
                         // reset the coutdown based on real time value
                         setKey((prevKey) => prevKey + 1);
                         // should set a setTimeout api call when the countdown reach 0
+                        console.log("remain", diffInSeconds);
+                        answerTimeOut = setTimeout(() => {
+                            console.log("awd");
+                            // get the id of user selected choice
+
+                            const answerIds = [];
+
+                            for (let i = 0; i < 4; i += 1) {
+                                console.log(eval(`checked${i}`));
+                                if (eval(`checked${i}`) === true) {
+                                    answerIds.push(rest.answers[i].answerId);
+                                }
+                            }
+                            console.log("answerIds", answerIds);
+                        }, diffInSeconds * 1000);
                     }
                 });
         };
@@ -252,31 +267,31 @@ const GamePlay = () => {
             // point of declare pollingTimeout as a global object is
             // making sure there are only one pooling function get runned
             // avoid multiple copy of pooling give server too much preasure
-            if(!pollingTimeout){
+            if (!pollingTimeout) {
                 pollingTimeout = setInterval(() => getGameStutus(), 1000);
             }
-        } else if(gameStatus === "started"){
+        } else if (gameStatus === "started") {
             clearInterval(pollingTimeout);
             pollingTimeout = null;
             // should fetch the first question of the game here
             getQuestion();
             console.log("game already started");
-        }
-        else{
+        } else {
             console.log("fuck");
         }
         return () => {
             // when component unmounted, stop pooling
             clearInterval(pollingTimeout);
+            clearTimeout(answerTimeOut);
             pollingTimeout = null;
         };
-    }, [playerId, gameStatus]);
+    }, [playerId, gameStatus, checked0, checked1, checked2, checked3]);
 
-    console.log(questionCurrent);
+    // console.log(questionCurrent);
     let pageContent = null;
     if (gameStatus === "not started") {
         pageContent = <div>Game not started yet</div>;
-    } else if(gameStatus === "started"){
+    } else if (gameStatus === "started") {
         console.log("awdawd", questionCurrent.timeLimit);
         pageContent = (
             <Grid container className={classes.girdContainer} spacing={2}>
@@ -309,7 +324,6 @@ const GamePlay = () => {
                             </CountdownCircleTimer>
                         </Grid>
                         <Grid item xs={12} container justify="center" alignContent="center">
-                            
                             <Typography variant="body1" gutterBottom>
                                 {questionCurrent.worthOfPoints} points
                             </Typography>
@@ -349,8 +363,8 @@ const GamePlay = () => {
                                     {questionCurrent.answers[0].answerBody}
                                 </Typography>
                                 <Checkbox
-                                    checked={checked1}
-                                    onChange={handleChangeCheckBox1}
+                                    checked={checked0}
+                                    onChange={handleChangeCheckBox0}
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
@@ -363,8 +377,8 @@ const GamePlay = () => {
                                     {questionCurrent.answers[1].answerBody}
                                 </Typography>
                                 <Checkbox
-                                    checked={checked2}
-                                    onChange={handleChangeCheckBox2}
+                                    checked={checked1}
+                                    onChange={handleChangeCheckBox1}
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
@@ -379,8 +393,8 @@ const GamePlay = () => {
                                     {questionCurrent.answers[2].answerBody}
                                 </Typography>
                                 <Checkbox
-                                    checked={checked3}
-                                    onChange={handleChangeCheckBox3}
+                                    checked={checked2}
+                                    onChange={handleChangeCheckBox2}
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
@@ -393,8 +407,8 @@ const GamePlay = () => {
                                     {questionCurrent.answers[3].answerBody}
                                 </Typography>
                                 <Checkbox
-                                    checked={checked4}
-                                    onChange={handleChangeCheckBox4}
+                                    checked={checked3}
+                                    onChange={handleChangeCheckBox3}
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
@@ -405,8 +419,7 @@ const GamePlay = () => {
                 </Grid>
             </Grid>
         );
-    }
-    else{
+    } else {
         console.log("fuck");
     }
     return pageContent;
