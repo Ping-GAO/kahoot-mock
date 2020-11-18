@@ -205,12 +205,12 @@ const GamePlay = () => {
     useEffect(() => {
     // using polling to get the ongoing game status
         const getGameStutus = () => {
+            console.log("game not started, pooling");
             fetch(`${API_URL}/play/${playerId}/status`, {
                 method: "GET",
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    console.log(data);
                     if (data.started === true) {
                         setGameStatus("question started");
                     } else {
@@ -225,22 +225,22 @@ const GamePlay = () => {
                 .then((res) => res.json())
 
                 .then((data) => {
-                    const { question } = data;
+                    
+                    
+                    const { question } = data;	
                     const { isoTimeLastQuestionStarted, ...rest } = question;
-
-                    // need to compare the previous question
-                    // if not change need to run pooling on question
-
+	
                     // console.log(rest);
-                    setQuestionCurrent(rest);
-
+                    
+          
+                        
                     // need a way to perserve the time remaining value between user refresh page
                     // i used real time calculation, so no matter how you refrest the page
                     // the time remain is presist
                     const now = moment(new Date());
                     const questionStart = moment(isoTimeLastQuestionStarted);
                     const questionEnd = questionStart.add(rest.timeLimit, "seconds");
-
+	
                     const diffInSeconds = moment
                         .duration(questionEnd.diff(now))
                         .asSeconds();
@@ -250,25 +250,24 @@ const GamePlay = () => {
                         setKey((prevKey) => prevKey + 1);
                         // should set a setTimeout api call when the countdown reach 0
                         console.log("remain", diffInSeconds);
-
+	
                         // note the (diffInSeconds - 1) * 1000
                         // there is a small delay due to code need time to excute
                         // i am asuming that in my machine its less than 1 sec
                         // so submit the answer 1 sec early
-
+	
                         answerTimeOut = setTimeout(() => {
-                            console.log("awd");
                             // get the id of user selected choice
-
+	
                             const answerIds = [];
-
+	
                             for (let i = 0; i < 4; i += 1) {
-                                console.log(eval(`checked${i}`));
+                                // console.log(eval(`checked${i}`));
                                 if (eval(`checked${i}`) === true) {
                                     answerIds.push(rest.answers[i].answerId);
                                 }
                             }
-                            // console.log("answerIds", answerIds);
+                            console.log("answerIds", answerIds);
                             fetch(`${API_URL}/play/${playerId}/answer`, {
                                 method: "PUT",
                                 headers: {
@@ -293,13 +292,23 @@ const GamePlay = () => {
                                     }
                                 );
                         }, (diffInSeconds - 1) * 1000);
-
+	
                         // use a timeout to end the question
                         questionEndTimeOut = setTimeout(() => {
-                            console.log("qestuin end");
+                            console.log("qestuin end234234");
+                            // preserve the questionId in localStorage
+                            localStorage.setItem(`${playerId}${question.questionId}`,question.questionId);
+                        
                             setGameStatus("question end");
                         }, (diffInSeconds + 1) * 1000);
                     }
+                    
+                    
+                    
+                    // put setState in the end beacause it will trigger react rerender
+                    // if rerender earilier, will skip the setTimeout code
+                    setQuestionCurrent(rest);
+                    
                 });
         };
         // if game is not start, keep pooling
@@ -326,28 +335,41 @@ const GamePlay = () => {
             clearInterval(pollingTimeout);
             pollingTimeout = null;
             // should fetch the first question of the game here
-            getQuestion();
+          
+            const previousQestionId =localStorage.getItem(`${playerId}${questionCurrent.questionId}`);
+            // question fetched is the same as the previous one
+            console.log("previousQestionId",previousQestionId);
+			 if(previousQestionId === null || previousQestionId !== questionCurrent.questionId){      
+                getQuestion();
+            }
+            else{
+                setGameStatus("question end");
+            }
             console.log("game already started");
         } else if (gameStatus === "question end") {
-            console.log("fuck2");
+            console.log("question end1");
         } else {
-            console.log("fuck");
+            console.log("fuckaweawe");
         }
         return () => {
             // when component unmounted, stop pooling
             clearInterval(pollingTimeout);
             clearTimeout(answerTimeOut);
             clearTimeout(questionEndTimeOut);
+            // do below when quiz end
+            // localStorage.removeItem(`${playerId}${questionCurrent.questionId}`);
             pollingTimeout = null;
+            answerTimeOut = null;
+            questionEndTimeOut = null;
         };
-    }, [playerId, gameStatus, checked0, checked1, checked2, checked3, dispatch]);
-
+    }, [playerId, gameStatus, checked0, checked1, checked2, checked3, dispatch, questionCurrent.questionId]);
+    // console.log(gameStatus);
     // console.log(questionCurrent);
     let pageContent = null;
     if (gameStatus === "game unknown status") {
         return null;
     }
-    if (gameStatus === "not started") {
+    if (gameStatus === "game not started") {
         pageContent = <div>Game not started yet</div>;
     } else if (gameStatus === "question end") {
         pageContent = <div>Wait admin to advance to next question</div>;
