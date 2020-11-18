@@ -18,3 +18,4 @@ The specified Eslint only lint js files, don't work with JSX and other files. [p
 - Emma Paris is also Tim Huang, I don't know why it's Emma Paris when I pushed my code to gitlab...
 - Found problem when develop in windows, the frontend and backend can't be kill properly with key strokes ctrl + C, which lead to error of some coponents setState when they already unmounted.
 - Fixed multiple alert, react setState when unmounted error
+- Found you can do some weird stuff, advance the game when curret qestion is not yet finished will produce error in my implemetation. It is not in the spec spefify we need to handle this and it really make no sense.

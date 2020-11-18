@@ -307,7 +307,12 @@ const GamePlay = () => {
                                 // preserve the questionId in localStorage
                                 // it is just indicate current quesion is active
                                 localStorage.setItem(playerId, question.questionId);
+                                setChecked0(false);
+                                setChecked1(false);
+                                setChecked2(false);
+                                setChecked3(false);
                                 setGameStatus("question end");
+                                
                             }, (diffInSeconds + 1) * 1000);
                         }
                     }
@@ -315,15 +320,23 @@ const GamePlay = () => {
                         previousQestionId !== null &&
             previousQestionId !== question.questionId
                     ) {
-                        if (questionPollingInterval !== null) {
-                            clearInterval(questionPollingInterval);
-                            questionPollingInterval = null;
-                        }
+                        // case where a new question is fetched from api
+                        // stop pulling question from server
+                        clearInterval(questionPollingInterval);
+                        questionPollingInterval = null;
+                        
+                        // invalid the item in localstorage
                         if (localStorage.getItem(playerId) !== null) {
                             localStorage.removeItem(playerId);
                         }
-                        console.log("agert update", localStorage.getItem(playerId));
                         setGameStatus("question started");
+                    }
+                    
+                    // case where user wait admin to advance to next question
+                    if(previousQestionId !== null &&
+						previousQestionId === question.questionId){
+                    
+                        setGameStatus("question end");
                     }
                 });
         };
@@ -351,9 +364,7 @@ const GamePlay = () => {
             // do a pooling to get next question
 
             if (!questionPollingInterval) {
-                // in validate the previous question
                 questionPollingInterval = setInterval(() => {
-                    // console.log("pooling next question");
                     getQuestion();
                 }, 1000);
             }
@@ -374,7 +385,7 @@ const GamePlay = () => {
             questionPollingInterval = null;
         };
     }, [playerId, gameStatus, checked0, checked1, checked2, checked3, dispatch]);
-    // console.log(gameStatus);
+    console.log(gameStatus);
     // console.log(questionCurrent);
     let pageContent = null;
 
