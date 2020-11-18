@@ -151,7 +151,7 @@ const GamePlay = () => {
     const { playerId } = useParams();
     const classes = useStyles();
 
-    const [started, setStarted] = useState(false);
+    const [gameStatus, setGameStatus] = useState("not started");
     const [key, setKey] = useState(0);
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
@@ -167,7 +167,7 @@ const GamePlay = () => {
             { answerBody: "" },
             { answerBody: "" },
         ],
-        timeLimit:0
+        timeLimit: 0
     });
 
     const handleChangeCheckBox1 = (event) => {
@@ -197,7 +197,6 @@ const GamePlay = () => {
         );
     };
 
-    // console.log( isoTimeCurrent);
 
     useEffect(() => {
     // using polling to get the ongoing game status
@@ -209,7 +208,7 @@ const GamePlay = () => {
                 .then((data) => {
                     console.log(data);
                     if (data.started === true) {
-                        setStarted(true);
+                        setGameStatus('started');
                     }
                 });
         };
@@ -240,29 +239,44 @@ const GamePlay = () => {
                         setRemainTime(diffInSeconds);
                         // reset the coutdown based on real time value
                         setKey((prevKey) => prevKey + 1);
+                        // should set a setTimeout api call when the countdown reach 0
                     }
                 });
         };
-        if (started === false) {
+        // if game is not start, keep pooling
+        // if game start, stop pooling and get question, page should work correctly
+        // even if user refresh the page
+        // if counterdown end, should wait admin to advance to next question
+        if (gameStatus === "not started") {
             getGameStutus();
-            pollingTimeout = setInterval(() => getGameStutus(), 1000);
-        } else {
+            // point of declare pollingTimeout as a global object is
+            // making sure there are only one pooling function get runned
+            // avoid multiple copy of pooling give server too much preasure
+            if(!pollingTimeout){
+                pollingTimeout = setInterval(() => getGameStutus(), 1000);
+            }
+        } else if(gameStatus === "started"){
             clearInterval(pollingTimeout);
+            pollingTimeout = null;
             // should fetch the first question of the game here
             getQuestion();
             console.log("game already started");
         }
+        else{
+            console.log("fuck");
+        }
         return () => {
             // when component unmounted, stop pooling
             clearInterval(pollingTimeout);
+            pollingTimeout = null;
         };
-    }, [playerId, started]);
+    }, [playerId, gameStatus]);
 
-    console.log(key);
+    console.log(questionCurrent);
     let pageContent = null;
-    if (started === false) {
-        pageContent = <div>awd{playerId}</div>;
-    } else {
+    if (gameStatus === "not started") {
+        pageContent = <div>Game not started yet</div>;
+    } else if(gameStatus === "started"){
         console.log("awdawd", questionCurrent.timeLimit);
         pageContent = (
             <Grid container className={classes.girdContainer} spacing={2}>
@@ -295,7 +309,10 @@ const GamePlay = () => {
                             </CountdownCircleTimer>
                         </Grid>
                         <Grid item xs={12} container justify="center" alignContent="center">
-              number of points
+                            
+                            <Typography variant="body1" gutterBottom>
+                                {questionCurrent.worthOfPoints} points
+                            </Typography>
                         </Grid>
                         <Grid item xs={12} container justify="center" alignContent="center">
                             <Chip label={questionCurrent.type} />
@@ -388,6 +405,9 @@ const GamePlay = () => {
                 </Grid>
             </Grid>
         );
+    }
+    else{
+        console.log("fuck");
     }
     return pageContent;
 };
