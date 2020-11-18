@@ -155,14 +155,13 @@ const GamePlay = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    // gameStatus is one of { game not started, question started, question end, game end }
-    const [gameStatus, setGameStatus] = useState("game not started");
+    // gameStatus is one of { game unknown status, game not started, question started, question end, game end }
+    const [gameStatus, setGameStatus] = useState("game unknown status");
     const [key, setKey] = useState(0);
     const [checked0, setChecked0] = useState(false);
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
-    // const [isoTimeCurrent, setIsoTimeCurrent] = useState();
     const [remainTime, setRemainTime] = useState(0);
     const [questionCurrent, setQuestionCurrent] = useState({
         questionBody: "",
@@ -213,6 +212,9 @@ const GamePlay = () => {
                     console.log(data);
                     if (data.started === true) {
                         setGameStatus("question started");
+                    }
+                    else{
+                        setGameStatus("game not started");
                     }
                 });
         };
@@ -295,7 +297,17 @@ const GamePlay = () => {
         // if game start, stop pooling and get question, page should work correctly
         // even if user refresh the page
         // if counterdown end, should wait admin to advance to next question
-        if (gameStatus === "game not started") {
+        
+        
+        if(gameStatus === "game unknown status"){
+            // this is added to handle some edge case
+            // for example, user may refresh the page between questions
+            // in this case, the game already started but the admin didn't advance to next question
+            // so should set the game to started and check if the qestion fetched from api is the same as the previous one
+            console.log("game unknown status aweawe");
+            getGameStutus();
+        }
+        else if (gameStatus === "game not started") {
             getGameStutus();
             // point of declare pollingTimeout as a global object is
             // making sure there are only one pooling function get runned
