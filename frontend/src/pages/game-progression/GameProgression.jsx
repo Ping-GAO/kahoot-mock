@@ -64,8 +64,9 @@ const GameProgression = () => {
                 
                 setPosition(results.position);
                 setGameLength(results.questions.length);
+                console.log("result postion",results.position);
                 if(results.position !== -1 && (results.position!== results.questions.length)){
-                    setTimeLimitCurrent(results.questions[results.position].timeLimit);
+                    
 
                     const now = moment(new Date());
                     const questionStart = moment(results.isoTimeLastQuestionStarted);
@@ -78,7 +79,19 @@ const GameProgression = () => {
 					
                     if (diffInSeconds > 0) {
                         setRemainTime(diffInSeconds);
+                        setTimeLimitCurrent(results.questions[results.position].timeLimit);
                         setKey((prevKey) => prevKey + 1);
+                       
+                    }
+                    else{
+                        // if already pass the time limit 
+                        // enable the advance button
+                        // and set the countdown to the stop stage
+                        setRemainTime(0);
+                        setTimeLimitCurrent(0);
+                        setAdvanceDisabled(false);
+                        setKey((prevKey) => prevKey + 1);
+                        
                     }
                 }
                 
@@ -107,7 +120,7 @@ const GameProgression = () => {
                 () => {
                     dispatch(alertSuccess("Advance Sucess"));
                     console.log("length", gameLength);
-
+                    setAdvanceDisabled(true);
                     setPosition((prevPosition) => prevPosition + 1);
                 },
                 (error) => {
@@ -147,7 +160,7 @@ const GameProgression = () => {
 
     console.log(timeLimitCurrent)
 
-
+    console.log(position,gameLength)
 
     let pageContent;
     if (position === -2) {
