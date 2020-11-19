@@ -16,7 +16,7 @@ export const quizQuestionPublicReturn = question => {
 export const quizQuestionGetCorrectAnswers = question => {
   const { answers, } = question;
   const answersRight = answers.filter(answer => answer.isRightOne !== true);
-  console.log('anwer corrent id ', answersRight.map(answer => answer.answerId));
+  //   console.log('anwer corrent id ', answersRight.map(answer => answer.answerId));
   return answersRight.map(answer => answer.answerId);
 };
 
