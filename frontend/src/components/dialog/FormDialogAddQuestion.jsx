@@ -280,6 +280,22 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
         for (let i = 1; i <= 4; i += 1) {
             answers.push(newAnswer(uuid(),eval(`answer${i}`), eval(`checked${i}`)));
         }
+        
+        let atLeastOneAnswer = false;
+        for (let i = 1; i <= 4; i += 1) {
+          
+            if(eval(`checked${i}`) === true){
+                atLeastOneAnswer  = true;
+                break;
+            }
+        }
+        
+        if(!atLeastOneAnswer){
+            dispatch(alertError("Please Checked Atleast One Correct Answer"));
+            return;
+        }
+        
+        
         const question = newQuestion(
             uuid(),
             title,
