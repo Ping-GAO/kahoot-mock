@@ -11,7 +11,7 @@ const GameProgression = () => {
     // -2 is an impossible value for fetch to return
     // this is set to default value
     const [position, setPosition] = useState(-2);
-    const [gameLength,setGameLength] = useState(-1);
+    const [gameLength, setGameLength] = useState(-1);
     useEffect(() => {
         fetch(`${API_URL}/admin/session/${sessionId}/status`, {
             method: "GET",
@@ -47,11 +47,9 @@ const GameProgression = () => {
             .then(
                 () => {
                     dispatch(alertSuccess("Advance Sucess"));
-                    console.log("length",gameLength);
-                   
-                    setPosition(prevPosition => prevPosition+1);
-                    
-                    
+                    console.log("length", gameLength);
+
+                    setPosition((prevPosition) => prevPosition + 1);
                 },
                 (error) => {
                     dispatch(alertError(error));
@@ -70,13 +68,11 @@ const GameProgression = () => {
         Start The Game
             </Button>
         );
-        // use setTimeout to get the answer then refresh the page by changing state varible
-    } else if(position===gameLength-1){
-        // didn't end now, end with a timeout
-        pageContent = (<div>Game End</div>);
-    }
-    else{
-    
+    // use setTimeout to get the answer then refresh the page by changing state varible
+    } else if (position === gameLength - 1) {
+    // didn't end now, end with a timeout
+        pageContent = <div>Game End</div>;
+    } else {
         pageContent = (
             <Button color="primary" onClick={handleAdvanceGame}>
         Advance
