@@ -39,11 +39,12 @@ const GameProgression = () => {
 
     // -2 is an impossible value for fetch to return
     // this is set to default value
-    const [timeLimitCurrent,setTimeLimitCurrent] = useState(0);
+    const [timeLimitCurrent,setTimeLimitCurrent] = useState(1000);
     const [position, setPosition] = useState(-2);
     const [gameLength, setGameLength] = useState(-1);
     const [key, setKey] = useState(0);
-    const [remainTime, setRemainTime] = useState(0);
+    const [remainTime, setRemainTime] = useState(1000);
+    const [advanceDisabled, setAdvanceDisabled] = useState(true);
 
     useEffect(() => {
         fetch(`${API_URL}/admin/session/${sessionId}/status`, {
@@ -63,7 +64,7 @@ const GameProgression = () => {
                 
                 setPosition(results.position);
                 setGameLength(results.questions.length);
-                if(results.position !== -1){
+                if(results.position !== -1 && (results.position!== results.questions.length)){
                     setTimeLimitCurrent(results.questions[results.position].timeLimit);
 
                     const now = moment(new Date());
@@ -159,18 +160,23 @@ const GameProgression = () => {
             </Button>
         );
         // use setTimeout to get the answer then refresh the page by changing state varible
-    } else if (position === gameLength - 1) {
+    } else if (position === gameLength ) {
         // didn't end now, end with a timeout
         // when game end show final result
+        
         pageContent = <div>Game End</div>;
+       
+       
     } else {
         // should be a countdown timer here
+        console.log("advanceDisabled",advanceDisabled);
         pageContent = (
             <>
                 <CountdownCircleTimer
                     onComplete={() => {
                         // should to some api call
                         console.log("end");
+                        setAdvanceDisabled(false);
                     }}
                     isPlaying
                     key={key}
@@ -184,7 +190,9 @@ const GameProgression = () => {
                 >
                     {renderTime}
                 </CountdownCircleTimer>
-                <Button color="primary" onClick={handleAdvanceGame}>
+                <Button color="primary" onClick={handleAdvanceGame}  
+                    disabled={advanceDisabled}
+                >
         Advance
                 </Button>
             </>
