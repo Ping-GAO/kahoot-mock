@@ -10,7 +10,7 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 import API_URL from "../../constants";
 import { alertError, alertSuccess } from "../../redux/actions";
-
+// import useLocalStorage from '../../custom-hook/useLocalStorage';
 /* eslint-disable no-eval */
 let gamePollingInterval = null;
 let questionPollingInterval = null;
@@ -176,6 +176,9 @@ const GamePlay = () => {
         ],
         timeLimit: 0,
     });
+    
+    
+
 
     const handleChangeCheckBox0 = (event) => {
         setChecked0(event.target.checked);
@@ -341,6 +344,45 @@ const GamePlay = () => {
                 });
         };
 
+
+
+
+
+        const getAnswers = ()=>{
+        
+        
+            // question already end
+            // but react setState don't presisit between refresh
+            // need to do a fetch call here to get the data from
+            // the question just ended
+            fetch(`${API_URL}/play/${playerId}/question`, {
+                method: "GET",
+            })
+                .then((res) => res.json())
+
+                .then((data) => {
+                
+                    const { question } = data;
+                    // console.log(data,"data");
+                    setQuestionCurrent(question);
+                    fetch(`${API_URL}/play/${playerId}/answer`,{
+                        method:"GET"
+                    })
+                        .then(res=>res.json())
+                        .then(data2=>{
+                            
+                            console.log(data2.answerIds);
+                        });
+                
+                });
+        
+           
+        
+           
+        };
+
+
+
         // if game is not start, keep pooling
         // if game start, stop pooling and get question, page should work correctly
         // even if user refresh the page
@@ -371,7 +413,7 @@ const GamePlay = () => {
             
             // show current question answers
             
-            
+            getAnswers();
             
             
         } else {
@@ -391,6 +433,8 @@ const GamePlay = () => {
             questionPollingInterval = null;
         };
     }, [playerId, gameStatus, checked0, checked1, checked2, checked3, dispatch]);
+    
+    console.log(questionCurrent)
     console.log(gameStatus);
     // console.log(questionCurrent);
     let pageContent = null;
