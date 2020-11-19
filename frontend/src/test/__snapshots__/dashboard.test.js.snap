@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dashboard Page Dashboard page should have a welcome text 1`] = `ReactWrapper {}`;

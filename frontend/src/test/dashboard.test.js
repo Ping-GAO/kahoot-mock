@@ -1,9 +1,9 @@
 import {mount} from "enzyme";
 import {Provider} from "react-redux";
-import store from "../redux/stores";
-import Dashboard from "../pages/home/Dashboard";
 import Typography from "@material-ui/core/Typography";
 import React from "react";
+import store from "../redux/stores";
+import Dashboard from "../pages/home/Dashboard";
 
 describe('Dashboard Page', () => {
     // test dashboard welcome text
@@ -13,7 +13,7 @@ describe('Dashboard Page', () => {
                 <Dashboard/>
             </Provider>);
         const dashboard = wrapper.children();
-        const dashboard_text = dashboard.find(Typography);
-        expect(dashboard_text.text()).toBe("Welcome to the BigBrain game, please log in to play!");
+        const dashboardText = dashboard.find(Typography);
+        expect(dashboardText.text()).toBe("Welcome to the BigBrain game, please log in to play!");
     })
 })
