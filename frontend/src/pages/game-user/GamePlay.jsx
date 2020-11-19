@@ -368,6 +368,12 @@ const GamePlay = () => {
                     getQuestion();
                 }, 1000);
             }
+            
+            // show current question answers
+            
+            
+            
+            
         } else {
             console.log("fuckaweawe");
         }
@@ -392,7 +398,108 @@ const GamePlay = () => {
     if (gameStatus === "game not started") {
         pageContent = <div>Game not started yet</div>;
     } else if (gameStatus === "question end") {
-        pageContent = <div>Wait admin to advance to next question</div>;
+        pageContent = (
+        // <div>Wait admin to advance to next question</div>
+        
+            <Grid container className={classes.girdContainer} spacing={2}>
+                <Grid container item xs={12} className={classes.head}>
+                    <Grid item container xs={12} className={classes.headWrapper}>
+                        <Typography variant="h3" gutterBottom>
+						Wait admin to advance to next question
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container item xs={12} className={classes.body}>
+                    
+
+                    <Grid item container xs={12} sm={12} md={12} className={classes.right}>
+                        <Grid
+                            container
+                            item
+                            xs={12}
+                            className={classes.imageContainer}
+                            justify="center"
+                            alignItems="center"
+                        >
+                            <div className={classes.imageFrameInner}>
+                                <div className={classes.imageFrame}>
+                                    <img
+                                        src={questionCurrent.image}
+                                        alt="question"
+                                        className={classes.image}
+                                    />
+                                </div>
+                            </div>
+                        </Grid>
+                    </Grid>
+                    <Grid item md={2} />
+                </Grid>
+                <Grid container item xs={12} className={classes.foot}>
+                    <Grid container item xs={12} spacing={1}>
+                        <Grid container item xs={12} sm={12} md={12} lg={6}>
+                            <div className={`${classes.choice} ${classes.choice1}`}>
+                                <Typography variant="button" display="block" gutterBottom>
+                                    {questionCurrent.answers[0].answerBody}
+                                </Typography>
+                                <Checkbox
+                                    checked={checked0}
+                                    onChange={handleChangeCheckBox0}
+                                    inputProps={{ "aria-label": "primary checkbox" }}
+                                    inputstyle={{ color: "white" }}
+                                    style={{ color: "white" }}
+                                />
+                            </div>
+                        </Grid>
+                        <Grid container item xs={12} sm={12} md={12} lg={6}>
+                            <div className={`${classes.choice} ${classes.choice2}`}>
+                                <Typography variant="button" display="block" gutterBottom>
+                                    {questionCurrent.answers[1].answerBody}
+                                </Typography>
+                                <Checkbox
+                                    checked={checked1}
+                                    onChange={handleChangeCheckBox1}
+                                    inputProps={{ "aria-label": "primary checkbox" }}
+                                    inputstyle={{ color: "white" }}
+                                    style={{ color: "white" }}
+                                />
+                            </div>
+                        </Grid>
+                    </Grid>
+                    <Grid container item xs={12} spacing={1}>
+                        <Grid container item xs={12} sm={12} md={12} lg={6}>
+                            <div className={`${classes.choice} ${classes.choice3}`}>
+                                <Typography variant="button" display="block" gutterBottom>
+                                    {questionCurrent.answers[2].answerBody}
+                                </Typography>
+                                <Checkbox
+                                    checked={checked2}
+                                    onChange={handleChangeCheckBox2}
+                                    inputProps={{ "aria-label": "primary checkbox" }}
+                                    inputstyle={{ color: "white" }}
+                                    style={{ color: "white" }}
+                                />
+                            </div>
+                        </Grid>
+                        <Grid container item xs={12} sm={12} md={12} lg={6}>
+                            <div className={`${classes.choice} ${classes.choice4}`}>
+                                <Typography variant="button" display="block" gutterBottom>
+                                    {questionCurrent.answers[3].answerBody}
+                                </Typography>
+                                <Checkbox
+                                    checked={checked3}
+                                    onChange={handleChangeCheckBox3}
+                                    inputProps={{ "aria-label": "primary checkbox" }}
+                                    inputstyle={{ color: "white" }}
+                                    style={{ color: "white" }}
+                                />
+                            </div>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        
+        
+        );
     } else if (gameStatus === "question started") {
         pageContent = (
             <Grid container className={classes.girdContainer} spacing={2}>
