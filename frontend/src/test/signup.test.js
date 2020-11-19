@@ -15,5 +15,6 @@ describe('Signup Page', () => {
         const signup = wrapper.children();
         const signupButton = signup.find(Button);
         expect(signupButton.text()).toBe("Signup");
+        expect(signupButton).toMatchSnapshot();
     })
 })

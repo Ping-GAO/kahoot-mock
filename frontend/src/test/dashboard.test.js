@@ -15,5 +15,6 @@ describe('Dashboard Page', () => {
         const dashboard = wrapper.children();
         const dashboardText = dashboard.find(Typography);
         expect(dashboardText.text()).toBe("Welcome to the BigBrain game, please log in to play!");
+        expect(dashboardText).toMatchSnapshot();
     })
 })
