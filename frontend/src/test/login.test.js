@@ -9,7 +9,7 @@ import store from "../redux/stores";
 import Login from "../pages/login/Login";
 
 
-// test login button
+// test login page
 describe('Login Page', () => {
     it('login page should have a button to login', () => {
         const wrapper = mount(
