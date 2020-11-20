@@ -408,6 +408,7 @@ const GamePlay = () => {
                     })
                         .then((res) => res.json())
                         .then((data) => {
+                            console.log(data)
                             for (let i = 0; i < data.length; i += 1) {
                                 if (data[i].correct === true) {
                                     setRight(right + 1);
