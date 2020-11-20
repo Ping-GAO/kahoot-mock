@@ -338,7 +338,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
     };
 
     const handleKeyDown = (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === 'Enter') {
             e.preventDefault();
             handleSave();
         }

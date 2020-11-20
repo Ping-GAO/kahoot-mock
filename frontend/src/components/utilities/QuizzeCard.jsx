@@ -21,7 +21,6 @@ import DialogStartGame from "../dialog/DialogStartGame";
 import { alertError, alertSuccess } from "../../redux/actions";
 import FormDialogJsonTemplate from "../dialog/FormDialogJsonTemplate";
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -62,32 +61,28 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [gameDialog, setGameDialog] = useState(false);
     const [editLocal, setEditLocal] = useState(false);
-    
-    const [templateDialog,setTemplateDialog] = useState(false);
+    const [editQ,setEditQ] = useState(false);
+    const [templateDialog, setTemplateDialog] = useState(false);
     const [endGame, setEndGame] = useState(false);
     useEffect(() => {
-        const loadQuiz = async () => {
-            const res = await fetch(`${API_URL}/admin/quiz/${id}`, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                },
-            });
-            const data = await res.json();
-            setQuiz(data);
-        };
-        loadQuiz();
-    }, [id, gameDialog, endGame]);
+        fetch(`${API_URL}/admin/quiz/${id}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        })
+            .then(res=>res.json())
+            .then(data=>setQuiz(data));
+    }, [id, gameDialog, endGame,editQ]);
     
     
     // console.log("quiz",quiz);
-    // console.log(JSON.stringify({questions:quiz.questions,name:quiz.name,
-    
-    //     thumbnail:quiz.thumbnail,
-    //     createdAt:quiz.createdAt
-    // }))
-    
-    
+    console.log(JSON.stringify({questions:quiz.questions,name:quiz.name,
+
+        thumbnail:quiz.thumbnail,
+        createdAt:quiz.createdAt
+    }))
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -95,7 +90,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         setAnchorEl(null);
     };
     const handleEditClose = () => {
-    // toogle the edit global state vairlbe because the user may edit multiple times
+        // toogle the edit global state vairlbe because the user may edit multiple times
         setEdit((prevState) => !prevState);
         setEditLocal(false);
     };
@@ -103,11 +98,13 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         setEditLocal(true);
     };
 
-    const handleTemplateDialogClose=()=>{
-        setEdit((prevState) => !prevState);
+    const handleTemplateDialogClose = () => {
+        setEditQ((prevState) => !prevState);
         setTemplateDialog(false);
-    }
-    const handleTemplateDialogOpen = ()=>{
+      
+    };
+
+    const handleTemplateDialogOpen = () => {
         setTemplateDialog(true);
     };
 
@@ -122,51 +119,44 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
     };
 
     const handleDelete = () => {
-    
-        fetch(`${API_URL}/admin/quiz/${id}`,{
-            method:"DELETE",
+        fetch(`${API_URL}/admin/quiz/${id}`, {
+            method: "DELETE",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
             },
         })
-        
             .then((res) => {
                 if (res.ok) {
                     return Promise.resolve(res.json());
                 }
-                return Promise.resolve(res.json()).then(data => {
+                return Promise.resolve(res.json()).then((data) => {
                     return Promise.reject(data.error);
                 });
             })
-            .then(()=>{
-            
-                dispatch(alertSuccess("Delete Success"));
-                handleClose();
-                setEdit((prevState) => !prevState);
-            },
-            
-            
-            (error)=>{
-                dispatch(alertError(error));
-            })
-        ;
-        
+            .then(
+                () => {
+                    dispatch(alertSuccess("Delete Success"));
+                    handleClose();
+                    setEdit((prevState) => !prevState);
+                },
+
+                (error) => {
+                    dispatch(alertError(error));
+                }
+            );
     };
 
-
-
-    const handleShowClipBoard = ()=>{
+    const handleShowClipBoard = () => {
         setGameDialog(true);
         handleClose();
     };
 
-    const handleShowGameProgression= ()=>{
+    const handleShowGameProgression = () => {
         handleClose();
         history.push(`/game/progression/${id}/${quiz.active}`);
     };
 
-
-    const handeJsonTemplate = ()=>{
+    const handeJsonTemplate = () => {
         handleClose();
         handleTemplateDialogOpen();
     };
@@ -178,8 +168,14 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
         >
-            {quiz.active && <MenuItem onClick={handleShowClipBoard}>Show ClipBoard</MenuItem>}
-            {quiz.active && <MenuItem onClick={handleShowGameProgression}>Show Game Progression</MenuItem>}
+            {quiz.active && (
+                <MenuItem onClick={handleShowClipBoard}>Show ClipBoard</MenuItem>
+            )}
+            {quiz.active && (
+                <MenuItem onClick={handleShowGameProgression}>
+          Show Game Progression
+                </MenuItem>
+            )}
             <MenuItem onClick={handeJsonTemplate}>Json Template</MenuItem>
             <MenuItem onClick={handeEditQuizze}>Edit Quizze</MenuItem>
             <MenuItem onClick={handleEditQuestion}>Edit Question</MenuItem>
@@ -282,7 +278,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
                     setGameDialog(false);
                 }}
                 quizid={id}
-                quizStatus={quiz.active} 
+                quizStatus={quiz.active}
             />
             <FormDialogJsonTemplate
                 open={templateDialog}

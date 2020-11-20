@@ -116,7 +116,8 @@ const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
                 createdAt
             }),
         
-        })  .then((res) => console.log(res.status))
+        })  
+            .then((res) => console.log(res.status))
             .then(() => {
                 handleClose();
                 console.log("fetchncall cussesss");
