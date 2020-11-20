@@ -1,13 +1,145 @@
-import React from 'react';
+import React,{useEffect, useMemo, useState} from 'react';
 import PropTypes from "prop-types";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 
+import {useDropzone} from 'react-dropzone';
+
+const baseStyle = {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '20px',
+    borderWidth: 2,
+    borderRadius: 2,
+    borderColor: '#eeeeee',
+    borderStyle: 'dashed',
+    backgroundColor: '#fafafa',
+    color: '#bdbdbd',
+    outline: 'none',
+    transition: 'border .24s ease-in-out'
+};
+  
+const activeStyle = {
+    borderColor: '#2196f3'
+};
+  
+const acceptStyle = {
+    borderColor: '#00e676'
+};
+  
+const rejectStyle = {
+    borderColor: '#ff1744'
+};
+  
 const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
 
     console.log(open,handleClose,id);
+    const [jsonFile,setJsonFile] = useState(null);
+    // accept only json file
+    const {
+        acceptedFiles,
+        getRootProps,
+        getInputProps,
+        isDragActive,
+        isDragAccept,
+        isDragReject
+	  } = useDropzone({
+        accept: '.json'
+	  });
+	
+	  const style = useMemo(() => ({
+        ...baseStyle,
+        ...(isDragActive ? activeStyle : {}),
+        ...(isDragAccept ? acceptStyle : {}),
+        ...(isDragReject ? rejectStyle : {})
+	  }), [
+        isDragActive,
+        isDragReject,
+        isDragAccept
+	  ]);
+	
+	  const files = acceptedFiles.map(file => (
+        <li key={file.path}>
+		  {file.path} - {file.size} bytes
+        </li>
+	  ));
+	  
+	  
+	  
+    const handleEdit = ()=>{
+    
+        
+    
+    
+    
+    
+    
+    
+    };
+    
+    
+    
+    useEffect(()=>{
+        if(acceptedFiles[0]){
+            const jsonFileLocal = acceptedFiles[0];
+            const fileReader = new FileReader();
+            fileReader.onload = (event)=>{
+                setJsonFile(JSON.parse(event.target.result));
+            }
+            fileReader.readAsText(jsonFileLocal);
+
+        
+        }
+
+       
+    }, [acceptedFiles]);
+    
+    console.log(jsonFile);
+    
+    
     return (
-        <div>
-			fuck
-        </div>
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="form-dialog-title"
+            fullWidth
+            maxWidth="sm"
+        >
+            <DialogTitle>Json Template</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+				Fill the Quiz with Json Template
+                </DialogContentText>
+               
+                <section className="container">
+
+                    <div {...getRootProps({style})}>
+                        <input {...getInputProps()} />
+                        <p>Upload a json file</p>
+                    </div>
+                    <aside>
+                        <h4>Files</h4>
+                        <ul>{files}</ul>
+                    </aside>
+                </section>
+                
+               
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} color="primary">
+				Cancel
+                </Button>
+                <Button onClick={handleEdit} color="primary">
+				Add
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 

@@ -276,7 +276,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
                 quizStatus={quiz.active} 
             />
             <FormDialogJsonTemplate
-                open={editLocal}
+                open={templateDialog}
                 handleClose={handleTemplateDialogClose}
                 id={id}
             />
