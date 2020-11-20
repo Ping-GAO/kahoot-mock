@@ -9,11 +9,14 @@ import Signup from "../pages/signup/Signup";
 
 // test signup button
 describe('Signup Page', () => {
+
+    const wrapper = mount(
+        <Provider store={store}>
+            <Signup />
+        </Provider>);
+    
     it('Signup page should have a button to signup', () => {
-        const wrapper = mount(
-            <Provider store={store}>
-                <Signup />
-            </Provider>);
+       
         const signup = wrapper.children();
         const signupButton = signup.find(Button);
         expect(signupButton.text()).toBe("Signup");
@@ -21,43 +24,28 @@ describe('Signup Page', () => {
     })
 
     it('Signup page has a textfield to input user email', () => {
-        const component = mount(
-            <Provider store={store}>
-                <Signup />
-            </Provider>);
-        expect(component.find(TextField).first().text()).toBe("Email *");
+       
+        expect(wrapper.find(TextField).first().text()).toBe("Email *");
     });
 
     it('Signup page has a textfield to input user email', () => {
-        const component = mount(
-            <Provider store={store}>
-                <Signup />
-            </Provider>);
-        expect(component.find(TextField).first().text()).toBe("Email *");
+      
+        expect(wrapper.find(TextField).first().text()).toBe("Email *");
     });
 
     it('Signup page has a textfield to input user password', () => {
-        const component = mount(
-            <Provider store={store}>
-                <Signup />
-            </Provider>);
-        expect(component.find(TextField).at(1).text()).toBe("Password *");
+     
+        expect(wrapper.find(TextField).at(1).text()).toBe("Password *");
     });
 
     it('Signup page has a textfield to verify user password', () => {
-        const component = mount(
-            <Provider store={store}>
-                <Signup />
-            </Provider>);
-        expect(component.find(TextField).at(2).text()).toBe("Type password again *");
+      
+        expect(wrapper.find(TextField).at(2).text()).toBe("Type password again *");
     });
 
 
     it('Signup page has a textfield to input user name', () => {
-        const component = mount(
-            <Provider store={store}>
-                <Signup />
-            </Provider>);
-        expect(component.find(TextField).last().text()).toBe("Name *");
+    
+        expect(wrapper.find(TextField).last().text()).toBe("Name *");
     });
 })
