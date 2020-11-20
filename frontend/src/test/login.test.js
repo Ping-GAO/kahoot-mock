@@ -9,7 +9,7 @@ import Login from "../pages/login/Login";
 import TextField from "@material-ui/core/TextField";
 
 
-// test login button
+// test login page
 describe('Login Page', () => {
     it('login page should have a button to login', () => {
         const wrapper = mount(
