@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useParams, useHistory } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import {makeStyles} from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
@@ -10,6 +10,7 @@ import moment from "moment";
 import {useDispatch} from "react-redux";
 import API_URL from "../../constants";
 import {alertError, alertSuccess} from "../../redux/actions";
+
 
 /* eslint-disable no-eval */
 let gamePollingInterval = null;
@@ -165,6 +166,7 @@ const useStyles = makeStyles((theme) => ({
 const GamePlay = () => {
     const {playerId} = useParams();
     const classes = useStyles();
+    const history = useHistory();
     const dispatch = useDispatch();
 
     // gameStatus is one of { game not started, question started, question end, game end }
@@ -189,7 +191,7 @@ const GamePlay = () => {
 
     const [remainTime, setRemainTime] = useState(0);
 
-    const [right, setRight] = useState(0);
+    
     const [questionCurrent, setQuestionCurrent] = useState({
         questionBody: "",
         answers: [
@@ -409,11 +411,16 @@ const GamePlay = () => {
                         .then((res) => res.json())
                         .then((data) => {
                             console.log(data)
+                            
+                            let  right = 0;
+                            
                             for (let i = 0; i < data.length; i += 1) {
                                 if (data[i].correct === true) {
-                                    setRight(right + 1);
+                                    right += 1;
                                 }
                             }
+                            const wrong = data.length - right;
+                            history.push(`/game/play/results/${playerId}/${right}/${wrong}`);
                         })
                 });
         };
@@ -515,7 +522,7 @@ const GamePlay = () => {
             questionEndTimeOut = null;
             questionPollingInterval = null;
         };
-    }, [playerId, gameStatus, checkBoxClicked, dispatch, right]);
+    }, [playerId, gameStatus, checkBoxClicked, dispatch, history]);
 
     // console.log(questionCurrent)
     // console.log(gameStatus);
@@ -776,8 +783,7 @@ const GamePlay = () => {
             </Grid>
         );
     } else {
-        pageContent = (<div style={{fontSize: '50px', textAlign: 'center'}}>Game ended and correct question number
-            is {right}</div>);
+        console.log("really shoukd not get here");
     }
     return pageContent;
 };

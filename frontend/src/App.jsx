@@ -11,6 +11,7 @@ import EditGameQuestion from "./pages/edit/EditGameQuestion";
 import GameProgression from './pages/game-progression/GameProgression';
 import GameJoin from './pages/game-user/GameJoin';
 import GamePlay from './pages/game-user/GamePlay';
+import GameResult from './pages/game-user/GameResult';
 
 const App = () => {
     const alert = useSelector((state) => state.alert);
@@ -43,6 +44,9 @@ const App = () => {
                     </Route>
                     <Route exact path="/game/progression/:quizId/:sessionId"> 
                         <GameProgression/>
+                    </Route>
+                    <Route exact path="/game/play/results/:playerId/:right/:wrong"> 
+                        <GameResult/>
                     </Route>
                     <Route path="/">
                         <Dashboard />
