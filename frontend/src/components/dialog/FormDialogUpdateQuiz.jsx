@@ -72,8 +72,6 @@ const FormDialogUpdateQuiz = ({ open, handleClose, id }) => {
 
     };
 
-
-
     const {
         acceptedFiles,
         getRootProps,
@@ -82,10 +80,6 @@ const FormDialogUpdateQuiz = ({ open, handleClose, id }) => {
         accept: "image/jpeg, image/png",
         noDrag: true,
     });
-
-
-
-
 
     useEffect(() => {
         if (acceptedFiles[0]) {
@@ -101,9 +95,12 @@ const FormDialogUpdateQuiz = ({ open, handleClose, id }) => {
 
     }, [acceptedFiles]);
 
-
-    // console.log(imageData);
-
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleEdit();
+        }
+    }
 
     return (
         <Dialog
@@ -119,6 +116,7 @@ const FormDialogUpdateQuiz = ({ open, handleClose, id }) => {
                     Change the title of the created quizze
                 </DialogContentText>
                 <TextField
+                    onKeyDown={handleKeyDown}
                     autoFocus
                     margin="dense"
                     label="Quizze Name"
