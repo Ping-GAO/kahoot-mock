@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import Chip from "@material-ui/core/Chip";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import {CountdownCircleTimer} from "react-countdown-circle-timer";
 import moment from "moment";
-import { useDispatch } from "react-redux";
+import {useDispatch} from "react-redux";
 import API_URL from "../../constants";
-import { alertError, alertSuccess } from "../../redux/actions";
+import {alertError, alertSuccess} from "../../redux/actions";
 
 /* eslint-disable no-eval */
 let gamePollingInterval = null;
@@ -155,10 +155,15 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: "flex-start",
     },
+    textstyle : {
+        fontSize: '50px',
+        textAlign: 'center',
+        marginTop:'20%'
+    }
 }));
 
 const GamePlay = () => {
-    const { playerId } = useParams();
+    const {playerId} = useParams();
     const classes = useStyles();
     const dispatch = useDispatch();
 
@@ -186,10 +191,10 @@ const GamePlay = () => {
     const [questionCurrent, setQuestionCurrent] = useState({
         questionBody: "",
         answers: [
-            { answerBody: "" },
-            { answerBody: "" },
-            { answerBody: "" },
-            { answerBody: "" },
+            {answerBody: ""},
+            {answerBody: ""},
+            {answerBody: ""},
+            {answerBody: ""},
         ],
         timeLimit: 0,
     });
@@ -211,7 +216,7 @@ const GamePlay = () => {
         setCheckBoxClicked((prevValue) => !prevValue);
     };
 
-    const renderTime = ({ remainingTime }) => {
+    const renderTime = ({remainingTime}) => {
         if (remainingTime === 0) {
             return <div className={classes.timer}>Too lale...</div>;
         }
@@ -255,7 +260,7 @@ const GamePlay = () => {
                 .then((res) => res.json())
 
                 .then((data) => {
-                    const { question } = data;
+                    const {question} = data;
                     const previousQestionId = localStorage.getItem(playerId);
 
                     // console.log(previousQestionId);
@@ -266,7 +271,7 @@ const GamePlay = () => {
                         previousQestionId !== question.questionId
                     ) {
                         // console.log("get nexy qesiotn");
-                        const { isoTimeLastQuestionStarted, ...rest } = question;
+                        const {isoTimeLastQuestionStarted, ...rest} = question;
 
                         setQuestionCurrent(rest);
 
@@ -310,7 +315,7 @@ const GamePlay = () => {
                                     headers: {
                                         "Content-Type": "application/json",
                                     },
-                                    body: JSON.stringify({ answerIds }),
+                                    body: JSON.stringify({answerIds}),
                                 })
                                     .then((res) => {
                                         if (res.ok) {
@@ -394,7 +399,7 @@ const GamePlay = () => {
                 .then((res) => res.json())
 
                 .then((data) => {
-                    const { question } = data;
+                    const {question} = data;
                     // console.log(data,"data");
                     setQuestionCurrent(question);
                     fetch(`${API_URL}/play/${playerId}/answer`, {
@@ -490,7 +495,7 @@ const GamePlay = () => {
     let pageContent = null;
 
     if (gameStatus.current === "game not started") {
-        pageContent = <div>Game not started yet</div>;
+        pageContent = <div className={classes.textstyle}>Game not started yet</div>;
     } else if (gameStatus.current === "question end") {
         pageContent = (
             // <div>Wait admin to advance to next question</div>
@@ -531,7 +536,7 @@ const GamePlay = () => {
                             </div>
                         </Grid>
                     </Grid>
-                    <Grid item md={2} />
+                    <Grid item md={2}/>
                 </Grid>
                 <Grid container item xs={12} className={classes.foot}>
                     <Grid
@@ -554,9 +559,9 @@ const GamePlay = () => {
                                 <Checkbox
                                     checked={checked0}
                                     onChange={handleChangeCheckBox0}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                     disabled={disabled0}
                                 />
                             </div>
@@ -569,9 +574,9 @@ const GamePlay = () => {
                                 <Checkbox
                                     checked={checked1}
                                     onChange={handleChangeCheckBox1}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                     disabled={disabled1}
                                 />
                             </div>
@@ -586,9 +591,9 @@ const GamePlay = () => {
                                 <Checkbox
                                     checked={checked2}
                                     onChange={handleChangeCheckBox2}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                     disabled={disabled2}
                                 />
                             </div>
@@ -601,9 +606,9 @@ const GamePlay = () => {
                                 <Checkbox
                                     checked={checked3}
                                     onChange={handleChangeCheckBox3}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                     disabled={disabled3}
                                 />
                             </div>
@@ -649,7 +654,7 @@ const GamePlay = () => {
                             </Typography>
                         </Grid>
                         <Grid item xs={12} container justify="center" alignContent="center">
-                            <Chip label={questionCurrent.type} />
+                            <Chip label={questionCurrent.type}/>
                         </Grid>
                     </Grid>
 
@@ -673,7 +678,7 @@ const GamePlay = () => {
                             </div>
                         </Grid>
                     </Grid>
-                    <Grid item md={2} />
+                    <Grid item md={2}/>
                 </Grid>
                 <Grid container item xs={12} className={classes.foot}>
                     <Grid container item xs={12} spacing={1}>
@@ -685,9 +690,9 @@ const GamePlay = () => {
                                 <Checkbox
                                     checked={checked0}
                                     onChange={handleChangeCheckBox0}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>
@@ -699,9 +704,9 @@ const GamePlay = () => {
                                 <Checkbox
                                     checked={checked1}
                                     onChange={handleChangeCheckBox1}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>
@@ -715,9 +720,9 @@ const GamePlay = () => {
                                 <Checkbox
                                     checked={checked2}
                                     onChange={handleChangeCheckBox2}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>
@@ -729,9 +734,9 @@ const GamePlay = () => {
                                 <Checkbox
                                     checked={checked3}
                                     onChange={handleChangeCheckBox3}
-                                    inputProps={{ "aria-label": "primary checkbox" }}
-                                    inputstyle={{ color: "white" }}
-                                    style={{ color: "white" }}
+                                    inputProps={{"aria-label": "primary checkbox"}}
+                                    inputstyle={{color: "white"}}
+                                    style={{color: "white"}}
                                 />
                             </div>
                         </Grid>

@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {useParams} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import { useDispatch } from "react-redux";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { makeStyles } from "@material-ui/core/styles";
+import {useDispatch} from "react-redux";
+import {CountdownCircleTimer} from "react-countdown-circle-timer";
+import {makeStyles} from "@material-ui/core/styles";
 import moment from "moment";
 import API_URL from "../../constants";
-import { alertError, alertSuccess } from "../../redux/actions";
-
-
-
+import {alertError, alertSuccess} from "../../redux/actions";
 
 
 const useStyles = makeStyles(() => ({
@@ -18,28 +15,38 @@ const useStyles = makeStyles(() => ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        fontSize: '30px',
     },
     text: {
         color: "#aaa",
+        fontSize: '25px',
     },
     value: {
         fontSize: "40px",
     },
+    id: {
+        fontSize: '50px',
+        textAlign: 'center',
+        marginTop: '20%',
+        marginBottom:'5%'
+    },
+    end: {
+        fontSize: '50px',
+        textAlign: 'center',
+        marginTop: '10%',
+    }
 
 }));
 
 
-
-
-
 const GameProgression = () => {
-    const { quizId, sessionId } = useParams();
+    const {quizId, sessionId} = useParams();
     const dispatch = useDispatch();
     const classes = useStyles();
 
     // -2 is an impossible value for fetch to return
     // this is set to default value
-    const [timeLimitCurrent,setTimeLimitCurrent] = useState(1000);
+    const [timeLimitCurrent, setTimeLimitCurrent] = useState(1000);
     const [position, setPosition] = useState(-2);
     const [gameLength, setGameLength] = useState(-1);
     const [key, setKey] = useState(0);
@@ -55,35 +62,34 @@ const GameProgression = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                const { results } = data;
+                const {results} = data;
                 console.log(results);
                 // could access gameStatus attribute to get posotion and length
                 // create extra state varible just to make the code more
                 // readable to myself
-                
-                
+
+
                 setPosition(results.position);
                 setGameLength(results.questions.length);
-                console.log("result postion",results.position);
-                if(results.position !== -1 && (results.position!== results.questions.length)){
-                    
+                console.log("result postion", results.position);
+                if (results.position !== -1 && (results.position !== results.questions.length)) {
+
 
                     const now = moment(new Date());
                     const questionStart = moment(results.isoTimeLastQuestionStarted);
                     const questionEnd = questionStart.add(results.questions[results.position].timeLimit, "seconds");
-					
+
                     const diffInSeconds = moment
                         .duration(questionEnd.diff(now))
                         .asSeconds();
-					
-					
+
+
                     if (diffInSeconds > 0) {
                         setRemainTime(diffInSeconds);
                         setTimeLimitCurrent(results.questions[results.position].timeLimit);
                         setKey((prevKey) => prevKey + 1);
-                       
-                    }
-                    else{
+
+                    } else {
                         // if already pass the time limit 
                         // enable the advance button
                         // and set the countdown to the stop stage
@@ -91,17 +97,16 @@ const GameProgression = () => {
                         setTimeLimitCurrent(0);
                         setAdvanceDisabled(false);
                         setKey((prevKey) => prevKey + 1);
-                        
+
                     }
                 }
-                
-                
-                
+
+
             });
-    }, [sessionId,position]);
+    }, [sessionId, position]);
 
     const handleAdvanceGame = () => {
-    // api with error handling
+        // api with error handling
         fetch(`${API_URL}/admin/quiz/${quizId}/advance`, {
             method: "POST",
             headers: {
@@ -130,14 +135,9 @@ const GameProgression = () => {
     };
     // console.log(position,gameLength);
 
-
-
-
-
-
-    const renderTime = ({ remainingTime }) => {
+    const renderTime = ({remainingTime}) => {
         if (remainingTime === 0) {
-            return <div className={classes.timer}>Too lale...</div>;
+            return <div className={classes.timer}>Too late...</div>;
         }
 
         return (
@@ -149,18 +149,9 @@ const GameProgression = () => {
         );
     };
 
-
-
-
-
-
-
-
-
-
     console.log(timeLimitCurrent)
 
-    console.log(position,gameLength)
+    console.log(position, gameLength)
 
     let pageContent;
     if (position === -2) {
@@ -168,54 +159,58 @@ const GameProgression = () => {
     }
     if (position === -1) {
         pageContent = (
-            <Button color="primary" onClick={handleAdvanceGame}>
-        Start The Game
+            <Button color="primary" variant="contained" onClick={handleAdvanceGame}>
+                Start The Game
             </Button>
         );
         // use setTimeout to get the answer then refresh the page by changing state varible
-    } else if (position === gameLength ) {
+    } else if (position === gameLength) {
         // didn't end now, end with a timeout
         // when game end show final result
-        
-        pageContent = <div>Game End</div>;
-       
-       
+
+        pageContent = <div className={classes.end}>Game End</div>;
+
+
     } else {
         // should be a countdown timer here
-        console.log("advanceDisabled",advanceDisabled);
+        console.log("advanceDisabled", advanceDisabled);
         pageContent = (
             <>
-                <CountdownCircleTimer
-                    onComplete={() => {
-                        // should to some api call
-                        console.log("end");
-                        setAdvanceDisabled(false);
-                    }}
-                    isPlaying
-                    key={key}
-                    duration={timeLimitCurrent}
-                    initialRemainingTime={remainTime}
-                    colors={[
-                        ["#004777", 0.33],
-                        ["#F7B801", 0.33],
-                        ["#A30000", 0.33],
-                    ]}
+                <div style={{display:'flex'}}>
+                    <div style={{margin:'auto'}}>
+                        <CountdownCircleTimer
+                            onComplete={() => {
+                                // should to some api call
+                                console.log("end");
+                                setAdvanceDisabled(false);
+                            }}
+                            isPlaying
+                            key={key}
+                            duration={timeLimitCurrent}
+                            initialRemainingTime={remainTime}
+                            colors={[
+                                ["#004777", 0.33],
+                                ["#F7B801", 0.33],
+                                ["#A30000", 0.33],
+                            ]}
+                        >
+                            {renderTime}
+                        </CountdownCircleTimer>
+                    </div>
+                </div>
+                <Button style={{marginTop:'5%'}} color="primary" onClick={handleAdvanceGame} variant="contained" disabled={advanceDisabled}
                 >
-                    {renderTime}
-                </CountdownCircleTimer>
-                <Button color="primary" onClick={handleAdvanceGame}  
-                    disabled={advanceDisabled}
-                >
-        Advance
+                    Advance
                 </Button>
             </>
         );
     }
 
+
     return (
         <>
-            <div>sessionId:{sessionId}</div>
-            {pageContent}
+            <div className={classes.id}>sessionId:{sessionId}</div>
+            <div style={{fontSize: '50px', textAlign: 'center'}}>{pageContent}</div>
         </>
     );
 };
