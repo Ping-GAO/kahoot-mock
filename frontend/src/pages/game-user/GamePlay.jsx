@@ -10,7 +10,8 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 import API_URL from "../../constants";
 import { alertError, alertSuccess } from "../../redux/actions";
-// import useLocalStorage from '../../custom-hook/useLocalStorage';
+
+
 /* eslint-disable no-eval */
 let gamePollingInterval = null;
 let questionPollingInterval = null;
@@ -350,7 +351,7 @@ const GamePlay = () => {
                     // case where user wait admin to advance to next question
                     if(previousQestionId !== null &&
 						previousQestionId === question.questionId){
-                    
+                        // keep pooling
                         setGameStatus("question end");
                     }
                 });
@@ -426,11 +427,10 @@ const GamePlay = () => {
             console.log("questuion stated");
             clearInterval(gamePollingInterval);
             gamePollingInterval = null;
-
             getQuestion();
         } else if (gameStatus === "question end") {
+        
             // do a pooling to get next question
-
             if (!questionPollingInterval) {
                 questionPollingInterval = setInterval(() => {
                     getQuestion();
@@ -462,7 +462,11 @@ const GamePlay = () => {
     
     console.log(questionCurrent)
     console.log(gameStatus);
-    // console.log(questionCurrent);
+
+    
+    
+    
+    // condition render base on gameStatus    
     let pageContent = null;
 
     if (gameStatus === "game not started") {
