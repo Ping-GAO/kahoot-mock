@@ -19,6 +19,7 @@ import API_URL from "../../constants";
 import FormDialogUpdateQuiz from "../dialog/FormDialogUpdateQuiz";
 import DialogStartGame from "../dialog/DialogStartGame";
 import { alertError, alertSuccess } from "../../redux/actions";
+import FormDialogJsonTemplate from "../dialog/FormDialogJsonTemplate";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -61,6 +62,8 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [gameDialog, setGameDialog] = useState(false);
     const [editLocal, setEditLocal] = useState(false);
+    
+    const [templateDialog,setTemplateDialog] = useState(false);
     const [endGame, setEndGame] = useState(false);
     useEffect(() => {
         const loadQuiz = async () => {
@@ -75,7 +78,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         };
         loadQuiz();
     }, [id, gameDialog, endGame]);
-
+    console.log(templateDialog);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -89,6 +92,14 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
     };
     const handleEditOpen = () => {
         setEditLocal(true);
+    };
+
+    const handleTemplateDialogClose=()=>{
+        setEdit((prevState) => !prevState);
+        setTemplateDialog(false);
+    }
+    const handleTemplateDialogOpen = ()=>{
+        setTemplateDialog(true);
     };
 
     const handeEditQuizze = () => {
@@ -148,6 +159,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
 
     const handeJsonTemplate = ()=>{
         handleClose();
+        handleTemplateDialogOpen();
     };
     const renderMenu = (
         <Menu
@@ -262,6 +274,11 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
                 }}
                 quizid={id}
                 quizStatus={quiz.active} 
+            />
+            <FormDialogJsonTemplate
+                open={templateDialog}
+                handleClose={handleTemplateDialogClose}
+                id={id}
             />
         </div>
     );
