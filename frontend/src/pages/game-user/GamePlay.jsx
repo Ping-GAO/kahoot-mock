@@ -151,6 +151,10 @@ const useStyles = makeStyles((theme) => ({
     value: {
         fontSize: "40px",
     },
+    showAnswer:{
+        justifyContent:"center",
+        alignItems:"flex-start"
+    }
 }));
 
 const GamePlay = () => {
@@ -165,6 +169,14 @@ const GamePlay = () => {
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
+    
+    const [disabled0, setDisabled0] = useState(false);
+    const [disabled1, setDisabled1] = useState(false);
+
+    const [disabled2, setDisabled2] = useState(false);
+    const [disabled3, setDisabled3] = useState(false);
+
+    
     const [remainTime, setRemainTime] = useState(0);
     const [questionCurrent, setQuestionCurrent] = useState({
         questionBody: "",
@@ -372,6 +384,20 @@ const GamePlay = () => {
                         .then(data2=>{
                             
                             console.log(data2.answerIds);
+                            // diable all checkboxs
+                            setDisabled0(true);
+                            setDisabled1(true);
+                            setDisabled2(true);
+                            setDisabled3(true);
+                            
+                            console.log(question.answers);
+                            question.answers.forEach((answer,index)=>{
+                            
+                                console.log(answer,index);
+                                if(data2.answerIds.includes(answer.answerId)){
+                                    eval(`setChecked${index}(true)`); 
+                                }
+                            })
                         });
                 
                 });
@@ -479,7 +505,15 @@ const GamePlay = () => {
                     <Grid item md={2} />
                 </Grid>
                 <Grid container item xs={12} className={classes.foot}>
+                    <Grid container item xs={12} spacing={1} className={classes.showAnswer}>
+                        <Typography variant="h5" gutterBottom>
+       Correct Answers Shown Bellow
+                        </Typography>
+                    </Grid>
                     <Grid container item xs={12} spacing={1}>
+                    
+              
+                    
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
                                 <Typography variant="button" display="block" gutterBottom>
@@ -491,6 +525,7 @@ const GamePlay = () => {
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
+                                    disabled={disabled0}
                                 />
                             </div>
                         </Grid>
@@ -505,6 +540,7 @@ const GamePlay = () => {
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
+                                    disabled={disabled1}
                                 />
                             </div>
                         </Grid>
@@ -521,6 +557,7 @@ const GamePlay = () => {
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
+                                    disabled={disabled2}
                                 />
                             </div>
                         </Grid>
@@ -535,6 +572,7 @@ const GamePlay = () => {
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
                                     style={{ color: "white" }}
+                                    disabled={disabled3}
                                 />
                             </div>
                         </Grid>
