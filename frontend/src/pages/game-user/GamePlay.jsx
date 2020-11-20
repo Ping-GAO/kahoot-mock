@@ -226,7 +226,7 @@ const GamePlay = () => {
     };
 
     useEffect(() => {
-    // using polling to get the ongoing game status
+        // using polling to get the ongoing game status
         const getGameStutus = () => {
             console.log("game not started, pooling");
             fetch(`${API_URL}/play/${playerId}/status`, {
@@ -263,7 +263,7 @@ const GamePlay = () => {
                     // no question is current active, fetch one from api
                     if (
                         previousQestionId === null ||
-            previousQestionId !== question.questionId
+                        previousQestionId !== question.questionId
                     ) {
                         // console.log("get nexy qesiotn");
                         const { isoTimeLastQuestionStarted, ...rest } = question;
@@ -348,7 +348,7 @@ const GamePlay = () => {
                     }
                     if (
                         previousQestionId !== null &&
-            previousQestionId !== question.questionId
+                        previousQestionId !== question.questionId
                     ) {
                         // case where a new question is fetched from api
                         // stop pulling question from server
@@ -368,12 +368,12 @@ const GamePlay = () => {
                     // case where user wait admin to advance to next question
                     if (
                         previousQestionId !== null &&
-            previousQestionId === question.questionId
+                        previousQestionId === question.questionId
                     ) {
                         // keep pooling
-                       
-                        
-                        if(gameStatus.current!=="question end"){
+
+
+                        if (gameStatus.current !== "question end") {
                             setGameStatus((prevState) => ({
                                 current: "question end",
                                 prev: prevState.current,
@@ -409,9 +409,11 @@ const GamePlay = () => {
                             setDisabled2(true);
                             setDisabled3(true);
 
-                            // console.log(question.answers);
+                            console.log("all the answr id", question.answers);
+                            console.log("correct answerid", data2.answerIds);
                             question.answers.forEach((answer, index) => {
                                 // console.log(answer, index);
+
                                 if (data2.answerIds.includes(answer.answerId)) {
                                     eval(`setChecked${index}(true)`);
                                 }
@@ -435,20 +437,20 @@ const GamePlay = () => {
             }
         } else if (gameStatus.current === "question started") {
             getQuestion();
-            
-            if(gameStatus.prev === "question end"){
+
+            if (gameStatus.prev === "question end") {
                 // reset all the checkbox
                 setChecked0(false);
                 setChecked1(false);
                 setChecked2(false);
                 setChecked3(false);
-                
+
                 // make sure this only get runned once
                 setGameStatus((prevState) => ({
                     current: "question started",
                     prev: prevState.current,
                 }));
-                
+
             }
         } else if (gameStatus.current === "question end") {
             // do a pooling to get next question
@@ -459,7 +461,7 @@ const GamePlay = () => {
             }
 
             // show current question answers
-            console.log("fukc",gameStatus);
+            console.log("fukc", gameStatus);
             getAnswers();
         } else {
             console.log("fuckaweawe");
@@ -497,7 +499,7 @@ const GamePlay = () => {
                 <Grid container item xs={12} className={classes.head}>
                     <Grid item container xs={12} className={classes.headWrapper}>
                         <Typography variant="h3" gutterBottom>
-              Wait admin to advance to next question
+                            Wait admin to advance to next question
                         </Typography>
                     </Grid>
                 </Grid>
@@ -540,7 +542,7 @@ const GamePlay = () => {
                         className={classes.showAnswer}
                     >
                         <Typography variant="h5" gutterBottom>
-              Correct Answers Shown Bellow
+                            Correct Answers Shown Bellow
                         </Typography>
                     </Grid>
                     <Grid container item xs={12} spacing={1}>
