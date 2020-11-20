@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -7,20 +7,21 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import {useDispatch} from "react-redux";
 import API_URL from "../../constants";
-import { alertError, alertSuccess } from "../../redux/actions";
+import {alertError, alertSuccess} from "../../redux/actions";
 
-const FormDialogAddQuiz = ({ open, handleClose }) => {
+const FormDialogAddQuiz = ({open, handleClose}) => {
     // add button should call backend api, stub for now
 
     const [name, setName] = useState("");
     const dispatch = useDispatch();
 
+
     const handleAdd = () => {
         fetch(`${API_URL}/admin/quiz/new`, {
             method: "POST",
-            body: JSON.stringify({ name }),
+            body: JSON.stringify({name}),
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
                 Accept: "application/json",
@@ -49,6 +50,13 @@ const FormDialogAddQuiz = ({ open, handleClose }) => {
 
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleAdd();
+        }
+    }
+
     return (
         <Dialog
             open={open}
@@ -63,6 +71,7 @@ const FormDialogAddQuiz = ({ open, handleClose }) => {
                     To add to this new quizze, please enter the name
                 </DialogContentText>
                 <TextField
+                    onKeyDown={handleKeyDown}
                     autoFocus
                     margin="dense"
                     id="name"
