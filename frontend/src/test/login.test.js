@@ -2,11 +2,12 @@ import {mount} from 'enzyme';
 import React from "react";
 import {Provider} from "react-redux";
 import Button from "@material-ui/core/Button";
-// import InputAdornment from "@material-ui/core/InputAdornment";
-// import TextField from "@material-ui/core/TextField";
-// import EmailIcon from "@material-ui/icons/Email";
+
 import store from "../redux/stores";
+
 import Login from "../pages/login/Login";
+import TextField from "@material-ui/core/TextField";
+
 
 // test login button
 describe('Login Page', () => {
@@ -21,28 +22,19 @@ describe('Login Page', () => {
         expect(loginButton).toMatchSnapshot();
     })
 
+    it('login page has a textfield to input user email', () => {
+        const component = mount(
+            <Provider store={store}>
+                <Login/>
+            </Provider>);
+        expect(component.find(TextField).first().text()).toBe("Email *");
+    });
 
-
-    // don't work on my machine 
-    // it('test onchange', () => {
-    //     const wrapper = mount(
-    //         <TextField
-    //             label="Email"
-    //             type="email"
-    //             margin="normal"
-    //             required
-    //             InputProps={{
-    //                 startAdornment: (
-    //                     <InputAdornment position="start">
-    //                         <EmailIcon/>
-    //                     </InputAdornment>
-    //                 ),
-    //             }}
-    //             onChange={(event) => setEmail(event.target.value)}
-    //         />)
-    //     const spy = jest.spyOn(TextField.prototype, 'onChange')
-    //     wrapper.find(TextField).find('input').simulate('change', {currentTarget: {value: "custom value"}}, spy);
-    //     expect(spy).toHaveBeenCalledWith('custom value');
-    // });
-
+    it('login page has a textfield to input user password ', () => {
+        const component = mount(
+            <Provider store={store}>
+                <Login/>
+            </Provider>);
+        expect(component.find(TextField).last().text()).toBe("Password *");
+    });
 })
