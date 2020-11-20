@@ -336,6 +336,14 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
             })
 
     };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleSave();
+        }
+    }
+
     return (
         <Dialog
             fullScreen
@@ -365,6 +373,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                 <Grid container item xs={12} className={classes.head}>
                     <Grid item container xs={12}>
                         <TextField
+                            onKeyDown={handleKeyDown}
                             id="outlined-full-width"
                             label="Start typing your question"
                             style={{ margin: 8 }}
@@ -468,6 +477,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
                                 <TextField
+                                    onKeyDown={handleKeyDown}
                                     className="text"
                                     label="Answer1"
                                     onChange={(event) => setAnswer1(event.target.value)}
@@ -478,6 +488,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                                 />
                                 <Checkbox
                                     checked={checked1}
+                                    onKeyDown={handleKeyDown}
                                     onChange={handleChangeCheckBox1}
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
@@ -488,6 +499,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice2}`}>
                                 <TextField
+                                    onKeyDown={handleKeyDown}
                                     className="text"
                                     label="Answer2"
                                     onChange={(event) => setAnswer2(event.target.value)}
@@ -498,6 +510,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                                 />
                                 <Checkbox
                                     checked={checked2}
+                                    onKeyDown={handleKeyDown}
                                     onChange={handleChangeCheckBox2}
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
@@ -510,6 +523,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice3}`}>
                                 <TextField
+                                    onKeyDown={handleKeyDown}
                                     className="text"
                                     label="Answer3"
                                     onChange={(event) => setAnswer3(event.target.value)}
@@ -520,6 +534,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                                 />
                                 <Checkbox
                                     checked={checked3}
+                                    onKeyDown={handleKeyDown}
                                     onChange={handleChangeCheckBox3}
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
@@ -530,6 +545,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice4}`}>
                                 <TextField
+                                    onKeyDown={handleKeyDown}
                                     className="text"
                                     label="Answer4"
                                     onChange={(event) => setAnswer4(event.target.value)}
@@ -540,6 +556,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                                 />
                                 <Checkbox
                                     checked={checked4}
+                                    onKeyDown={handleKeyDown}
                                     onChange={handleChangeCheckBox4}
                                     inputProps={{ "aria-label": "primary checkbox" }}
                                     inputstyle={{ color: "white" }}
