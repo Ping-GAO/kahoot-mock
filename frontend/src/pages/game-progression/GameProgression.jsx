@@ -27,7 +27,7 @@ const useStyles = makeStyles(() => ({
     id: {
         fontSize: '50px',
         textAlign: 'center',
-        marginTop: '20%',
+        marginTop: '15%',
         marginBottom:'5%'
     },
     end: {

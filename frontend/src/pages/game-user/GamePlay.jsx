@@ -155,10 +155,10 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "center",
         alignItems: "flex-start",
     },
-    textstyle : {
+    textstyle: {
         fontSize: '50px',
         textAlign: 'center',
-        marginTop:'20%'
+        marginTop: '20%'
     }
 }));
 
@@ -188,6 +188,8 @@ const GamePlay = () => {
     const [disabled3, setDisabled3] = useState(false);
 
     const [remainTime, setRemainTime] = useState(0);
+
+    const [right, setRight] = useState(0);
     const [questionCurrent, setQuestionCurrent] = useState({
         questionBody: "",
         answers: [
@@ -198,7 +200,6 @@ const GamePlay = () => {
         ],
         timeLimit: 0,
     });
-
     const handleChangeCheckBox0 = (event) => {
         setChecked0(event.target.checked);
         setCheckBoxClicked((prevValue) => !prevValue);
@@ -250,6 +251,7 @@ const GamePlay = () => {
                             current: "game not started",
                             prev: prevState.current,
                         }));
+
                     }
                 });
         };
@@ -257,10 +259,18 @@ const GamePlay = () => {
             fetch(`${API_URL}/play/${playerId}/question`, {
                 method: "GET",
             })
-                .then((res) => res.json())
+                .then((res) => {
+                    if (res.ok) {
+                        return Promise.resolve(res.json());
+                    }
+                    return Promise.resolve(res.json()).then(data => {
+                        return Promise.reject(data.error);
+                    });
+                })
 
                 .then((data) => {
                     const {question} = data;
+                    console.log("quesaiotyn", question);
                     const previousQestionId = localStorage.getItem(playerId);
 
                     // console.log(previousQestionId);
@@ -385,6 +395,26 @@ const GamePlay = () => {
                             }));
                         }
                     }
+                }, (error) => {
+                    console.log(error, "game should end");
+                    setGameStatus((prevState) => ({
+                        current: "game end",
+                        prev: prevState.current,
+                    }));
+
+                    // fetch the game result
+                    fetch(`${API_URL}/play/${playerId}/results`, {
+                        method: "GET",
+                    })
+                        .then((res) => res.json())
+                        .then((data) => {
+                            console.log(data)
+                            for (let i = 0; i < data.length; i += 1) {
+                                if (data[i].correct === true) {
+                                    setRight(right + 1);
+                                }
+                            }
+                        })
                 });
         };
 
@@ -469,7 +499,8 @@ const GamePlay = () => {
             console.log("fukc", gameStatus);
             getAnswers();
         } else {
-            console.log("fuckaweawe");
+            // game end
+            console.log("should be game end");
         }
         return () => {
             // when component unmounted, stop pooling
@@ -484,7 +515,7 @@ const GamePlay = () => {
             questionEndTimeOut = null;
             questionPollingInterval = null;
         };
-    }, [playerId, gameStatus, checkBoxClicked, dispatch]);
+    }, [playerId, gameStatus, checkBoxClicked, dispatch, right]);
 
     // console.log(questionCurrent)
     // console.log(gameStatus);
@@ -745,7 +776,8 @@ const GamePlay = () => {
             </Grid>
         );
     } else {
-        console.log("fuck");
+        pageContent = (<div style={{fontSize: '50px', textAlign: 'center'}}>Game ended and correct question number
+            is {right}</div>);
     }
     return pageContent;
 };
