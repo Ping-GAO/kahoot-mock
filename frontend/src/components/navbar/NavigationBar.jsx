@@ -71,7 +71,7 @@ const ButtonAppBar = () => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-                        News
+                        BigBrain
                     </Typography>
                     <Button color="inherit" onClick={toDashBoard}>
                         Dashboard

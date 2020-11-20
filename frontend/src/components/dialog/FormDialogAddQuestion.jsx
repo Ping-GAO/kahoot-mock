@@ -362,7 +362,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
                         <CloseIcon />
                     </IconButton>
                     <Typography variant="h6" className={classes.title}>
-                        Sound
+                        BigBrain
                     </Typography>
                     <Button autoFocus color="inherit" onClick={handleSave}>
                         save
