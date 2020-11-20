@@ -8,6 +8,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 
 import {useDropzone} from 'react-dropzone';
+import API_URL from '../../constants';
 
 const baseStyle = {
     flex: 1,
@@ -39,7 +40,8 @@ const rejectStyle = {
   
 const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
 
-    console.log(open,handleClose,id);
+    // console.log(open,handleClose,id);
+    // console.log(id);
     const [jsonFile,setJsonFile] = useState(null);
     // accept only json file
     const {
@@ -73,14 +75,52 @@ const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
 	  
 	  
     const handleEdit = ()=>{
+        // contain array of question
+        const {questions,thumbnail,createdAt} = jsonFile;
+        console.log("fuck",questions);
     
+         
+        const validQuestions = questions.map(question=>{
+            // this is used as a validtor
+            // if the field is not presert in the question
+            // when destructe, it will have value null
+            const { questionId,
+                questionBody,
+                answers,
+                type,
+                timeLimit,
+                worthOfPoints,
+                image} = question;
+            
         
+            return { questionId,
+                questionBody,
+                answers,
+                type,
+                timeLimit,
+                worthOfPoints,
+                image};
+        });
     
-    
-    
-    
-    
-    
+        console.log("valid",validQuestions,thumbnail,createdAt);
+        fetch(`${API_URL}/admin/quiz/${id}`,{
+            method: "PUT",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+            body: JSON.stringify({
+                questions: validQuestions,
+                thumbnail,
+                createdAt
+            }),
+        
+        })  .then((res) => console.log(res.status))
+            .then(() => {
+                handleClose();
+                console.log("fetchncall cussesss");
+            });
     };
     
     
@@ -100,7 +140,7 @@ const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
        
     }, [acceptedFiles]);
     
-    console.log(jsonFile);
+    // console.log(jsonFile);
     
     
     return (

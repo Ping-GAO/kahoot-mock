@@ -78,7 +78,16 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         };
         loadQuiz();
     }, [id, gameDialog, endGame]);
-    console.log(templateDialog);
+    
+    
+    // console.log("quiz",quiz);
+    // console.log(JSON.stringify({questions:quiz.questions,name:quiz.name,
+    
+    //     thumbnail:quiz.thumbnail,
+    //     createdAt:quiz.createdAt
+    // }))
+    
+    
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
