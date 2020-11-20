@@ -14,9 +14,12 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import { useDispatch } from "react-redux";
 import API_URL from "../../constants";
 import FormDialogUpdateQuiz from "../dialog/FormDialogUpdateQuiz";
 import DialogStartGame from "../dialog/DialogStartGame";
+import { alertError, alertSuccess } from "../../redux/actions";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
 
 const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
     const history = useHistory();
     const [quiz, setQuiz] = useState({ questions: [], active: false });
     // the original data formal is not standard format ususlly seen convert it to standard
@@ -98,7 +102,35 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
     };
 
     const handleDelete = () => {
-        handleClose();
+    
+        fetch(`${API_URL}/admin/quiz/${id}`,{
+            method:"DELETE",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        })
+        
+            .then((res) => {
+                if (res.ok) {
+                    return Promise.resolve(res.json());
+                }
+                return Promise.resolve(res.json()).then(data => {
+                    return Promise.reject(data.error);
+                });
+            })
+            .then(()=>{
+            
+                dispatch(alertSuccess("Delete Success"));
+                handleClose();
+                setEdit((prevState) => !prevState);
+            },
+            
+            
+            (error)=>{
+                dispatch(alertError(error));
+            })
+        ;
+        
     };
 
 
@@ -114,7 +146,9 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
     };
 
 
-
+    const handeJsonTemplate = ()=>{
+        handleClose();
+    };
     const renderMenu = (
         <Menu
             id="simple-menu"
@@ -125,6 +159,7 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
         >
             {quiz.active && <MenuItem onClick={handleShowClipBoard}>Show ClipBoard</MenuItem>}
             {quiz.active && <MenuItem onClick={handleShowGameProgression}>Show Game Progression</MenuItem>}
+            <MenuItem onClick={handeJsonTemplate}>Json Template</MenuItem>
             <MenuItem onClick={handeEditQuizze}>Edit Quizze</MenuItem>
             <MenuItem onClick={handleEditQuestion}>Edit Question</MenuItem>
             <MenuItem onClick={handleDelete}>Delete</MenuItem>
