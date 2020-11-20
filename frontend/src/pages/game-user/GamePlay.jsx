@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux";
 import API_URL from "../../constants";
 import { alertError, alertSuccess } from "../../redux/actions";
 
-
 /* eslint-disable no-eval */
 let gamePollingInterval = null;
 let questionPollingInterval = null;
@@ -152,10 +151,10 @@ const useStyles = makeStyles((theme) => ({
     value: {
         fontSize: "40px",
     },
-    showAnswer:{
-        justifyContent:"center",
-        alignItems:"flex-start"
-    }
+    showAnswer: {
+        justifyContent: "center",
+        alignItems: "flex-start",
+    },
 }));
 
 const GamePlay = () => {
@@ -164,20 +163,25 @@ const GamePlay = () => {
     const dispatch = useDispatch();
 
     // gameStatus is one of { game not started, question started, question end, game end }
-    const [gameStatus, setGameStatus] = useState("game not started");
+    const [gameStatus, setGameStatus] = useState({
+        current: "game not started",
+        prev: "",
+    });
+
     const [key, setKey] = useState(0);
     const [checked0, setChecked0] = useState(false);
     const [checked1, setChecked1] = useState(false);
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
-    
+    // this is used as a toogle to trigger rerender in useEffect
+    const [checkBoxClicked, setCheckBoxClicked] = useState(false);
+
     const [disabled0, setDisabled0] = useState(false);
     const [disabled1, setDisabled1] = useState(false);
 
     const [disabled2, setDisabled2] = useState(false);
     const [disabled3, setDisabled3] = useState(false);
 
-    
     const [remainTime, setRemainTime] = useState(0);
     const [questionCurrent, setQuestionCurrent] = useState({
         questionBody: "",
@@ -189,21 +193,22 @@ const GamePlay = () => {
         ],
         timeLimit: 0,
     });
-    
-    
-
 
     const handleChangeCheckBox0 = (event) => {
         setChecked0(event.target.checked);
+        setCheckBoxClicked((prevValue) => !prevValue);
     };
     const handleChangeCheckBox1 = (event) => {
         setChecked1(event.target.checked);
+        setCheckBoxClicked((prevValue) => !prevValue);
     };
     const handleChangeCheckBox2 = (event) => {
         setChecked2(event.target.checked);
+        setCheckBoxClicked((prevValue) => !prevValue);
     };
     const handleChangeCheckBox3 = (event) => {
         setChecked3(event.target.checked);
+        setCheckBoxClicked((prevValue) => !prevValue);
     };
 
     const renderTime = ({ remainingTime }) => {
@@ -231,9 +236,15 @@ const GamePlay = () => {
                 .then((data) => {
                     if (data.started === true) {
                         // check if the qestion is active
-                        setGameStatus("question started");
+                        setGameStatus((prevState) => ({
+                            current: "question started",
+                            prev: prevState.current,
+                        }));
                     } else {
-                        setGameStatus("game not started");
+                        setGameStatus((prevState) => ({
+                            current: "game not started",
+                            prev: prevState.current,
+                        }));
                     }
                 });
         };
@@ -258,6 +269,7 @@ const GamePlay = () => {
                         const { isoTimeLastQuestionStarted, ...rest } = question;
 
                         setQuestionCurrent(rest);
+
                         // console.log(rest);
                         // need a way to perserve the time remaining value between user refresh page
                         // i used real time calculation, so no matter how you refrest the page
@@ -327,8 +339,10 @@ const GamePlay = () => {
                                 setChecked1(false);
                                 setChecked2(false);
                                 setChecked3(false);
-                                setGameStatus("question end");
-                                
+                                setGameStatus((prevState) => ({
+                                    current: "question end",
+                                    prev: prevState.current,
+                                }));
                             }, (diffInSeconds + 1) * 1000);
                         }
                     }
@@ -340,30 +354,36 @@ const GamePlay = () => {
                         // stop pulling question from server
                         clearInterval(questionPollingInterval);
                         questionPollingInterval = null;
-                        
+
                         // invalid the item in localstorage
                         if (localStorage.getItem(playerId) !== null) {
                             localStorage.removeItem(playerId);
                         }
-                        setGameStatus("question started");
+                        setGameStatus((prevState) => ({
+                            current: "question started",
+                            prev: prevState.current,
+                        }));
                     }
-                    
+
                     // case where user wait admin to advance to next question
-                    if(previousQestionId !== null &&
-						previousQestionId === question.questionId){
+                    if (
+                        previousQestionId !== null &&
+            previousQestionId === question.questionId
+                    ) {
                         // keep pooling
-                        setGameStatus("question end");
+                       
+                        
+                        if(gameStatus.current!=="question end"){
+                            setGameStatus((prevState) => ({
+                                current: "question end",
+                                prev: prevState.current,
+                            }));
+                        }
                     }
                 });
         };
 
-
-
-
-
-        const getAnswers = ()=>{
-        
-        
+        const getAnswers = () => {
             // question already end
             // but react setState don't presisit between refresh
             // need to do a fetch call here to get the data from
@@ -374,48 +394,38 @@ const GamePlay = () => {
                 .then((res) => res.json())
 
                 .then((data) => {
-                
                     const { question } = data;
                     // console.log(data,"data");
                     setQuestionCurrent(question);
-                    fetch(`${API_URL}/play/${playerId}/answer`,{
-                        method:"GET"
+                    fetch(`${API_URL}/play/${playerId}/answer`, {
+                        method: "GET",
                     })
-                        .then(res=>res.json())
-                        .then(data2=>{
-                            
-                            console.log(data2.answerIds);
+                        .then((res) => res.json())
+                        .then((data2) => {
+                            // console.log(data2.answerIds);
                             // diable all checkboxs
                             setDisabled0(true);
                             setDisabled1(true);
                             setDisabled2(true);
                             setDisabled3(true);
-                            
-                            console.log(question.answers);
-                            question.answers.forEach((answer,index)=>{
-                            
-                                console.log(answer,index);
-                                if(data2.answerIds.includes(answer.answerId)){
-                                    eval(`setChecked${index}(true)`); 
+
+                            // console.log(question.answers);
+                            question.answers.forEach((answer, index) => {
+                                // console.log(answer, index);
+                                if (data2.answerIds.includes(answer.answerId)) {
+                                    eval(`setChecked${index}(true)`);
                                 }
-                            })
+                            });
                         });
-                
                 });
-        
-           
-        
-           
         };
-
-
 
         // if game is not start, keep pooling
         // if game start, stop pooling and get question, page should work correctly
         // even if user refresh the page
         // if counterdown end, should wait admin to advance to next question
 
-        if (gameStatus === "game not started") {
+        if (gameStatus.current === "game not started") {
             getGameStutus();
             // point of declare pollingTimeout as a global object is
             // making sure there are only one pooling function get runned
@@ -423,25 +433,34 @@ const GamePlay = () => {
             if (!gamePollingInterval) {
                 gamePollingInterval = setInterval(() => getGameStutus(), 1000);
             }
-        } else if (gameStatus === "question started") {
-            console.log("questuion stated");
-            clearInterval(gamePollingInterval);
-            gamePollingInterval = null;
+        } else if (gameStatus.current === "question started") {
             getQuestion();
-        } else if (gameStatus === "question end") {
-        
+            
+            if(gameStatus.prev === "question end"){
+                // reset all the checkbox
+                setChecked0(false);
+                setChecked1(false);
+                setChecked2(false);
+                setChecked3(false);
+                
+                // make sure this only get runned once
+                setGameStatus((prevState) => ({
+                    current: "question started",
+                    prev: prevState.current,
+                }));
+                
+            }
+        } else if (gameStatus.current === "question end") {
             // do a pooling to get next question
             if (!questionPollingInterval) {
                 questionPollingInterval = setInterval(() => {
                     getQuestion();
                 }, 1000);
             }
-            
+
             // show current question answers
-            
+            console.log("fukc",gameStatus);
             getAnswers();
-            
-            
         } else {
             console.log("fuckaweawe");
         }
@@ -458,35 +477,39 @@ const GamePlay = () => {
             questionEndTimeOut = null;
             questionPollingInterval = null;
         };
-    }, [playerId, gameStatus, checked0, checked1, checked2, checked3, dispatch]);
-    
-    console.log(questionCurrent)
-    console.log(gameStatus);
+    }, [playerId, gameStatus, checkBoxClicked, dispatch]);
 
-    
-    
-    
-    // condition render base on gameStatus    
+    // console.log(questionCurrent)
+    // console.log(gameStatus);
+
+    // console.log(prevGameStatusRef.current);
+
+    // condition render base on gameStatus
     let pageContent = null;
 
-    if (gameStatus === "game not started") {
+    if (gameStatus.current === "game not started") {
         pageContent = <div>Game not started yet</div>;
-    } else if (gameStatus === "question end") {
+    } else if (gameStatus.current === "question end") {
         pageContent = (
-        // <div>Wait admin to advance to next question</div>
-        
+            // <div>Wait admin to advance to next question</div>
+
             <Grid container className={classes.girdContainer} spacing={2}>
                 <Grid container item xs={12} className={classes.head}>
                     <Grid item container xs={12} className={classes.headWrapper}>
                         <Typography variant="h3" gutterBottom>
-						Wait admin to advance to next question
+              Wait admin to advance to next question
                         </Typography>
                     </Grid>
                 </Grid>
                 <Grid container item xs={12} className={classes.body}>
-                    
-
-                    <Grid item container xs={12} sm={12} md={12} className={classes.right}>
+                    <Grid
+                        item
+                        container
+                        xs={12}
+                        sm={12}
+                        md={12}
+                        className={classes.right}
+                    >
                         <Grid
                             container
                             item
@@ -509,15 +532,18 @@ const GamePlay = () => {
                     <Grid item md={2} />
                 </Grid>
                 <Grid container item xs={12} className={classes.foot}>
-                    <Grid container item xs={12} spacing={1} className={classes.showAnswer}>
+                    <Grid
+                        container
+                        item
+                        xs={12}
+                        spacing={1}
+                        className={classes.showAnswer}
+                    >
                         <Typography variant="h5" gutterBottom>
-       Correct Answers Shown Bellow
+              Correct Answers Shown Bellow
                         </Typography>
                     </Grid>
                     <Grid container item xs={12} spacing={1}>
-                    
-              
-                    
                         <Grid container item xs={12} sm={12} md={12} lg={6}>
                             <div className={`${classes.choice} ${classes.choice1}`}>
                                 <Typography variant="button" display="block" gutterBottom>
@@ -583,10 +609,8 @@ const GamePlay = () => {
                     </Grid>
                 </Grid>
             </Grid>
-        
-        
         );
-    } else if (gameStatus === "question started") {
+    } else if (gameStatus.current === "question started") {
         pageContent = (
             <Grid container className={classes.girdContainer} spacing={2}>
                 <Grid container item xs={12} className={classes.head}>
