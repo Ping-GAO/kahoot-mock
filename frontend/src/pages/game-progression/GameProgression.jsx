@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from "react";
-import {useParams} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import {useDispatch} from "react-redux";
-import {CountdownCircleTimer} from "react-countdown-circle-timer";
-import {makeStyles} from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import { makeStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,8 +13,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import uuid from 'react-uuid'
-import {alertError, alertSuccess} from "../../redux/actions";
-import API_URL, {playerData} from "../../constants";
+import { alertError, alertSuccess } from "../../redux/actions";
+import API_URL, { playerData } from "../../constants";
 
 
 const useStyles = makeStyles(() => ({
@@ -46,7 +46,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const GameProgression = () => {
-    const {quizId, sessionId} = useParams();
+    const { quizId, sessionId } = useParams();
     const dispatch = useDispatch();
     const classes = useStyles();
 
@@ -72,8 +72,8 @@ const GameProgression = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                const {results} = data;
-                console.log("in fetch",results);
+                const { results } = data;
+                console.log("in fetch", results);
                 // could access gameStatus attribute to get posotion and length
                 // create extra state varible just to make the code more
                 // readable to myself
@@ -158,7 +158,7 @@ const GameProgression = () => {
     };
     // console.log(position,gameLength);
 
-    const renderTime = ({remainingTime}) => {
+    const renderTime = ({ remainingTime }) => {
         if (remainingTime === 0) {
             return <div className={classes.timer}>Too late...</div>;
         }
@@ -203,7 +203,7 @@ const GameProgression = () => {
             }
             scoreList.push(grade);
         }
-        console.log("scoliwst",scoreList);
+        console.log("scoliwst", scoreList);
         const playDataList = [];
         for (let n = 0; n < scoreList.length; n += 1) {
             playDataList.push(playerData(result[n].name, scoreList[n]));
@@ -212,11 +212,11 @@ const GameProgression = () => {
             return b.playerScore - a.playerScore;
         });
 
-        const arr=[];
-        for (let i=0;i<playDataList.length;i+=1){
-            const body=(
+        const arr = [];
+        for (let i = 0; i < playDataList.length; i += 1) {
+            const body = (
                 <TableRow key={uuid()}>
-                    <TableCell>{ playDataList[i].playerName}</TableCell>
+                    <TableCell>{playDataList[i].playerName}</TableCell>
                     <TableCell>{playDataList[i].playerScore}</TableCell>
                 </TableRow>
             );
@@ -224,7 +224,7 @@ const GameProgression = () => {
             arr.push(body);
         }
 
-        pageContent =  (<TableContainer component={Paper}>
+        pageContent = (<TableContainer component={Paper}>
             <Table aria-label="simple table">
                 <TableHead>
                     <TableRow>
@@ -242,8 +242,8 @@ const GameProgression = () => {
         // console.log("advanceDisabled", advanceDisabled);
         pageContent = (
             <>
-                <div style={{display: "flex"}}>
-                    <div style={{margin: "auto"}}>
+                <div style={{ display: "flex" }}>
+                    <div style={{ margin: "auto" }}>
                         <CountdownCircleTimer
                             onComplete={() => {
                                 // should to some api call
@@ -265,7 +265,7 @@ const GameProgression = () => {
                     </div>
                 </div>
                 <Button
-                    style={{marginTop: "5%"}}
+                    style={{ marginTop: "5%" }}
                     color="primary"
                     onClick={handleAdvanceGame}
                     variant="contained"
@@ -280,7 +280,7 @@ const GameProgression = () => {
     return (
         <>
             <div className={classes.id}>sessionId:{sessionId}</div>
-            <div style={{fontSize: "50px", textAlign: "center"}}>{pageContent}</div>
+            <div style={{ fontSize: "50px", textAlign: "center" }}>{pageContent}</div>
         </>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams , useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import PanoramaOutlinedIcon from "@material-ui/icons/PanoramaOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -13,7 +13,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormLabel from "@material-ui/core/FormLabel";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch } from "react-redux";
-import { alertError ,alertSuccess} from "../../redux/actions";
+import { alertError, alertSuccess } from "../../redux/actions";
 
 
 
@@ -142,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
     butSet: {
         display: "flex",
         justifyContent: "flex-end",
-        alignItems:"center"
+        alignItems: "center"
     },
 }));
 
@@ -161,7 +161,7 @@ const EditGameQuestion = () => {
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
     const [checked4, setChecked4] = useState(false);
-   
+
     const [upload, setUpload] = useState({ imagePreviewUrl: "" });
 
     const classes = useStyles({ answer1, answer2, answer3, answer4 });
@@ -215,10 +215,10 @@ const EditGameQuestion = () => {
             </div>
         );
     }
-    
-    
 
-    
+
+
+
     const handleImageChange = (e) => {
         e.preventDefault();
 
@@ -233,15 +233,15 @@ const EditGameQuestion = () => {
 
         reader.readAsDataURL(file);
     };
-    
-    
-    const handleCancel = ()=>{
+
+
+    const handleCancel = () => {
         history.push(`/dashboard/${quizId}`);
     };
-    
-    
-    
-    const handleSubmit = ()=>{
+
+
+
+    const handleSubmit = () => {
         if (!(answer1 && answer2 && answer3 && answer4)) {
             dispatch(alertError("Please Fill In All Answers"));
             return;
@@ -258,20 +258,20 @@ const EditGameQuestion = () => {
             dispatch(alertError("Please Upload An Image"));
             return;
         }
-    
+
         let atLeastOneAnswer = false;
         for (let i = 1; i <= 4; i += 1) {
-          
-            if(eval(`checked${i}`) === true){
-                atLeastOneAnswer  = true;
+
+            if (eval(`checked${i}`) === true) {
+                atLeastOneAnswer = true;
                 break;
             }
         }
-        if(!atLeastOneAnswer){
+        if (!atLeastOneAnswer) {
             dispatch(alertError("Please Checked Atleast One Correct Answer"));
             return;
         }
-      
+
         let cnt = 0;
         let type;
         for (let i = 1; i <= 4; i += 1) {
@@ -284,12 +284,12 @@ const EditGameQuestion = () => {
         } else {
             type = "Single Choice";
         }
-        
+
         console.log(type);
-    
+
 
         // do a fetch call to update the question
-    
+
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
             method: "GET",
             headers: {
@@ -298,17 +298,17 @@ const EditGameQuestion = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-            
-            
+
+
                 console.log(data);
                 // const 
-                const q = data.questions.find(qes=>qes.questionId=== questionId);
+                const q = data.questions.find(qes => qes.questionId === questionId);
                 console.log(q);
                 q.answers[0].answerBody = answer1;
                 q.answers[1].answerBody = answer2;
                 q.answers[2].answerBody = answer3;
                 q.answers[3].answerBody = answer4;
-                
+
                 q.answers[0].isRightOne = checked1;
                 q.answers[1].isRightOne = checked2;
                 q.answers[2].isRightOne = checked3;
@@ -317,21 +317,21 @@ const EditGameQuestion = () => {
                 q.worthOfPoints = points;
                 q.image = upload.imagePreviewUrl;
                 q.questionBody = title;
-                
-                
-                const {questions} = data;
+
+
+                const { questions } = data;
                 const newQuestions = []
-                console.log("apple",questions);
-                for(let i=0;i<questions.length;i+=1){
-                    if(questions[i].questionId !== questionId){
+                console.log("apple", questions);
+                for (let i = 0; i < questions.length; i += 1) {
+                    if (questions[i].questionId !== questionId) {
                         newQuestions.push(questions[i]);
                     }
-                    else{
+                    else {
                         newQuestions.push(q);
                     }
                 }
-                console.log("new",newQuestions);
-                
+                console.log("new", newQuestions);
+
                 fetch(`${API_URL}/admin/quiz/${quizId}`, {
                     method: "PUT",
                     headers: {
@@ -349,18 +349,18 @@ const EditGameQuestion = () => {
                         dispatch(alertSuccess("Update Questions Success"));
                         history.push(`/dashboard/${quizId}`);
                     });
-                
+
             });
-    
-    
-    
-       
+
+
+
+
     };
-    
-    
-    
+
+
+
     useEffect(() => {
-       
+
 
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
             method: "GET",
@@ -371,13 +371,13 @@ const EditGameQuestion = () => {
             .then((res) => res.json())
             .then((data) => {
 
-                const quesitonData =  data.questions.filter((q) => q.questionId === questionId)[0];
+                const quesitonData = data.questions.filter((q) => q.questionId === questionId)[0];
                 setTitle(quesitonData.questionBody);
                 setTimeLimit(quesitonData.timeLimit);
                 setUpload({
-                    imagePreviewUrl:quesitonData.image
+                    imagePreviewUrl: quesitonData.image
                 });
-                
+
                 setAnswer1(quesitonData.answers[0].answerBody);
                 setAnswer2(quesitonData.answers[1].answerBody);
                 setAnswer3(quesitonData.answers[2].answerBody);
@@ -391,10 +391,10 @@ const EditGameQuestion = () => {
                 console.log(data);
             });
 
-        
+
     }, [questionId, quizId]);
 
-  
+
 
 
     return (
@@ -402,11 +402,11 @@ const EditGameQuestion = () => {
             <Grid container item xs={12} className={classes.head}>
                 <Grid item container xs={12} className={classes.butSet}>
                     <Button size="medium" variant="contained" color="secondary" onClick={handleCancel} >
-            Cancel
+                        Cancel
                     </Button>
-                    <div style={{width:"20px"}}/>
-                    <Button size="medium" variant="contained" color="primary"  onClick={handleSubmit}>
-            Submit
+                    <div style={{ width: "20px" }} />
+                    <Button size="medium" variant="contained" color="primary" onClick={handleSubmit}>
+                        Submit
                     </Button>
                 </Grid>
 
@@ -495,7 +495,7 @@ const EditGameQuestion = () => {
                                 className={classes.button}
                                 size="small"
                             >
-                Upload
+                                Upload
                             </Button>
                         </label>
                     </Grid>

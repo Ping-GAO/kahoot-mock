@@ -132,7 +132,7 @@ const Dashboard = () => {
                 });
         }
     }, [loginStatus.loggedIn, open, edit]);
-    
+
     // console.log("dahsboard get renredner");
     // conditional render based on user's login status
     return (
