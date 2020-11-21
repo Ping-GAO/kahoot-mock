@@ -2,3 +2,4 @@ node_modules
 .vscode
 database.json
 .idea
+.DS_Store
