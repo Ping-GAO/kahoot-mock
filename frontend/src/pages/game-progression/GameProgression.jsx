@@ -1,13 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {useParams} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import { useDispatch } from "react-redux";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { makeStyles } from "@material-ui/core/styles";
+import {useDispatch} from "react-redux";
+import {CountdownCircleTimer} from "react-countdown-circle-timer";
+import {makeStyles} from "@material-ui/core/styles";
 import moment from "moment";
-// import Table from "@material-ui/core/Table";
-import { alertError, alertSuccess } from "../../redux/actions";
-import API_URL, { playerData } from "../../constants";
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import uuid from 'react-uuid'
+import {alertError, alertSuccess} from "../../redux/actions";
+import API_URL, {playerData} from "../../constants";
+
 
 const useStyles = makeStyles(() => ({
     timer: {
@@ -25,9 +33,9 @@ const useStyles = makeStyles(() => ({
         fontSize: "40px",
     },
     id: {
-        fontSize: "50px",
+        fontSize: "30px",
         textAlign: "center",
-        marginTop: "15%",
+        marginTop: "5%",
         marginBottom: "5%",
     },
     end: {
@@ -38,7 +46,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const GameProgression = () => {
-    const { quizId, sessionId } = useParams();
+    const {quizId, sessionId} = useParams();
     const dispatch = useDispatch();
     const classes = useStyles();
 
@@ -64,15 +72,15 @@ const GameProgression = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                const { results } = data;
-                console.log(results);
+                const {results} = data;
+                console.log("in fetch",results);
                 // could access gameStatus attribute to get posotion and length
                 // create extra state varible just to make the code more
                 // readable to myself
 
                 setPosition(results.position);
                 setGameLength(results.questions.length);
-                console.log("result postion", results.position);
+                // console.log("result postion", results.position);
                 if (
                     results.position !== -1 &&
                     results.position !== results.questions.length
@@ -112,7 +120,7 @@ const GameProgression = () => {
                     })
                         .then((res) => res.json())
                         .then((data2) => {
-                            console.log("fuck", data2);
+                            console.log("in fetgc 2", data2);
                             setMark(results);
                             setResult(data2.results);
                         });
@@ -150,7 +158,7 @@ const GameProgression = () => {
     };
     // console.log(position,gameLength);
 
-    const renderTime = ({ remainingTime }) => {
+    const renderTime = ({remainingTime}) => {
         if (remainingTime === 0) {
             return <div className={classes.timer}>Too late...</div>;
         }
@@ -183,8 +191,8 @@ const GameProgression = () => {
         // didn't end now, end with a timeout
         // when game end show final result
 
-        console.log("awdawd", result);
-        console.log("sdasds", mark);
+        // console.log("awdawd", result);
+        // console.log("sdasds", mark);
         const scoreList = [];
         for (let i = 0; i < result.length; i += 1) {
             let grade = 0;
@@ -195,32 +203,47 @@ const GameProgression = () => {
             }
             scoreList.push(grade);
         }
-        console.log(scoreList);
-
-        // const toplist=[]
-        // const array = [];
+        console.log("scoliwst",scoreList);
         const playDataList = [];
         for (let n = 0; n < scoreList.length; n += 1) {
-            // toplist.push(pageContent)
-            // console.log(toplist)
-            // setList(toplist)
-            // array.push(<Table>{result[n].name}  {scoreList[n]}</Table>);
             playDataList.push(playerData(result[n].name, scoreList[n]));
         }
-        console.log(playDataList);
-
         playDataList.sort((a, b) => {
-            return a.playerScore < b.playerScore;
+            return b.playerScore - a.playerScore;
         });
-        console.log("sored", playDataList);
-        pageContent = <div>awdawd</div>;
+
+        const arr=[];
+        for (let i=0;i<playDataList.length;i+=1){
+            const body=(
+                <TableRow key={uuid()}>
+                    <TableCell>{ playDataList[i].playerName}</TableCell>
+                    <TableCell>{playDataList[i].playerScore}</TableCell>
+                </TableRow>
+            );
+
+            arr.push(body);
+        }
+
+        pageContent =  (<TableContainer component={Paper}>
+            <Table aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>player name</TableCell>
+                        <TableCell>player score</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {arr}
+                </TableBody>
+            </Table>
+        </TableContainer>);
     } else {
         // should be a countdown timer here
-        console.log("advanceDisabled", advanceDisabled);
+        // console.log("advanceDisabled", advanceDisabled);
         pageContent = (
             <>
-                <div style={{ display: "flex" }}>
-                    <div style={{ margin: "auto" }}>
+                <div style={{display: "flex"}}>
+                    <div style={{margin: "auto"}}>
                         <CountdownCircleTimer
                             onComplete={() => {
                                 // should to some api call
@@ -242,7 +265,7 @@ const GameProgression = () => {
                     </div>
                 </div>
                 <Button
-                    style={{ marginTop: "5%" }}
+                    style={{marginTop: "5%"}}
                     color="primary"
                     onClick={handleAdvanceGame}
                     variant="contained"
@@ -257,7 +280,7 @@ const GameProgression = () => {
     return (
         <>
             <div className={classes.id}>sessionId:{sessionId}</div>
-            <div style={{ fontSize: "50px", textAlign: "center" }}>{pageContent}</div>
+            <div style={{fontSize: "50px", textAlign: "center"}}>{pageContent}</div>
         </>
     );
 };
