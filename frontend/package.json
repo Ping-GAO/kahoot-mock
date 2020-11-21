@@ -12,6 +12,7 @@
     "clsx": "^1.1.1",
     "es-abstract": "^1.17.7",
     "eslint": "^7.12.1",
+    "history": "^5.0.0",
     "ismounted": "^0.1.8",
     "moment": "^2.29.1",
     "prettier": "^2.1.2",
@@ -30,6 +31,7 @@
     "recharts": "^1.8.5",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "sinon": "^9.2.1",
     "styled-components": "^5.0.0",
     "web-vitals": "^0.2.4"
   },
