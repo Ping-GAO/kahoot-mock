@@ -1,5 +1,5 @@
-import React, {useState,useEffect} from "react";
-import {useParams} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams , useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import PanoramaOutlinedIcon from "@material-ui/icons/PanoramaOutlined";
 import Typography from "@material-ui/core/Typography";
@@ -13,6 +13,7 @@ import Chip from "@material-ui/core/Chip";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormLabel from "@material-ui/core/FormLabel";
 import { makeStyles } from "@material-ui/core/styles";
+
 
 
 import API_URL from "../../constants";
@@ -34,14 +35,14 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: "column",
         justifyContent: "center",
         backgroundColor: "#f2f2f2",
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down("sm")]: {
             padding: "70px 20px 0px",
-            flexWrap: "nowrap"
+            flexWrap: "nowrap",
         },
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up("md")]: {
             padding: "20px 40px 0px",
         },
-        [theme.breakpoints.up('lg')]: {
+        [theme.breakpoints.up("lg")]: {
             padding: "80px 150px 0px",
         },
     },
@@ -78,15 +79,15 @@ const useStyles = makeStyles((theme) => ({
         padding: 4,
         boxSizing: "border-box",
 
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down("sm")]: {
             maxWidth: 220,
             maxHeight: 370,
         },
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up("md")]: {
             maxWidth: 240,
             maxHeight: 370,
         },
-        [theme.breakpoints.up('lg')]: {
+        [theme.breakpoints.up("lg")]: {
             maxWidth: 300,
             maxHeight: 370,
         },
@@ -113,16 +114,16 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
     },
     choice1: {
-        backgroundColor: props => props.answer1 ? "#e21b3c" : "#ffffff"
+        backgroundColor: (props) => (props.answer1 ? "#e21b3c" : "#ffffff"),
     },
     choice2: {
-        backgroundColor: props => props.answer2 ? "#1368ce" : "#ffffff"
+        backgroundColor: (props) => (props.answer2 ? "#1368ce" : "#ffffff"),
     },
     choice3: {
-        backgroundColor: props => props.answer3 ? "#d89e00" : "#ffffff"
+        backgroundColor: (props) => (props.answer3 ? "#d89e00" : "#ffffff"),
     },
     choice4: {
-        backgroundColor: props => props.answer4 ? "#26890c" : "#ffffff"
+        backgroundColor: (props) => (props.answer4 ? "#26890c" : "#ffffff"),
     },
     inputText: {
         color: "white",
@@ -137,18 +138,19 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         fontSize: "1.5em",
     },
-    backdrop: {
-        zIndex: theme.zIndex.drawer + 1,
-        color: '#fff',
+    butSet: {
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems:"center"
     },
 }));
 
-
-
 const EditGameQuestion = () => {
-    const {quizId, questionId} = useParams();
+    const { quizId, questionId } = useParams();
+    const history = useHistory();
+
     const [title, setTitle] = useState("");
-    const [questionData,setQUestionData] = useState();
+    const [questionData, setQUestionData] = useState();
     const [answer1, setAnswer1] = useState("");
     const [answer2, setAnswer2] = useState("");
     const [answer3, setAnswer3] = useState("");
@@ -164,7 +166,6 @@ const EditGameQuestion = () => {
 
     const classes = useStyles({ answer1, answer2, answer3, answer4 });
 
-    
     const handleChangeCheckBox1 = (event) => {
         setChecked1(event.target.checked);
     };
@@ -177,16 +178,16 @@ const EditGameQuestion = () => {
     const handleChangeCheckBox4 = (event) => {
         setChecked4(event.target.checked);
     };
-    
+
     const handleChange = (event) => {
         setTimeLimit(event.target.value);
     };
     const valuetext = (value) => {
         return value;
     };
-   
+
     console.log(title);
-    
+
     let imagePlaceHolder;
 
     if (upload.imagePreviewUrl) {
@@ -212,42 +213,14 @@ const EditGameQuestion = () => {
             </div>
         );
     }
-    useEffect(() => {
-        const setQuestionsType = ()=>{
-            let cnt = 0;
-            for (let i = 1; i <= 4; i += 1) {
-                if (eval(`checked${i}`) === true) {
-                    cnt += 1;
-                }
-            }
-            if (cnt === 0) {
-                setQuestionType("Question Type");
-            } else if (cnt > 1) {
-                setQuestionType("Mutiple Choice");
-            } else {
-                setQuestionType("Single Choice");
-            }
-        
-        }
-        
-        
-        fetch(`${API_URL}/admin/quiz/${quizId}`, {
-            method: "GET",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                // console.log(data.questions.filter())
-              
-                setQUestionData(data.questions.filter(q=>q.questionId === questionId));
-            });
-            
-            
-        setQuestionsType();
     
-    }, [questionId, quizId,checked1, checked2, checked3, checked4]);
+    
+    
+    
+    
+    
+    
+    
     
     const handleImageChange = (e) => {
         e.preventDefault();
@@ -263,17 +236,73 @@ const EditGameQuestion = () => {
 
         reader.readAsDataURL(file);
     };
+    
+    
+    const handleCancel = ()=>{
+        history.push(`/dashboard/${quizId}`);
+    };
+    
+    
+    
+    const handleSubmit = ()=>{
+        history.push(`/dashboard/${quizId}`);
+    };
+    
+    
+    
+    useEffect(() => {
+        const setQuestionsType = () => {
+            let cnt = 0;
+            for (let i = 1; i <= 4; i += 1) {
+                if (eval(`checked${i}`) === true) {
+                    cnt += 1;
+                }
+            }
+            if (cnt === 0) {
+                setQuestionType("Question Type");
+            } else if (cnt > 1) {
+                setQuestionType("Mutiple Choice");
+            } else {
+                setQuestionType("Single Choice");
+            }
+        };
+
+        fetch(`${API_URL}/admin/quiz/${quizId}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                // console.log(data.questions.filter())
+
+                setQUestionData(
+                    data.questions.filter((q) => q.questionId === questionId)
+                );
+            });
+
+        setQuestionsType();
+    }, [questionId, quizId, checked1, checked2, checked3, checked4]);
+
+  
     console.log(questionData);
 
-    
     return (
-      
-            
         <Grid container className={classes.girdContainer} spacing={2}>
             <Grid container item xs={12} className={classes.head}>
+                <Grid item container xs={12} className={classes.butSet}>
+                    <Button size="medium" variant="contained" color="secondary" onClick={handleCancel} >
+            Cancel
+                    </Button>
+                    <div style={{width:"20px"}}/>
+                    <Button size="medium" variant="contained" color="primary"  onClick={handleSubmit}>
+            Submit
+                    </Button>
+                </Grid>
+
                 <Grid item container xs={12}>
                     <TextField
-                        
                         id="outlined-full-width"
                         label="Start typing your question"
                         style={{ margin: 8 }}
@@ -284,14 +313,14 @@ const EditGameQuestion = () => {
                             shrink: true,
                         }}
                         variant="outlined"
-                        value="fuck"
+                        value={title}
                         onChange={(event) => setTitle(event.target.value)}
-                        inputProps={{ style: {textAlign: 'center'} }}
+                        inputProps={{ style: { textAlign: "center" } }}
                     />
                 </Grid>
             </Grid>
             <Grid container item xs={12} className={classes.body}>
-                <Grid  item container xs={12} sm={4} md={4} className={classes.left}>
+                <Grid item container xs={12} sm={4} md={4} className={classes.left}>
                     <Grid item xs={12} container justify="center" alignContent="center">
                         <FormControl className={classes.formControl}>
                             <FormLabel>Time Limit</FormLabel>
@@ -336,7 +365,7 @@ const EditGameQuestion = () => {
                         </FormControl>
                     </Grid>
                 </Grid>
-                <Grid  item container xs={12} sm={8} md={6} className={classes.right}>
+                <Grid item container xs={12} sm={8} md={6} className={classes.right}>
                     <Grid
                         container
                         item
@@ -365,7 +394,7 @@ const EditGameQuestion = () => {
                                 className={classes.button}
                                 size="small"
                             >
-								Upload
+                Upload
                             </Button>
                         </label>
                     </Grid>
@@ -377,7 +406,6 @@ const EditGameQuestion = () => {
                     <Grid container item xs={12} sm={12} md={12} lg={6}>
                         <div className={`${classes.choice} ${classes.choice1}`}>
                             <TextField
-                               
                                 className="text"
                                 label="Answer1"
                                 onChange={(event) => setAnswer1(event.target.value)}
@@ -388,7 +416,6 @@ const EditGameQuestion = () => {
                             />
                             <Checkbox
                                 checked={checked1}
-                               
                                 onChange={handleChangeCheckBox1}
                                 inputProps={{ "aria-label": "primary checkbox" }}
                                 inputstyle={{ color: "white" }}
@@ -461,8 +488,6 @@ const EditGameQuestion = () => {
                 </Grid>
             </Grid>
         </Grid>
-          
-       
     );
 };
 
