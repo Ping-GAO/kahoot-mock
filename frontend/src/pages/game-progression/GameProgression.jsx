@@ -37,7 +37,7 @@ const useStyles = makeStyles(() => ({
         fontSize: "30px",
         textAlign: "center",
         marginTop: "5%",
-        marginBottom: "5%",
+        marginBottom: "2%",
     },
     end: {
         fontSize: "50px",
@@ -45,7 +45,6 @@ const useStyles = makeStyles(() => ({
         marginTop: "10%",
     },
     page: {
-
         display: "flex",
         flexDirection: "column"
     },
@@ -75,7 +74,7 @@ const GameProgression = () => {
     const [key, setKey] = useState(0);
     const [remainTime, setRemainTime] = useState(1000);
     const [advanceDisabled, setAdvanceDisabled] = useState(true);
-    const [result, setResult] = useState([{ answers: [] }]);
+    const [result, setResult] = useState([{ answers: [{correct:false}] }]);
     const [mark, setMark] = useState();
     // const [list,setList]=useState();
     // const [name,setName]=useState([]);
@@ -291,6 +290,7 @@ const GameProgression = () => {
         pageContent = (
 
             <div className={classes.page}>
+                <div>Top 5 Users and Scores </div>
                 <div className={classes.chart}>
                     <TableContainer component={Paper} className={classes.tb}>
                         <Table aria-label="simple table">
@@ -306,6 +306,7 @@ const GameProgression = () => {
                         </Table>
                     </TableContainer>
                 </div>
+                <div>Percentages of each question </div>
                 <div className={classes.chart}>
                     <LineChart width={600} height={250} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                         <CartesianGrid strokeDasharray="3 3" />
@@ -316,6 +317,7 @@ const GameProgression = () => {
                         <Line type="monotone" dataKey="question number" stroke="#8884d8" />
                     </LineChart>
                 </div>
+                <div>Average time of each question </div>
                 <div className={classes.chart}>
                     <LineChart width={600} height={250} data={data2} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                         <CartesianGrid strokeDasharray="3 3" />
