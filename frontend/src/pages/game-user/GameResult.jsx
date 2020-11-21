@@ -6,14 +6,14 @@ const GameResult = () => {
     const {playerId, right, wrong} = useParams()
     const data = [
         {
-            'name': playerId,
+            'name': `playerID: ${playerId}`,
             'right': right,
             'wrong': wrong
         }
     ]
-    
+
     return (
-        <div style={{margin:'10%'}}>
+        <div style={{margin:'10%', fontSize:'20px'}}>
             <BarChart width={1000} height={400} data={data}>
                 <CartesianGrid strokeDasharray="3 3"/>
                 <XAxis dataKey="name"/>
