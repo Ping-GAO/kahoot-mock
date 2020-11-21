@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {useParams} from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import { useDispatch } from "react-redux";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import { makeStyles } from "@material-ui/core/styles";
+import {useDispatch} from "react-redux";
+import {CountdownCircleTimer} from "react-countdown-circle-timer";
+import {makeStyles} from "@material-ui/core/styles";
 import moment from "moment";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,9 +13,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import uuid from 'react-uuid'
-import { LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line } from "recharts";
-import { alertError, alertSuccess } from "../../redux/actions";
-import API_URL, { playerData } from "../../constants";
+import {LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Line} from "recharts";
+import {alertError, alertSuccess} from "../../redux/actions";
+import API_URL, {playerData} from "../../constants";
 
 
 const useStyles = makeStyles(() => ({
@@ -44,10 +44,14 @@ const useStyles = makeStyles(() => ({
         textAlign: "center",
         marginTop: "10%",
     },
+    page: {
+
+        display: "flex"
+    }
 }));
 
 const GameProgression = () => {
-    const { quizId, sessionId } = useParams();
+    const {quizId, sessionId} = useParams();
     const dispatch = useDispatch();
     const classes = useStyles();
 
@@ -59,7 +63,7 @@ const GameProgression = () => {
     const [key, setKey] = useState(0);
     const [remainTime, setRemainTime] = useState(1000);
     const [advanceDisabled, setAdvanceDisabled] = useState(true);
-    const [result, setResult] = useState([{ answers: [] }]);
+    const [result, setResult] = useState([{answers: []}]);
     const [mark, setMark] = useState();
     // const [list,setList]=useState();
     // const [name,setName]=useState([]);
@@ -73,7 +77,7 @@ const GameProgression = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                const { results } = data;
+                const {results} = data;
                 console.log("in fetch", results);
                 // could access gameStatus attribute to get posotion and length
                 // create extra state varible just to make the code more
@@ -160,7 +164,7 @@ const GameProgression = () => {
     };
     // console.log(position,gameLength);
 
-    const renderTime = ({ remainingTime }) => {
+    const renderTime = ({remainingTime}) => {
         if (remainingTime === 0) {
             return <div className={classes.timer}>Too late...</div>;
         }
@@ -193,8 +197,8 @@ const GameProgression = () => {
         // didn't end now, end with a timeout
         // when game end show final result
 
-        // console.log("awdawd", result);
-        // console.log("sdasds", mark);
+        console.log("awdawd", result);
+        console.log("sdasds", mark);
         const scoreList = [];
         for (let i = 0; i < result.length; i += 1) {
             let grade = 0;
@@ -210,16 +214,26 @@ const GameProgression = () => {
         console.log("len", result[0].answers.length);
         console.log(result.length);
         const rightList = []
+        const timeList = []
         for (let n = 0; n < result[0].answers.length; n += 1) {
             let right = 0;
+            let quesitionTime = 0
             for (let j = 0; j < result.length; j += 1) {
                 // console.log("apple",result[n].answers[j]);
                 if (result[n].answers[j].correct === true) {
                     right += 1;
                 }
+
+                const answerAt = moment(result[n].answers[j].answeredAt);
+                const questionStart = moment(result[n].answers[j].questionStartedAt);
+                const diff = moment.duration(answerAt.diff(questionStart)).asSeconds();
+                quesitionTime += diff;
+
             }
             const rigthRate = right / result[0].answers.length
+            const average = quesitionTime / result[0].answers.length
             rightList.push(rigthRate);
+            timeList.push(average);
         }
         const data = [];
         for (let i = 0; i < rightList.length; i += 1) {
@@ -228,6 +242,14 @@ const GameProgression = () => {
                 'question number': rightList[i]
             }
             data.push(fill);
+        }
+        const data2 = [];
+        for (let i = 0; i < timeList.length; i += 1) {
+            const fill = {
+                'name': i + 1,
+                'question number': timeList[i]
+            }
+            data2.push(fill);
         }
 
         const playDataList = [];
@@ -251,16 +273,9 @@ const GameProgression = () => {
         }
 
         pageContent = (
-            <div style={{ display: 'flex' }}>
-                <LineChart width={730} height={250} data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="question number" stroke="#8884d8" />
-                </LineChart>
-                <div style={{ width: '50%' }}>
+            <>
+                <div className={classes.page}>
+
                     <TableContainer component={Paper}>
                         <Table aria-label="simple table">
                             <TableHead>
@@ -274,16 +289,38 @@ const GameProgression = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
+
+
+                    <LineChart width={600} height={250} data={data} margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                        <CartesianGrid strokeDasharray="3 3"/>
+                        <XAxis dataKey="name"/>
+                        <YAxis/>
+                        <Tooltip/>
+                        <Legend/>
+                        <Line type="monotone" dataKey="question number" stroke="#8884d8"/>
+                    </LineChart>
+
+
+                    <LineChart width={600} height={250} data={data2} margin={{top: 5, right: 30, left: 20, bottom: 5}}>
+                        <CartesianGrid strokeDasharray="3 3"/>
+                        <XAxis dataKey="name"/>
+                        <YAxis/>
+                        <Tooltip/>
+                        <Legend/>
+                        <Line type="monotone" dataKey="question number" stroke="#8884d8"/>
+                    </LineChart>
+
                 </div>
-            </div>);
+            </>
+        );
 
     } else {
         // should be a countdown timer here
         // console.log("advanceDisabled", advanceDisabled);
         pageContent = (
             <>
-                <div style={{ display: "flex" }}>
-                    <div style={{ margin: "auto" }}>
+                <div style={{display: "flex"}}>
+                    <div style={{margin: "auto"}}>
                         <CountdownCircleTimer
                             onComplete={() => {
                                 // should to some api call
@@ -305,7 +342,7 @@ const GameProgression = () => {
                     </div>
                 </div>
                 <Button
-                    style={{ marginTop: "5%" }}
+                    style={{marginTop: "5%"}}
                     color="primary"
                     onClick={handleAdvanceGame}
                     variant="contained"
@@ -320,7 +357,7 @@ const GameProgression = () => {
     return (
         <>
             <div className={classes.id}>sessionId:{sessionId}</div>
-            <div style={{ fontSize: "20px", textAlign: "center" }}>{pageContent}</div>
+            <div style={{fontSize: "20px", textAlign: "center"}}>{pageContent}</div>
         </>
     );
 };
