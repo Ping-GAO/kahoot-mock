@@ -9,7 +9,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import FormControl from "@material-ui/core/FormControl";
 import Slider from "@material-ui/core/Slider";
-import Chip from "@material-ui/core/Chip";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormLabel from "@material-ui/core/FormLabel";
 import { makeStyles } from "@material-ui/core/styles";
@@ -150,7 +149,6 @@ const EditGameQuestion = () => {
     const history = useHistory();
 
     const [title, setTitle] = useState("");
-    const [questionData, setQUestionData] = useState();
     const [answer1, setAnswer1] = useState("");
     const [answer2, setAnswer2] = useState("");
     const [answer3, setAnswer3] = useState("");
@@ -161,7 +159,7 @@ const EditGameQuestion = () => {
     const [checked2, setChecked2] = useState(false);
     const [checked3, setChecked3] = useState(false);
     const [checked4, setChecked4] = useState(false);
-    const [questionType, setQuestionType] = useState("Question Type");
+   
     const [upload, setUpload] = useState({ imagePreviewUrl: "" });
 
     const classes = useStyles({ answer1, answer2, answer3, answer4 });
@@ -171,12 +169,15 @@ const EditGameQuestion = () => {
     };
     const handleChangeCheckBox2 = (event) => {
         setChecked2(event.target.checked);
+
     };
     const handleChangeCheckBox3 = (event) => {
         setChecked3(event.target.checked);
+
     };
     const handleChangeCheckBox4 = (event) => {
         setChecked4(event.target.checked);
+
     };
 
     const handleChange = (event) => {
@@ -186,7 +187,6 @@ const EditGameQuestion = () => {
         return value;
     };
 
-    console.log(title);
 
     let imagePlaceHolder;
 
@@ -215,12 +215,7 @@ const EditGameQuestion = () => {
     }
     
     
-    
-    
-    
-    
-    
-    
+
     
     const handleImageChange = (e) => {
         e.preventDefault();
@@ -245,27 +240,42 @@ const EditGameQuestion = () => {
     
     
     const handleSubmit = ()=>{
+    
+    
+        // do a fetch call to update the question
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
         history.push(`/dashboard/${quizId}`);
     };
     
     
     
     useEffect(() => {
-        const setQuestionsType = () => {
-            let cnt = 0;
-            for (let i = 1; i <= 4; i += 1) {
-                if (eval(`checked${i}`) === true) {
-                    cnt += 1;
-                }
-            }
-            if (cnt === 0) {
-                setQuestionType("Question Type");
-            } else if (cnt > 1) {
-                setQuestionType("Mutiple Choice");
-            } else {
-                setQuestionType("Single Choice");
-            }
-        };
+        // const setQuestionsType = () => {
+        //     let cnt = 0;
+        //     for (let i = 1; i <= 4; i += 1) {
+        //         if (eval(`checked${i}`) === true) {
+        //             cnt += 1;
+        //         }
+        //     }
+        //     if (cnt === 0) {
+        //         setQuestionType("Question Type");
+        //     } else if (cnt > 1) {
+        //         setQuestionType("Mutiple Choice");
+        //     } else {
+        //         setQuestionType("Single Choice");
+        //     }
+        // };
 
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
             method: "GET",
@@ -277,16 +287,35 @@ const EditGameQuestion = () => {
             .then((data) => {
                 // console.log(data.questions.filter())
 
-                setQUestionData(
-                    data.questions.filter((q) => q.questionId === questionId)
-                );
+               
+                
+                const quesitonData =  data.questions.filter((q) => q.questionId === questionId)[0];
+                
+                
+                
+                setTitle(quesitonData.questionBody);
+                setTimeLimit(quesitonData.timeLimit);
+                setUpload({
+                    imagePreviewUrl:quesitonData.image
+                });
+                
+                setAnswer1(quesitonData.answers[0].answerBody);
+                setAnswer2(quesitonData.answers[1].answerBody);
+                setAnswer3(quesitonData.answers[2].answerBody);
+                setAnswer4(quesitonData.answers[3].answerBody);
+                setChecked1(quesitonData.answers[0].isRightOne);
+                setChecked2(quesitonData.answers[1].isRightOne);
+                setChecked3(quesitonData.answers[2].isRightOne);
+                setChecked4(quesitonData.answers[3].isRightOne);
+                setPoints(quesitonData.worthOfPoints);
+                console.log(quesitonData);
             });
 
-        setQuestionsType();
-    }, [questionId, quizId, checked1, checked2, checked3, checked4]);
+        
+    }, [questionId, quizId]);
 
   
-    console.log(questionData);
+
 
     return (
         <Grid container className={classes.girdContainer} spacing={2}>
@@ -354,14 +383,6 @@ const EditGameQuestion = () => {
                                 }}
                                 value={points}
                             />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} container justify="center" alignContent="center">
-                        <FormControl className={classes.formControl}>
-                            <FormLabel>Answer options</FormLabel>
-
-                            <div style={{ height: 15 }} />
-                            <Chip label={questionType} />
                         </FormControl>
                     </Grid>
                 </Grid>
