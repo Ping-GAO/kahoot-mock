@@ -1,19 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, {useState,useEffect} from "react";
 import {useParams} from "react-router-dom";
-// import Typography from "@material-ui/core/Typography";
-import FormDialogUpdateQuestion from "../../components/dialog/FormDialogUpdateQuestion";
 import API_URL from "../../constants";
 
 
 const EditGameQuestion = () => {
     const {quizId, questionId} = useParams();
-    const [open, setOpen] = useState(true);
-    const handleClose = () => {
-        setOpen(false);
-    };
-
+    const [questionData,setQUestionData] = useState();
     useEffect(() => {
-        // TODO handle 403 error case
+       
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
             method: "GET",
             headers: {
@@ -22,29 +16,19 @@ const EditGameQuestion = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data)
-                fetch(`${API_URL}/admin/quiz/${quizId}`, {
-                    method: "PUT",
-                    headers: {
-                        Accept: "application/json",
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    },
-                    body: JSON.stringify({
-                        ...data,
-                        questionId
-                    }),
-                })
-                    .then((res) => console.log(res.status))
-                    .then(() => {
-                        console.log(data)
-                    });
+                // console.log(data.questions.filter())
+              
+                setQUestionData(data.questions.filter(q=>q.questionId === questionId));
             });
-    }, [quizId, questionId]);
-
+    }, [questionId, quizId]);
+    
+    
+    console.log(questionData);
+    
+    
     return (
         <div>
-            <FormDialogUpdateQuestion handleClose={handleClose} open={open} id={quizId}/>
+            fuck
         </div>
     );
 };

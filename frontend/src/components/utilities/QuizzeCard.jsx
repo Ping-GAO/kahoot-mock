@@ -77,11 +77,11 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
     
     
     // console.log("quiz",quiz);
-    console.log(JSON.stringify({questions:quiz.questions,name:quiz.name,
+    // console.log(JSON.stringify({questions:quiz.questions,name:quiz.name,
 
-        thumbnail:quiz.thumbnail,
-        createdAt:quiz.createdAt
-    }))
+    //     thumbnail:quiz.thumbnail,
+    //     createdAt:quiz.createdAt
+    // }))
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
