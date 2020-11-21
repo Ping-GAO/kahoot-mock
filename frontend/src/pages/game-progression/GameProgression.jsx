@@ -5,8 +5,9 @@ import {useDispatch} from "react-redux";
 import {CountdownCircleTimer} from "react-countdown-circle-timer";
 import {makeStyles} from "@material-ui/core/styles";
 import moment from "moment";
-import API_URL from "../../constants";
+// import Table from "@material-ui/core/Table";
 import {alertError, alertSuccess} from "../../redux/actions";
+import API_URL, {playerData} from "../../constants";
 
 
 const useStyles = makeStyles(() => ({
@@ -52,10 +53,14 @@ const GameProgression = () => {
     const [key, setKey] = useState(0);
     const [remainTime, setRemainTime] = useState(1000);
     const [advanceDisabled, setAdvanceDisabled] = useState(true);
-    // const [mark,setMark]=useState(0);
+    const  [result,setResult] = useState([]);
+    const [mark,setMark]=useState();
+    // const [list,setList]=useState();
     // const [name,setName]=useState([]);
 
     useEffect(() => {
+
+
         fetch(`${API_URL}/admin/session/${sessionId}/status`, {
             method: "GET",
             headers: {
@@ -105,7 +110,21 @@ const GameProgression = () => {
                     }
                 }
 
+                if(results.position === results.questions.length){
+                    fetch(`${API_URL}/admin/session/${sessionId}/results`,{
+                        method:'GET',
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                        },
+                    })
+                        .then((res) => res.json())
+                        .then((data2) => {
+                            console.log("fuck",data2)
+                            setMark(results)
+                            setResult(data2.results);
 
+                        })
+                }
             });
     }, [sessionId, position]);
 
@@ -171,32 +190,37 @@ const GameProgression = () => {
     } else if (position === gameLength) {
         // didn't end now, end with a timeout
         // when game end show final result
-        fetch(`${API_URL}/admin/session/${sessionId}/results`,{
-            method:'GET',
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data2) => {
-                console.log("fuck",data2)
 
-                fetch(`${API_URL}/admin/session/${sessionId}/status`,{
-                    method:'GET',
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-                    },
-                })
-                    .then((res) => res.json())
-                    .then((data3) => {
-                        console.log("nopno",data3)
-                        // for (let i=0;i<data3.)
-                    })
+        console.log("awdawd",result);
+        console.log('sdasds',mark)
+        const scoreList=[];
+        for (let i=0;i<result.length;i+=1){
+            let grade=0;
+            for (let j=0;j<result[i].answers.length;j+=1){
+                if (result[i].answers[j].correct===true){
+                    grade+=mark.questions[j].worthOfPoints;
+                }
+            }
+            scoreList.push(grade);
+        }
+        console.log(scoreList);
 
-            })
-        pageContent = <div className={classes.end}>Game End</div>;
+        // const toplist=[]
+        // const array = [];
+        const playDataList = [];
+        for (let n=0;n<scoreList.length;n+=1){
 
+            // toplist.push(pageContent)
+            // console.log(toplist)
+            // setList(toplist)
+            // array.push(<Table>{result[n].name}  {scoreList[n]}</Table>);
+            playDataList.push(playerData(result[n].name, scoreList[n]));
+        }
+        console.log(playDataList);
 
+        playDataList.sort((a,b)=>{return a.playerScore<b.playerScore})
+        console.log("sored",playDataList);
+        pageContent = (<div>awdawd</div>);
     } else {
         // should be a countdown timer here
         console.log("advanceDisabled", advanceDisabled);
@@ -209,9 +233,6 @@ const GameProgression = () => {
                                 // should to some api call
                                 console.log("end");
                                 setAdvanceDisabled(false);
-
-                                // display the results of a game in admin page
-
 
 
                             }}
