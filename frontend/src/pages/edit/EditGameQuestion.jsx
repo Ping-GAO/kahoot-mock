@@ -12,6 +12,8 @@ import Slider from "@material-ui/core/Slider";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormLabel from "@material-ui/core/FormLabel";
 import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch } from "react-redux";
+import { alertError ,alertSuccess} from "../../redux/actions";
 
 
 
@@ -147,7 +149,7 @@ const useStyles = makeStyles((theme) => ({
 const EditGameQuestion = () => {
     const { quizId, questionId } = useParams();
     const history = useHistory();
-
+    const dispatch = useDispatch();
     const [title, setTitle] = useState("");
     const [answer1, setAnswer1] = useState("");
     const [answer2, setAnswer2] = useState("");
@@ -240,42 +242,125 @@ const EditGameQuestion = () => {
     
     
     const handleSubmit = ()=>{
+        if (!(answer1 && answer2 && answer3 && answer4)) {
+            dispatch(alertError("Please Fill In All Answers"));
+            return;
+        }
+        if (!title) {
+            dispatch(alertError("Please Fill in Title"));
+            return;
+        }
+        if (!timeLimit) {
+            dispatch(alertError("Please Set Time Limit"));
+            return;
+        }
+        if (!upload.imagePreviewUrl) {
+            dispatch(alertError("Please Upload An Image"));
+            return;
+        }
     
+        let atLeastOneAnswer = false;
+        for (let i = 1; i <= 4; i += 1) {
+          
+            if(eval(`checked${i}`) === true){
+                atLeastOneAnswer  = true;
+                break;
+            }
+        }
+        if(!atLeastOneAnswer){
+            dispatch(alertError("Please Checked Atleast One Correct Answer"));
+            return;
+        }
+      
+        let cnt = 0;
+        let type;
+        for (let i = 1; i <= 4; i += 1) {
+            if (eval(`checked${i}`) === true) {
+                cnt += 1;
+            }
+        }
+        if (cnt > 1) {
+            type = "Mutiple Choice";
+        } else {
+            type = "Single Choice";
+        }
+        
+        console.log(type);
     
+
         // do a fetch call to update the question
     
-        
+        fetch(`${API_URL}/admin/quiz/${quizId}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+            
+            
+                console.log(data);
+                // const 
+                const q = data.questions.find(qes=>qes.questionId=== questionId);
+                console.log(q);
+                q.answers[0].answerBody = answer1;
+                q.answers[1].answerBody = answer2;
+                q.answers[2].answerBody = answer3;
+                q.answers[3].answerBody = answer4;
+                
+                q.answers[0].isRightOne = checked1;
+                q.answers[1].isRightOne = checked2;
+                q.answers[2].isRightOne = checked3;
+                q.answers[3].isRightOne = checked4;
+                q.timeLimit = timeLimit;
+                q.worthOfPoints = points;
+                q.image = upload.imagePreviewUrl;
+                q.questionBody = title;
+                
+                
+                const {questions} = data;
+                const newQuestions = []
+                console.log("apple",questions);
+                for(let i=0;i<questions.length;i+=1){
+                    if(questions[i].questionId !== questionId){
+                        newQuestions.push(questions[i]);
+                    }
+                    else{
+                        newQuestions.push(q);
+                    }
+                }
+                console.log("new",newQuestions);
+                
+                fetch(`${API_URL}/admin/quiz/${quizId}`, {
+                    method: "PUT",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                    body: JSON.stringify({
+                        ...data,
+                        questions: newQuestions,
+                    }),
+                })
+                    .then((res) => console.log(res.status))
+                    .then(() => {
+                        dispatch(alertSuccess("Update Questions Success"));
+                        history.push(`/dashboard/${quizId}`);
+                    });
+                
+            });
     
     
     
-    
-    
-    
-    
-    
-    
-    
-        history.push(`/dashboard/${quizId}`);
+       
     };
     
     
     
     useEffect(() => {
-        // const setQuestionsType = () => {
-        //     let cnt = 0;
-        //     for (let i = 1; i <= 4; i += 1) {
-        //         if (eval(`checked${i}`) === true) {
-        //             cnt += 1;
-        //         }
-        //     }
-        //     if (cnt === 0) {
-        //         setQuestionType("Question Type");
-        //     } else if (cnt > 1) {
-        //         setQuestionType("Mutiple Choice");
-        //     } else {
-        //         setQuestionType("Single Choice");
-        //     }
-        // };
+       
 
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
             method: "GET",
@@ -285,14 +370,8 @@ const EditGameQuestion = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                // console.log(data.questions.filter())
 
-               
-                
                 const quesitonData =  data.questions.filter((q) => q.questionId === questionId)[0];
-                
-                
-                
                 setTitle(quesitonData.questionBody);
                 setTimeLimit(quesitonData.timeLimit);
                 setUpload({
@@ -308,7 +387,8 @@ const EditGameQuestion = () => {
                 setChecked3(quesitonData.answers[2].isRightOne);
                 setChecked4(quesitonData.answers[3].isRightOne);
                 setPoints(quesitonData.worthOfPoints);
-                console.log(quesitonData);
+                // console.log(quesitonData);
+                console.log(data);
             });
 
         
