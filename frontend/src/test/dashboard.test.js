@@ -5,7 +5,7 @@ import React from "react";
 import store from "../redux/stores";
 import Dashboard from "../pages/home/Dashboard";
 
-describe('Dashboard Page', () => {
+describe('test dashboard page static html', () => {
     // test dashboard welcome text
     it('Dashboard page should have a welcome text', () => {
         const wrapper = mount(

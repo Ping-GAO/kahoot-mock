@@ -8,7 +8,7 @@ import Signup from "../pages/signup/Signup";
 // import Login from "../pages/login/Login";
 
 // test signup button
-describe('Signup Page', () => {
+describe('test signup page static html', () => {
 
     const wrapper = mount(
         <Provider store={store}>
