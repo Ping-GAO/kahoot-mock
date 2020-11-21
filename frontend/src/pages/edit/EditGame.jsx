@@ -50,7 +50,6 @@ const EditGame = () => {
             });
     }, [quizId, open, toogle]);
 
-    // console.log(quizze);
 
     return (
         <div className={classes.root}>

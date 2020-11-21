@@ -49,8 +49,6 @@ const ButtonAppBar = () => {
         );
     }
 
-
-
     const toDashBoard = ()=>{
         history.push('/dashboard');
     };

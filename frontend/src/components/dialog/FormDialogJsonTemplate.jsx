@@ -6,7 +6,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-
 import {useDropzone} from 'react-dropzone';
 import API_URL from '../../constants';
 
@@ -40,8 +39,6 @@ const rejectStyle = {
   
 const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
 
-    // console.log(open,handleClose,id);
-    // console.log(id);
     const [jsonFile,setJsonFile] = useState(null);
     // accept only json file
     const {
@@ -77,9 +74,7 @@ const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
     const handleEdit = ()=>{
         // contain array of question
         const {questions,thumbnail,createdAt} = jsonFile;
-        console.log("fuck",questions);
-    
-         
+
         const validQuestions = questions.map(question=>{
             // this is used as a validtor
             // if the field is not presert in the question
@@ -91,8 +86,7 @@ const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
                 timeLimit,
                 worthOfPoints,
                 image} = question;
-            
-        
+
             return { questionId,
                 questionBody,
                 answers,
@@ -101,8 +95,7 @@ const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
                 worthOfPoints,
                 image};
         });
-    
-        console.log("valid",validQuestions,thumbnail,createdAt);
+
         fetch(`${API_URL}/admin/quiz/${id}`,{
             method: "PUT",
             headers: {
@@ -120,12 +113,9 @@ const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
             .then((res) => console.log(res.status))
             .then(() => {
                 handleClose();
-                console.log("fetchncall cussesss");
             });
     };
-    
-    
-    
+
     useEffect(()=>{
         if(acceptedFiles[0]){
             const jsonFileLocal = acceptedFiles[0];
@@ -134,16 +124,11 @@ const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
                 setJsonFile(JSON.parse(event.target.result));
             }
             fileReader.readAsText(jsonFileLocal);
-
-        
         }
 
        
     }, [acceptedFiles]);
-    
-    // console.log(jsonFile);
-    
-    
+
     return (
         <Dialog
             open={open}
@@ -157,9 +142,7 @@ const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
                 <DialogContentText>
 				Fill the Quiz with Json Template
                 </DialogContentText>
-               
                 <section className="container">
-
                     <div {...getRootProps({style})}>
                         <input {...getInputProps()} />
                         <p>Upload a json file</p>
@@ -169,8 +152,7 @@ const FormDialogJsonTemplate = ({ open, handleClose, id }) => {
                         <ul>{files}</ul>
                     </aside>
                 </section>
-                
-               
+
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">

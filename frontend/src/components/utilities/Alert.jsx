@@ -22,7 +22,6 @@ const CustomizedSnackbars = ({ type, message }) => {
         }
     };
 
-
     return (
         <Snackbar
             open={open}

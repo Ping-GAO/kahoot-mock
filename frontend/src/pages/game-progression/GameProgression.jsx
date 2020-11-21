@@ -76,8 +76,6 @@ const GameProgression = () => {
     const [advanceDisabled, setAdvanceDisabled] = useState(true);
     const [result, setResult] = useState([{ answers: [{correct:false}] }]);
     const [mark, setMark] = useState();
-    // const [list,setList]=useState();
-    // const [name,setName]=useState([]);
 
     useEffect(() => {
         fetch(`${API_URL}/admin/session/${sessionId}/status`, {
@@ -96,7 +94,6 @@ const GameProgression = () => {
 
                 setPosition(results.position);
                 setGameLength(results.questions.length);
-                // console.log("result postion", results.position);
                 if (
                     results.position !== -1 &&
                     results.position !== results.questions.length
@@ -136,9 +133,7 @@ const GameProgression = () => {
                     })
                         .then((res) => res.json())
                         .then((data2) => {
-                            // console.log("in fetgc 2", data2);
                             setMark(results);
-                            // console.log("lool;",data2.results);
                             setResult(data2.results);
                         });
                 }
@@ -164,7 +159,6 @@ const GameProgression = () => {
             .then(
                 () => {
                     dispatch(alertSuccess("Advance Sucess"));
-                    console.log("length", gameLength);
                     setAdvanceDisabled(true);
                     setPosition((prevPosition) => prevPosition + 1);
                 },
@@ -173,7 +167,6 @@ const GameProgression = () => {
                 }
             );
     };
-    // console.log(position,gameLength);
 
     const renderTime = ({ remainingTime }) => {
         if (remainingTime === 0) {
@@ -189,9 +182,6 @@ const GameProgression = () => {
         );
     };
 
-    // console.log(timeLimitCurrent);
-    //
-    // console.log(position, gameLength);
 
     let pageContent;
     if (position === -2) {
@@ -208,8 +198,6 @@ const GameProgression = () => {
         // didn't end now, end with a timeout
         // when game end show final result
 
-        // console.log("awdawd", result);
-        // console.log("sdasds", mark);
         const scoreList = [];
         for (let i = 0; i < result.length; i += 1) {
             let grade = 0;
@@ -221,20 +209,13 @@ const GameProgression = () => {
             scoreList.push(grade);
         }
 
-        // console.log("resrser", result);
-        // console.log("len", result[0].answers.length);
-        console.log(result.length);
         const rightList = []
         const timeList = []
         for (let n = 0; n < result[0].answers.length; n += 1) {
             let right = 0;
             let quesitionTime = 0
             for (let j = 0; j < result.length; j += 1) {
-                // console.log("apple",result[n].answers[j]);
 
-
-                // console.log("n is", n);
-                // console.log("re n", result[n]);
                 if (result[j].answers[n].correct === true) {
                     right += 1;
                 }
@@ -333,7 +314,6 @@ const GameProgression = () => {
 
     } else {
         // should be a countdown timer here
-        // console.log("advanceDisabled", advanceDisabled);
         pageContent = (
             <>
                 <div style={{ display: "flex" }}>

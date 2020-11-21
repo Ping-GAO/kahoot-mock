@@ -216,9 +216,6 @@ const EditGameQuestion = () => {
         );
     }
 
-
-
-
     const handleImageChange = (e) => {
         e.preventDefault();
 
@@ -234,12 +231,9 @@ const EditGameQuestion = () => {
         reader.readAsDataURL(file);
     };
 
-
     const handleCancel = () => {
         history.push(`/dashboard/${quizId}`);
     };
-
-
 
     const handleSubmit = () => {
         if (!(answer1 && answer2 && answer3 && answer4)) {
@@ -287,7 +281,6 @@ const EditGameQuestion = () => {
 
         console.log(type);
 
-
         // do a fetch call to update the question
 
         fetch(`${API_URL}/admin/quiz/${quizId}`, {
@@ -301,7 +294,7 @@ const EditGameQuestion = () => {
 
 
                 console.log(data);
-                // const 
+                // const
                 const q = data.questions.find(qes => qes.questionId === questionId);
                 console.log(q);
                 q.answers[0].answerBody = answer1;

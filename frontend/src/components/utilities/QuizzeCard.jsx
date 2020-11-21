@@ -74,14 +74,6 @@ const QuizzeCard = ({ id, name, createdAt, thumbnail, setEdit }) => {
             .then(res=>res.json())
             .then(data=>setQuiz(data));
     }, [id, gameDialog, endGame,editQ]);
-    
-    
-    // console.log("quiz",quiz);
-    // console.log(JSON.stringify({questions:quiz.questions,name:quiz.name,
-
-    //     thumbnail:quiz.thumbnail,
-    //     createdAt:quiz.createdAt
-    // }))
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);

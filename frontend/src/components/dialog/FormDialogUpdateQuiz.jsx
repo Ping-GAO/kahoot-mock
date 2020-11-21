@@ -11,10 +11,6 @@ import { useDropzone } from "react-dropzone";
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components';
 import API_URL from "../../constants";
-// import { useDispatch } from "react-redux";
-// import API_URL from "../../constants";
-// import { alertError, alertSuccess } from "../../redux/actions";
-
 
 const Container = styled.div`
   flex: 1;

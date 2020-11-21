@@ -63,7 +63,6 @@ const DialogStartGame = ({ open, handleClose, quizid, quizStatus }) => {
                             })
                                 .then((res) => res.json())
                                 .then((data) => {
-                                    // console.log(data.active);
                                     setSessionId(data.active);
                                 });
                         },
@@ -84,17 +83,12 @@ const DialogStartGame = ({ open, handleClose, quizid, quizStatus }) => {
                 })
                     .then((res) => res.json())
                     .then((data) => {
-                        // console.log(data.active);
                         setSessionId(data.active);
                     });
             }
         }
     }, [quizid, dispatch, quizStatus, open]);
-    
 
-    
-   
-    
     return (
         <Dialog
             open={open}

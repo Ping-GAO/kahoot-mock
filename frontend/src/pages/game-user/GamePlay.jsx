@@ -275,19 +275,16 @@ const GamePlay = () => {
                     console.log("quesaiotyn", question);
                     const previousQestionId = localStorage.getItem(playerId);
 
-                    // console.log(previousQestionId);
-                    // console.log(question.questionId);
                     // no question is current active, fetch one from api
                     if (
                         previousQestionId === null ||
                         previousQestionId !== question.questionId
                     ) {
-                        // console.log("get nexy qesiotn");
+
                         const { isoTimeLastQuestionStarted, ...rest } = question;
 
                         setQuestionCurrent(rest);
 
-                        // console.log(rest);
                         // need a way to perserve the time remaining value between user refresh page
                         // i used real time calculation, so no matter how you refrest the page
                         // the time remain is presist
@@ -316,7 +313,6 @@ const GamePlay = () => {
                                 const answerIds = [];
 
                                 for (let i = 0; i < 4; i += 1) {
-                                    // console.log(eval(`checked${i}`));
                                     if (eval(`checked${i}`) === true) {
                                         answerIds.push(rest.answers[i].answerId);
                                     }
@@ -389,7 +385,6 @@ const GamePlay = () => {
                     ) {
                         // keep pooling
 
-
                         if (gameStatus.current !== "question end") {
                             setGameStatus((prevState) => ({
                                 current: "question end",
@@ -437,7 +432,6 @@ const GamePlay = () => {
 
                 .then((data) => {
                     const { question } = data;
-                    // console.log(data,"data");
                     setQuestionCurrent(question);
                     fetch(`${API_URL}/play/${playerId}/answer`, {
                         method: "GET",
@@ -454,7 +448,6 @@ const GamePlay = () => {
                             console.log("all the answr id", question.answers);
                             console.log("correct answerid", data2.answerIds);
                             question.answers.forEach((answer, index) => {
-                                // console.log(answer, index);
 
                                 if (data2.answerIds.includes(answer.answerId)) {
                                     eval(`setChecked${index}(true)`);
@@ -524,10 +517,6 @@ const GamePlay = () => {
         };
     }, [playerId, gameStatus, checkBoxClicked, dispatch, history]);
 
-    // console.log(questionCurrent)
-    // console.log(gameStatus);
-
-    // console.log(prevGameStatusRef.current);
 
     // condition render base on gameStatus
     let pageContent = null;
@@ -536,7 +525,6 @@ const GamePlay = () => {
         pageContent = <div className={classes.textstyle}>Game not started yet</div>;
     } else if (gameStatus.current === "question end") {
         pageContent = (
-            // <div>Wait admin to advance to next question</div>
 
             <Grid container className={classes.girdContainer} spacing={2}>
                 <Grid container item xs={12} className={classes.head}>

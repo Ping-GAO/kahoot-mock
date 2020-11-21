@@ -66,7 +66,6 @@ const Dashboard = () => {
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    // console.log(data.quizzes.length);
                     let i = 0;
                     let row = [];
                     let girdLocal = [];

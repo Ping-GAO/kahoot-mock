@@ -29,14 +29,10 @@ export const newQuestion = (
     image,
 });
 
-
-
 export const playerData = (playerName, playerScore)=>({
     playerName,
     playerScore
 });
-
-
 
 
 // get the base url of app is running on include the port number

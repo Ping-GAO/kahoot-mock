@@ -283,7 +283,6 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
         
         let atLeastOneAnswer = false;
         for (let i = 1; i <= 4; i += 1) {
-          
             if(eval(`checked${i}`) === true){
                 atLeastOneAnswer  = true;
                 break;
@@ -294,8 +293,7 @@ const FormDialogAddQuestion = ({ open, handleClose, id }) => {
             dispatch(alertError("Please Checked Atleast One Correct Answer"));
             return;
         }
-        
-        
+
         const question = newQuestion(
             uuid(),
             title,
