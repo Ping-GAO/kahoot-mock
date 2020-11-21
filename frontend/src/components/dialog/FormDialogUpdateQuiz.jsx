@@ -96,7 +96,7 @@ const FormDialogUpdateQuiz = ({ open, handleClose, id }) => {
     }, [acceptedFiles]);
 
     const handleKeyDown = (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (e.key === 'Enter') {
             e.preventDefault();
             handleEdit();
         }

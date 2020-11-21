@@ -52,6 +52,8 @@ const GameProgression = () => {
     const [key, setKey] = useState(0);
     const [remainTime, setRemainTime] = useState(1000);
     const [advanceDisabled, setAdvanceDisabled] = useState(true);
+    // const [mark,setMark]=useState(0);
+    // const [name,setName]=useState([]);
 
     useEffect(() => {
         fetch(`${API_URL}/admin/session/${sessionId}/status`, {
@@ -97,6 +99,8 @@ const GameProgression = () => {
                         setTimeLimitCurrent(0);
                         setAdvanceDisabled(false);
                         setKey((prevKey) => prevKey + 1);
+
+
 
                     }
                 }
@@ -167,7 +171,29 @@ const GameProgression = () => {
     } else if (position === gameLength) {
         // didn't end now, end with a timeout
         // when game end show final result
+        fetch(`${API_URL}/admin/session/${sessionId}/results`,{
+            method:'GET',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((data2) => {
+                console.log("fuck",data2)
 
+                fetch(`${API_URL}/admin/session/${sessionId}/status`,{
+                    method:'GET',
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+                    },
+                })
+                    .then((res) => res.json())
+                    .then((data3) => {
+                        console.log("nopno",data3)
+                        // for (let i=0;i<data3.)
+                    })
+
+            })
         pageContent = <div className={classes.end}>Game End</div>;
 
 
@@ -183,6 +209,11 @@ const GameProgression = () => {
                                 // should to some api call
                                 console.log("end");
                                 setAdvanceDisabled(false);
+
+                                // display the results of a game in admin page
+
+
+
                             }}
                             isPlaying
                             key={key}
