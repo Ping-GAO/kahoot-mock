@@ -28,12 +28,14 @@
 - 11/11: Upon request, added 'isoTimeLastQuestionStarted' property to `GET /play/{playerid}/question` so that you can display a countdown / remaining timer on the frontend
 - 12/11: Added `answeredAt` property to results, to complete various sections; Clarity that only 3 components need to be tested; We encourage you to only use shallow component rendering; Question started time added to overall results payload for each user
 - 15/11: Added `/play/{playerid}/status` to allow a player to tell if the game has started or not - not required to be used, someone just asked for it
+- 20/11: Made clear that 'Updates the thumbnail and name of the game successfully (yes, it will have no questions)' is not required
+- 20/11: Recommendation to put a `TESTING.md` file in the project repo with information about your tets if you feel they need some explanation
 
 ## 1. Background & Motivation
 
 In October 2020 you and your friends pitched a startup idea to produce _An innovative lightweight quiz platform for millenials_ that will _revolutionise the secondary and tertiary education market for years_. You pitched this solution in the form of a web-based application, and called this quiz application **BigBrain**.
 
-A week later you received a tentative \$50,000 investment from an [Angel Investor](https://en.wikipedia.org/wiki/Angel_investor) pending you producing a working MVP of the application.
+A week later you received a tentative $50,000 investment from an [Angel Investor](https://en.wikipedia.org/wiki/Angel_investor) pending you producing a working MVP of the application.
 
 Shortly after you discussed the functionality and feature set with your friends, and wrote out a RESTful specification / interface together so that you can split up the front-end and back-end work between the group.
 
@@ -170,7 +172,7 @@ For **ui testing**, you must:
 - Write a single test for the "happy path" of an admin that is described as:
   1.  Registers successfully
   2.  Creates a new game successfully
-  3.  Updates the thumbnail and name of the game successfully (yes, it will have no questions)
+  3.  (Not required) Updates the thumbnail and name of the game successfully (yes, it will have no questions)
   4.  Starts a game successfully
   5.  Ends a game successfully (yes, no one will have played it)
   6.  Loads the results page successfully
@@ -178,6 +180,8 @@ For **ui testing**, you must:
   8.  Logs back into the application successfully
 
 Tests must be run from inside the `frontend` folder by running `yarn test`.
+
+We recommend (not required) putting put a `TESTING.md` file in the project repo with information about your tets if you feel they need some explanation.
 
 ### 2.8. General Requirements
 
