@@ -1,3 +1,0 @@
-# Note
-- Emma Paris is also Tim Huang, I don't know why it's Emma Paris when I pushed my code to gitlab...
-- 2.5.json is located in the public folder
